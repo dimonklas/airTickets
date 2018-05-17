@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Регрессионное тестирование сайта покупки авиабилетов" parallel="tests" thread-count="1" verbose="1">
+
+	<!--<test name="Покупка билета" >-->
+		<!--<groups>-->
+			<!--<run>-->
+				<!--<include name="Загрузка курсов"/>-->
+			<!--</run>-->
+		<!--</groups>-->
+		<!--<classes>-->
+			<!--<class name="autotest.TestRunner" />-->
+		<!--</classes>-->
+	<!--</test>-->
+
+
+
+
+</suite>

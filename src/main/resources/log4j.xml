@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- Send debug messages to System.out -->
+    <!--<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">-->
+        <!--By default, encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <!--<param name="Target" value="System.out"/>-->
+        <!--<layout class="org.apache.log4j.PatternLayout">-->
+            <!--<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!-- console appender -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1} - %m%n" />
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch" value="INFO" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter"/>
+    </appender>
+
+    <root>
+        <priority value="DEBUG" />
+        <appender-ref ref="console" />
+    </root>
+
+    <!--<appender name="RP" class="com.epam.ta.reportportal.log4j.appender.ReportPortalAppender">-->
+        <!--<layout class="org.apache.log4j.PatternLayout">-->
+            <!--<param name="ConversionPattern" value="[%d{HH:mm:ss}] %-5p (%F:%L) - %m%n"/>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!--'additivity' flag is important! Without it logback will double-log log messages-->
+    <!--<logger name="com.epam.ta.apache" additivity="false">-->
+        <!--<level value="OFF"/>-->
+        <!--<appender-ref ref="RP"/>-->
+    <!--</logger>-->
+
+    <!-- By default, the level of the root level is set to DEBUG -->
+    <!--<root>-->
+        <!--<level value="INFO"/>-->
+        <!--<appender-ref ref="RP"/>-->
+        <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
+
+</log4j:configuration>

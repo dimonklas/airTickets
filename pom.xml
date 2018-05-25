@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <suiteFile>testng.xml</suiteFile>
         <suiteName>TestSuite</suiteName>
-        <selenideVersion>4.11.2</selenideVersion>
+        <selenideVersion>4.11.4</selenideVersion>
         <allure.version>2.6.0</allure.version>
         <aspectj.version>1.9.1</aspectj.version>
         <compiler.plugin.version>3.7.0</compiler.plugin.version>

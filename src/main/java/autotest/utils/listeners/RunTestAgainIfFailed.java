@@ -1,6 +1,5 @@
 package autotest.utils.listeners;
 
-import autotest.utils.exception.AuthentificationException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -43,8 +42,7 @@ public class RunTestAgainIfFailed implements IRetryAnalyzer {
 //                com.codeborne.selenide.ex.ElementNotFound.class,
 //                com.codeborne.selenide.ex.ElementShould.class,
 //                com.codeborne.selenide.ex.ElementShouldNot.class,
-                InvalidElementStateException.class,
-                AuthentificationException.class
+                InvalidElementStateException.class
         );
 
         return list.stream().anyMatch(clazz -> {

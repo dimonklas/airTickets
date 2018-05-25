@@ -1,7 +1,9 @@
 package autotest.utils;
 
+import autotest.bl.ProminSessionBL;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -22,22 +24,34 @@ public class ConfigurationVariables {
     public String currentBrowser = System.getProperty("currentBrowser");
     public String userLogin = System.getProperty("userLogin");
     public String userPassword = System.getProperty("userPassword");
-    public String userCashierLogin = System.getProperty("userCashierLogin");
-    public String userCashierPassword = System.getProperty("userCashierPassword");
-    public String totpUrl;
-    public String branch;
-    public String branchCass;
-    public String branchCashier;
+
+    public String urlPromin;
+    public String urlTest;
+    public String urlPrerelease;
+
+    public String prominSession;
+
     public String dbClass;
     public String URLBaseConnection;
     public String loginDataBase;
     public String passwordDataBase;
+
+
 
     static {
 
         fillMyProperties(configurationData, configFilePath);
         fillMyProperties(testData, testDataFilePath);
         instance = new ConfigurationVariables();
+
+        if(instance.prominSession == null) {
+            try{
+                instance.prominSession = new ProminSessionBL().getProminSession();
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
@@ -52,16 +66,9 @@ public class ConfigurationVariables {
         if (userPassword == null || userPassword.equalsIgnoreCase(""))
             userPassword = getProperty(configurationData, "userPassword");
 
-         if (userCashierLogin == null|| userCashierLogin.equalsIgnoreCase(""))
-             userCashierLogin = getProperty(configurationData, "userCashierLogin");
-
-         if (userCashierPassword == null || userCashierPassword.equalsIgnoreCase(""))
-             userCashierPassword = getProperty(configurationData, "userCashierPassword");
-
-         totpUrl = getProperty(configurationData, "totpUrl");
-         branch = getProperty(configurationData, "branch");
-         branchCass = getProperty(configurationData, "branchCass");
-         branchCashier = getProperty(configurationData, "branchCashier");
+         urlPromin = getProperty(configurationData, "urlPromin");
+         urlTest = getProperty(configurationData, "urlTest");
+         urlPrerelease = getProperty(configurationData, "urlPrerelease");
 
          dbClass = getProperty(configurationData, "dbClass");
          URLBaseConnection = getProperty(configurationData, "URLBaseConnection");

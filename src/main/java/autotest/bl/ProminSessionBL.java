@@ -21,26 +21,44 @@ public class ProminSessionBL {
     private Filler filler = new Filler();
     private JaxbGsonUtils jaxbGsonUtils = new JaxbGsonUtils();
 
+    private final String URL_PROMIN = CV.urlPromin;
+
 
     public String getProminSession() throws JAXBException {
-        String url = CV.urlPromin;
+        Session session = filler.fillSessionRequest(CV.userLogin, getAdminSession());
+        String body = jaxbGsonUtils.objectToXml(session, Session.class);
+        Id result = null;
+        try{
+            result =  (Id) restTemplateSetRequest.requestMethodPost(URL_PROMIN, body, prominHeaders(), Id.class);
+        } catch (Exception e) {
+            throw new AuthentificationException("Ошибка получения LDAP сессии проминя\n" + e.getMessage());
+        }
 
+        Assert.assertNotNull(result, "Ошибка получения LDAP сессии проминя");
+        return result.getValue();
+    }
+
+    private String getAdminSession() throws JAXBException {
+        autotest.dto.promin.request.excl.Session session = filler.fillAdminSessionRequest(CV.techLogin, CV.techPassword);
+        String body = jaxbGsonUtils.objectToXml(session, autotest.dto.promin.request.excl.Session.class);
+        Id result = null;
+        try{
+            result =  (Id) restTemplateSetRequest.requestMethodPost(URL_PROMIN, body, prominHeaders(), Id.class);
+        } catch (Exception e) {
+            throw new AuthentificationException("Ошибка получения EXCL сессии проминя\n" + e.getMessage());
+        }
+
+        Assert.assertNotNull(result, "Ошибка получения EXCL сессии проминя");
+        return result.getValue();
+    }
+
+    private HttpHeaders prominHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/xml;charset=UTF-8");
         headers.add("Accept", "application/xml");
         headers.add("host", "promin.stage.it.loc");
 
-        Session session = filler.fillSessionRequest(CV.userLogin, CV.userPassword);
-        String body = jaxbGsonUtils.objectToXml(session, Session.class);
-        Id result = null;
-        try{
-            result =  (Id) restTemplateSetRequest.requestMethodPost(url, body, headers, Id.class);
-        } catch (Exception e) {
-            throw new AuthentificationException("Ошибка получения сессии проминя\n" + e.getMessage());
-        }
-
-        Assert.assertNotNull(result, "Ошибка получения сессии проминя");
-        return result.getValue();
+        return headers;
     }
 
 }

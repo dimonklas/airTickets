@@ -24,6 +24,8 @@ public class ConfigurationVariables {
     public String currentBrowser = System.getProperty("currentBrowser");
     public String userLogin = System.getProperty("userLogin");
     public String userPassword = System.getProperty("userPassword");
+    public String techLogin = System.getProperty("techLogin");
+    public String techPassword = System.getProperty("techPassword");
 
     public String urlPromin;
     public String urlTest;
@@ -56,7 +58,7 @@ public class ConfigurationVariables {
     }
 
 
-     ConfigurationVariables() {
+     private ConfigurationVariables() {
         if (currentBrowser == null || currentBrowser.equalsIgnoreCase(""))
             currentBrowser = getProperty(configurationData, "currentBrowser");
 
@@ -65,6 +67,12 @@ public class ConfigurationVariables {
 
         if (userPassword == null || userPassword.equalsIgnoreCase(""))
             userPassword = getProperty(configurationData, "userPassword");
+
+        if (techLogin == null|| techLogin.equalsIgnoreCase(""))
+            techLogin = getProperty(configurationData, "techLogin");
+
+        if (techPassword == null || techPassword.equalsIgnoreCase(""))
+            techPassword = getProperty(configurationData, "techPassword");
 
          urlPromin = getProperty(configurationData, "urlPromin");
          urlTest = getProperty(configurationData, "urlTest");

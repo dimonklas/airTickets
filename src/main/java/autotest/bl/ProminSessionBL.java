@@ -24,6 +24,9 @@ public class ProminSessionBL {
     private final String URL_PROMIN = CV.urlPromin;
 
 
+    /*
+    * Получает активированную сессию сотрудника с помощью админской сессии
+    * */
     public String getProminSession() throws JAXBException {
         Session session = filler.fillSessionRequest(CV.userLogin, getAdminSession());
         String body = jaxbGsonUtils.objectToXml(session, Session.class);
@@ -35,9 +38,12 @@ public class ProminSessionBL {
         }
 
         Assert.assertNotNull(result, "Ошибка получения LDAP сессии проминя");
-        return result.getValue();
+        return result.getValue().trim();
     }
 
+    /*
+    * Метод для получения админской сессии проминя
+    * */
     private String getAdminSession() throws JAXBException {
         autotest.dto.promin.request.excl.Session session = filler.fillAdminSessionRequest(CV.techLogin, CV.techPassword);
         String body = jaxbGsonUtils.objectToXml(session, autotest.dto.promin.request.excl.Session.class);
@@ -49,9 +55,12 @@ public class ProminSessionBL {
         }
 
         Assert.assertNotNull(result, "Ошибка получения EXCL сессии проминя");
-        return result.getValue();
+        return result.getValue().trim();
     }
 
+    /*
+    * Хидеры для запросов на сервер проминя
+    * */
     private HttpHeaders prominHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/xml;charset=UTF-8");

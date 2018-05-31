@@ -21,12 +21,13 @@ public class TestRunner extends SetUpAndTearDown {
 
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "Бронировка авиабилета для одного взрослого (Внешний сайт)",
+            description = "front-14514: Бронировка авиабилета для одного взрослого (Внешний Сайт)",
             groups = {"Покупка билетов"},
             priority = 10)
-    public void a1(){
+    public void a1_front_14514(){
+
+        testSuite.front_14514();
         log.info("Sid = " + CV.prominSession);
-//        testSuite.;
     }
 
 

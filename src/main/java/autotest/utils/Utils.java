@@ -10,10 +10,9 @@ import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
-import static com.codeborne.selenide.Selenide.switchTo;
+import static com.codeborne.selenide.Selenide.*;
 
 public class Utils {
 
@@ -33,6 +32,15 @@ public class Utils {
     public static String date(String formatDate){
         SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
         return sdf.format(Calendar.getInstance().getTime());
+    }
+
+    public static String dateForFlightSearchResults(int days){
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM E");
+        return sdf.format(calendar.getTime()).toLowerCase();
     }
 
 

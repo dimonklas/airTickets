@@ -4,14 +4,13 @@ import autotest.utils.ConfigurationVariables;
 import autotest.utils.listeners.AllureOnFailListener;
 import autotest.utils.listeners.RunTestAgainIfFailed;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import lombok.extern.log4j.Log4j;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Log4j
-@Epic("Сайт 'Банковские металлы'")
-@Feature("Регресионное тестирование сайта 'https://bmetal.test.it.loc'")
+@Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
+//@Feature("Бронирование билетов")
 @Listeners({AllureOnFailListener.class})
 public class TestRunner extends SetUpAndTearDown {
 
@@ -32,3 +31,4 @@ public class TestRunner extends SetUpAndTearDown {
 
 
 }
+

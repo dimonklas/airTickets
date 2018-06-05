@@ -1,9 +1,7 @@
 package autotest;
 
 
-import autotest.pages.MainPage;
-import autotest.pages.SearchPage;
-import autotest.pages.SearchResultsPage;
+import autotest.pages.*;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import lombok.extern.log4j.Log4j;
@@ -21,6 +19,8 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel("Внешний Сайт")
@@ -49,15 +49,35 @@ class TestSuite {
         searchResultsPage.checkDepartureCityNameBackward(id, "Варшава");
         searchResultsPage.checkArrivalCityNameBackward(id, "Краков");
 
+        searchResultsPage.checkDepartureAitportNameForward(id);
+        searchResultsPage.checkArrivalAitportNameForward(id);
+        searchResultsPage.checkDepartureAitportNameBackward(id);
+        searchResultsPage.checkArrivalAitportNameBackward(id);
+
         searchResultsPage.checkDepartureDateForward(id, Utils.dateForFlightSearchResults(180));
         searchResultsPage.checkArrivalDateForward(id, Utils.dateForFlightSearchResults(180), Utils.dateForFlightSearchResults(180+1));
         searchResultsPage.checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(185));
         searchResultsPage.checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(185), Utils.dateForFlightSearchResults(185+1));
 
-        searchResultsPage.checkPresenceOfDepartureTimeForward(id, "[0-9]{1,2}:[0-9]{2}");
-        searchResultsPage.checkPresenceOfArrivalTimeForward(id, "[0-9]{1,2}:[0-9]{2}");
-        searchResultsPage.checkPresenceOfDepartureTimeBackward(id, "[0-9]{1,2}:[0-9]{2}");
-        searchResultsPage.checkPresenceOfArrivalTimeBackward(id, "[0-9]{1,2}:[0-9]{2}");
+        String regex = "[0-9]{1,2}:[0-9]{2}";
+        searchResultsPage.checkPresenceOfDepartureTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfArrivalTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfDepartureTimeBackward(id, regex);
+        searchResultsPage.checkPresenceOfArrivalTimeBackward(id, regex);
+
+        regex = "[0-9ч]{2,3}[0-9м\\s]{3,4}";
+        searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
+
+        searchResultsPage.checkPresenceOfTicketsCost(id);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketForwardDetails();
+        ticketInfoPage.checkTicketBackwardDetails();
+
+        customerContactDataPage.checkPresenceOfContactDataBlock();
     }
 
 }

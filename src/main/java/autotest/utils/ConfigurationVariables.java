@@ -39,6 +39,16 @@ public class ConfigurationVariables {
     public String passwordDataBase;
 
 
+    public String phone;
+    public String otp;
+    public String lastName;
+    public String firstName;
+    public String sex;
+    public String birthDate;
+    public String citizenship;
+    public String docSN;
+    public String docExpDate;
+
 
     static {
 
@@ -58,30 +68,40 @@ public class ConfigurationVariables {
     }
 
 
-     private ConfigurationVariables() {
+    private ConfigurationVariables() {
         if (currentBrowser == null || currentBrowser.equalsIgnoreCase(""))
             currentBrowser = getProperty(configurationData, "currentBrowser");
 
-        if (userLogin == null|| userLogin.equalsIgnoreCase(""))
+        if (userLogin == null || userLogin.equalsIgnoreCase(""))
             userLogin = getProperty(configurationData, "userLogin");
 
         if (userPassword == null || userPassword.equalsIgnoreCase(""))
             userPassword = getProperty(configurationData, "userPassword");
 
-        if (techLogin == null|| techLogin.equalsIgnoreCase(""))
+        if (techLogin == null || techLogin.equalsIgnoreCase(""))
             techLogin = getProperty(configurationData, "techLogin");
 
         if (techPassword == null || techPassword.equalsIgnoreCase(""))
             techPassword = getProperty(configurationData, "techPassword");
 
-         urlPromin = getProperty(configurationData, "urlPromin");
-         urlTest = getProperty(configurationData, "urlTest");
-         urlPrerelease = getProperty(configurationData, "urlPrerelease");
+        urlPromin = getProperty(configurationData, "urlPromin");
+        urlTest = getProperty(configurationData, "urlTest");
+        urlPrerelease = getProperty(configurationData, "urlPrerelease");
 
-         dbClass = getProperty(configurationData, "dbClass");
-         URLBaseConnection = getProperty(configurationData, "URLBaseConnection");
-         loginDataBase = getProperty(configurationData, "loginDataBase");
-         passwordDataBase = getProperty(configurationData, "passwordDataBase");
+        dbClass = getProperty(configurationData, "dbClass");
+        URLBaseConnection = getProperty(configurationData, "URLBaseConnection");
+        loginDataBase = getProperty(configurationData, "loginDataBase");
+        passwordDataBase = getProperty(configurationData, "passwordDataBase");
+
+        phone = getProperty(testData, "phone");
+        otp = getProperty(testData, "otp");
+        lastName = getProperty(testData, "lastName");
+        firstName = getProperty(testData, "firstName");
+        sex = getProperty(testData, "sex");
+        birthDate = getProperty(testData, "birthDate");
+        citizenship = getProperty(testData, "citizenship");
+        docSN = getProperty(testData, "docSN");
+        docExpDate = getProperty(testData, "docExpDate");
 
     }
 

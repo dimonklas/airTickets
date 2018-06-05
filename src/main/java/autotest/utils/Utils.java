@@ -61,6 +61,7 @@ public class Utils {
             counter++;
             if(counter > iterations) Assert.fail("Произошла ошибка (не пропал прелоадер), см. скриншот");
         }
-
     }
+
+
 }

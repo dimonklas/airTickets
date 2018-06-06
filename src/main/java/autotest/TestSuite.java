@@ -21,6 +21,7 @@ class TestSuite {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel("Внешний Сайт")
@@ -78,6 +79,10 @@ class TestSuite {
         ticketInfoPage.checkTicketBackwardDetails();
 
         customerContactDataPage.checkPresenceOfContactDataBlock();
+        customerContactDataPage.enterUserData();
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceOfTextElements();
     }
 
 }

@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j
 class TestSuite {
@@ -83,6 +84,16 @@ class TestSuite {
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements();
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+
+        passengersDataPage.fillCustomersData(CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCitizenship(CV.citizenship);
+        passengersDataPage.setSex("M");
+        passengersDataPage.fillDocData(CV.docSN, CV.docExpDate);
+        passengersDataPage.fillEmail("pedroDelgardo@mail.com");
+
+        log.info("Заполнили данные и слипимся");
+        sleep(60 * 1000);
     }
 
 }

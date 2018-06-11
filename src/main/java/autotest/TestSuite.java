@@ -1,6 +1,8 @@
 package autotest;
 
 
+import autotest.entity.SearchData;
+import autotest.entity.TicketData;
 import autotest.pages.*;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
@@ -16,7 +18,8 @@ class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-    void front_14514(){
+    void front_14514(SearchData search, TicketData ticket){
+
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
@@ -31,25 +34,26 @@ class TestSuite {
 
         Utils.switchFrame();
 
-        searchPage.selectWaysForTicket("Туда и обратно");
-        searchPage.selectClass("Эконом");
-        searchPage.setDepartureCity("Краков");
-        searchPage.setArrivalCity("Варшава");
+        searchPage.selectWaysForTicket(search.getWaysType());
+        searchPage.selectClass(search.getClassType());
+        searchPage.setDepartureCity(search.getDepartureCity());
+        searchPage.setArrivalCity(search.getArrivalCity());
         searchPage.setFirstDate(180);
         searchPage.setSecondDate(185);
         searchPage.submitSearch();
         searchPage.preloader.should(appear);
 
         Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
+        //Получим id-шнки блоков с результатами поиска
         List<String> ids = searchResultsPage.getIdOfSearchResults();
         String id = ids.get(0);
 
         searchResultsPage.checkCompanyPresence(id, 2);
 
-        searchResultsPage.checkDepartureCityNameForward(id, "Краков");
-        searchResultsPage.checkArrivalCityNameForward(id, "Варшава");
-        searchResultsPage.checkDepartureCityNameBackward(id, "Варшава");
-        searchResultsPage.checkArrivalCityNameBackward(id, "Краков");
+        searchResultsPage.checkDepartureCityNameForward(id, search.getDepartureCity());
+        searchResultsPage.checkArrivalCityNameForward(id, search.getArrivalCity());
+        searchResultsPage.checkDepartureCityNameBackward(id, search.getArrivalCity());
+        searchResultsPage.checkArrivalCityNameBackward(id, search.getDepartureCity());
 
         searchResultsPage.checkDepartureAitportNameForward(id);
         searchResultsPage.checkArrivalAitportNameForward(id);
@@ -71,7 +75,8 @@ class TestSuite {
         searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
         searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
 
-        searchResultsPage.checkPresenceOfTicketsCost(id);
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
 
         searchResultsPage.pressSelectButton(id);
 
@@ -91,9 +96,15 @@ class TestSuite {
         passengersDataPage.setSex("M");
         passengersDataPage.fillDocData(CV.docSN, CV.docExpDate);
         passengersDataPage.fillEmail("pedroDelgardo@mail.com");
+        passengersDataPage.bookTicket();
 
-        log.info("Заполнили данные и слипимся");
-        sleep(60 * 1000);
+        passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
+        String bookingCode = passengersDataPage.getBookingCode();
+        ticket.setBookingId(bookingCode);
+
+        passengersDataPage.openArchive();
+        sleep(30*1000);
+
     }
 
 }

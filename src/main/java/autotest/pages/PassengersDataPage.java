@@ -9,6 +9,7 @@ import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class PassengersDataPage {
 
@@ -17,7 +18,10 @@ public class PassengersDataPage {
     private SelenideElement
             passengersDataText = $(By.xpath(".//h2[text()='Данные о пассажирах']")),
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
-            preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]"));
+            preloaderBooking = $(By.xpath(".//*[contains(@data-ng-show,'vm.loader||vm.bookingData.loader')] //*[contains(@class,'circle-spinner__circle')]")),
+            preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
+            bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью']")),
+            errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']"));
 
     private SelenideElement
             passengerTitle = $(By.xpath(".//*[@data-ng-bind='passenger.title']")),
@@ -32,9 +36,7 @@ public class PassengersDataPage {
             docSerNumField = $(By.xpath(".//*[@name='docnum']")),
             docExpDateField = $(By.xpath(".//*[@name='doc_expire_date']")),
             mileCardField = $(By.xpath(".//*[@name='bonus_card']")),
-            eMailField = $(By.xpath(".//*[@name='email']")),
-            emailText1 = $(By.xpath(".//h2[text()='Укажите e-mail']")),
-            emailText2 = $(By.xpath(".//*[text()='На него будет выслан электронный билет']"));
+            eMailField = $(By.xpath(".//*[@name='email']"));
 
     private SelenideElement
             sexMaleChkbox = $(By.xpath(".//label[@title='Мужской']")),
@@ -49,12 +51,10 @@ public class PassengersDataPage {
 
     @Step("Проверим наличие и доступность основных полей ввода данных")
     public void checkAvaliabilityOfCustomersDataFields() {
-        passengersDataText.shouldBe(visible);
+        passengersDataText.shouldBe(visible).scrollIntoView(true);
         preloader.waitUntil(disappear, 60*1000);
         preloaderBaggage.shouldBe(visible);
-
         preloaderBaggage.waitUntil(disappear, 180 * 1000);
-
 
         surnameField.shouldBe(visible, enabled);
         nameField.shouldBe(visible, enabled);
@@ -87,11 +87,11 @@ public class PassengersDataPage {
         $(By.xpath(".//*[text()='Фамилия/имя должны совпадать с данными паспорта']")).shouldBe(visible);
         $(By.xpath(".//*[text()='Отключите поле, если нет при себе паспорта']")).shouldBe(visible);
         $(By.xpath(".//*[text()='Для документов без срока действия отключите поле']")).shouldBe(visible);
-        emailText1.shouldBe(visible);
-        emailText2.shouldBe(visible);
+        $(By.xpath(".//*[text()='Укажите e-mail']")).shouldBe(visible);
+        $(By.xpath(".//*[text()='На него будет выслан электронный билет']")).shouldBe(visible);
     }
 
-    @Step("Проверим наличие кнопок и текста со сроком бронирования")
+    @Step("Проверим наличие кнопок 'Назад', 'Забронировать (бесплатно)', 'Купить' и текста со сроком бронирования")
     public void checkPresenceAndAvaliabilityOfButtons(){
         backBtn.shouldBe(visible, enabled);
         bookingBtn.shouldBe(visible, enabled);
@@ -106,7 +106,7 @@ public class PassengersDataPage {
 
     @Step("Заполним клиентские данные: ФИО, пол, дата рождения и гражданство")
     public void fillCustomersData(String surname, String name, String bDate){
-        surnameField.setValue(surname);
+        surnameField.shouldBe(visible).setValue(surname);
         nameField.setValue(name);
         bdateField.setValue(bDate);
     }
@@ -133,7 +133,7 @@ public class PassengersDataPage {
 
         if(expDate != null) {
             if( !$(By.id("withExpireDateLabel-0")).isSelected() ) docExpDateChkbox.shouldBe(visible).click();
-            docSerNumField.shouldBe(enabled).setValue(expDate);
+            docExpDateField.shouldBe(enabled).setValue(expDate);
         }
     }
 
@@ -152,7 +152,30 @@ public class PassengersDataPage {
 
     @Step("Нажмем кнопку 'Забронировать (бесплатно)'")
     public void bookTicket(){
-        bookingBtn.click();
+        bookingBtn.shouldBe(visible).scrollIntoView(true).click();
+        errorText.shouldNot(appear);
+        bookingMessageText.waitUntil(appear, 120*1000).shouldBe(visible).scrollTo();
+    }
+
+
+    @Step("Проверим данные после бронирования")
+    public void checkBookedTicketMessage(String price){
+        String text = "Вы забронировали авиабилет стоимостью " + price + ",00" + " грн";
+        $$(By.xpath(".//*[contains(@class,'booking-message__text-header')]/span")).forEach(e -> {
+            Assert.assertTrue(text.contains(e.getText()), "В сообщении о бронировании билета некорректно отобразился текст");
+        });
+    }
+
+    @Step("Проверим отображение кода бронирования билета")
+    public String getBookingCode(){
+        String code = $(By.xpath(".//*[text()='Код бронирования']/following-sibling::p[@data-ng-bind='locator']")).shouldBe(visible).getText();
+        Assert.assertFalse(code.isEmpty(), "В сообщении о бронировании билета не отобразился код бронирования");
+        return code;
+    }
+
+    @Step("Перейдем в архив билетов")
+    public void openArchive(){
+        $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
     }
 
 }

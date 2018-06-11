@@ -155,11 +155,13 @@ public class SearchResultsPage {
 
 
     @Step("Проверим отображение стоимости билета")
-    public void checkPresenceOfTicketsCost(String id){
+    public String checkPresenceOfTicketsCost(String id){
         String xPath = String.format(".//*[@id='%s']//*[text()='Стоимость:']", id);
         $(By.xpath(xPath)).shouldBe(visible);
         String xPathPrice = String.format(".//*[@id='%s']//*[@data-ng-bind='ticket.amount.UAHFormat']", id);
-        Assert.assertFalse($(By.xpath(xPathPrice)).shouldBe(visible).getText().isEmpty(), "Не отобразилась стоимость билета");
+        String price = $(By.xpath(xPathPrice)).shouldBe(visible).getText();
+        Assert.assertFalse(price.isEmpty(), "Не отобразилась стоимость билета");
+        return price.trim();
     }
 
 

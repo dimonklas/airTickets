@@ -38,6 +38,7 @@ public class PassengersDataPage {
             mileCardField = $(By.xpath(".//*[@name='bonus_card']")),
             eMailField = $(By.xpath(".//*[@name='email']"));
 
+
     private SelenideElement
             sexMaleChkbox = $(By.xpath(".//label[@title='Мужской']")),
             sexFemaleChkbox = $(By.xpath(".//label[@title='Женский']"));
@@ -72,23 +73,27 @@ public class PassengersDataPage {
         eMailField.shouldBe(visible, enabled);
     }
 
+
+
     @Step("Проверим основные надписи для полей ввода данных")
-    public void checkPresenceOfTextElements(){
-        passengerTitle.shouldBe(visible);
-        $(By.xpath(".//label[text()='Фамилия']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Имя']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Пол']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Дата рождения']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Гражданство']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Серия, № документа']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Срок действия']")).shouldBe(visible);
-        $(By.xpath(".//label[text()='Мильная карта']")).shouldBe(visible);
-//        $(By.xpath(".//label[text()='Докупить багаж']")).shouldBe(visible);
-        $(By.xpath(".//*[text()='Фамилия/имя должны совпадать с данными паспорта']")).shouldBe(visible);
-        $(By.xpath(".//*[text()='Отключите поле, если нет при себе паспорта']")).shouldBe(visible);
-        $(By.xpath(".//*[text()='Для документов без срока действия отключите поле']")).shouldBe(visible);
-        $(By.xpath(".//*[text()='Укажите e-mail']")).shouldBe(visible);
-        $(By.xpath(".//*[text()='На него будет выслан электронный билет']")).shouldBe(visible);
+    public void checkPresenceOfTextElements(int passNo, String passType){
+        passengerTitle.shouldBe(visible).should(matchesText(passType));
+
+        $(By.xpath(String.format("(.//label[text()='Фамилия'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Имя'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Пол'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Дата рождения'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Гражданство'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Серия, № документа'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", passNo))).shouldBe(visible);
+//        $(By.xpath(String.format("(.//label[text()='Докупить багаж'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Укажите e-mail'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='На него будет выслан электронный билет'])[%s]", passNo))).shouldBe(visible);
+
     }
 
     @Step("Проверим наличие кнопок 'Назад', 'Забронировать (бесплатно)', 'Купить' и текста со сроком бронирования")

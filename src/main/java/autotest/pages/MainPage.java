@@ -1,7 +1,9 @@
 package autotest.pages;
 
+import autotest.entity.AuthData;
 import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
@@ -27,7 +29,14 @@ public class MainPage {
     @Step("Откроем главную страницу")
     public MainPage openMainPage(){
         open(baseUrl);
+        new AuthData().setCookies(WebDriverRunner.getWebDriver().manage().getCookies());
         return this;
+    }
+
+    @Step("Откроем архив билетов")
+    public void openArchivePage(){
+        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", new AuthData().getDep_sid());
+        open(archiveUrl);
     }
 
     @Step("Перейдем на страницу поиска билетов через канал {channel}")

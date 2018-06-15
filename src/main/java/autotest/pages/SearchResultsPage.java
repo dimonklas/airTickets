@@ -156,7 +156,7 @@ public class SearchResultsPage {
 
     @Step("Проверим отображение стоимости билета")
     public String checkPresenceOfTicketsCost(String id){
-        String xPath = String.format(".//*[@id='%s']//*[text()='Стоимость:']", id);
+        String xPath = String.format(".//*[@id='%s']//*[contains(text(),'Стоимость')]", id);
         $(By.xpath(xPath)).shouldBe(visible);
         String xPathPrice = String.format(".//*[@id='%s']//*[@data-ng-bind='ticket.amount.UAHFormat']", id);
         String price = $(By.xpath(xPathPrice)).shouldBe(visible).getText();

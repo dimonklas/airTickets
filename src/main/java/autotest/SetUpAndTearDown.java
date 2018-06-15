@@ -55,6 +55,11 @@ public class SetUpAndTearDown {
     }
 
     @AfterTest(alwaysRun = true)
+    public void stornBookedTickets(){
+        LOGGER.info("Сторнирование бронировок");
+    }
+
+    @AfterTest(alwaysRun = true)
     public void closeDriver(){
         WebDriverRunner.closeWebDriver();
     }

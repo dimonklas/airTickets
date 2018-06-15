@@ -48,5 +48,33 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-12552:Покупка авиабилета для взрослого и ребенка (внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 20)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-12552")
+    public void a2_front_12552(){
+
+        SearchData searchData = new SearchData(s -> {
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
+            s.setPassengersCount(2);
+        });
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+        });
+
+        log.info("Sid = " + CV.prominSession);
+        testSuite.front_12552(searchData, ticketData);
+
+    }
+
+
 }
 

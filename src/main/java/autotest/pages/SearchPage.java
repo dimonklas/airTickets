@@ -4,12 +4,11 @@ import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.executeJavaScript;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 public class SearchPage {
 
@@ -65,6 +64,63 @@ public class SearchPage {
         executeJavaScript(jsCode);
     }
 
+    @Step("Установим количество пассажиров")
+    public void setPassengersCount(int adult, int child){
+        int totalCount = adult + child;
+
+        $x(".//*[@data-pc-models='vm.models.passengers']").shouldBe(visible).click();
+        setAdultsCount(adult);
+        setChildrenCount(child);
+        Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
+                "Неправильно установили количество пассажиров");
+    }
+
+    @Step("Установим кол-во взрослых: {adultsCount}")
+    private void setAdultsCount(int adultsCount) {
+       int actCount = Integer.parseInt($x(".//input[@data-ng-model='models.adt']").shouldBe(visible).getValue());
+
+       if(actCount != adultsCount) {
+           SelenideElement
+           addCount = $x(".//input[@data-ng-model='models.adt']/../div[contains(@data-ng-click,'addPassenger')]").shouldBe(enabled, visible),
+           removeCount = $x(".//input[@data-ng-model='models.adt']/../div[contains(@data-ng-click,'removePassenger')]").shouldBe(enabled, visible);
+           if (actCount < adultsCount) {
+               for (int i = 0; i < (adultsCount - actCount); ++i) {
+               addCount.click();
+               sleep(500);
+               }
+           } else {
+               for (int i = actCount; i > (actCount - adultsCount); i--) {
+                   removeCount.click();
+                   sleep(500);
+               }
+           }
+       }
+    }
+
+
+    @Step("Установим кол-во взрослых: {adultsCount}")
+    private void setChildrenCount(int childCount) {
+        int actCount = Integer.parseInt($x(".//input[@data-ng-model='models.chd']").shouldBe(visible).getValue());
+
+        if(actCount != childCount) {
+            SelenideElement
+                    addCount = $x(".//input[@data-ng-model='models.chd']/../div[contains(@data-ng-click,'addPassenger')]").shouldBe(enabled, visible),
+                    removeCount = $x(".//input[@data-ng-model='models.chd']/../div[contains(@data-ng-click,'removePassenger')]").shouldBe(enabled, visible);
+            if (actCount < childCount) {
+                for (int i = 0; i < (childCount - actCount); ++i) {
+                    addCount.click();
+                    sleep(600);
+                }
+            } else {
+                for (int i = actCount; i > (actCount - childCount); i--) {
+                    removeCount.click();
+                    sleep(600);
+                }
+            }
+        }
+    }
+
+
     @Step("Подтвердим поиск")
     public void submitSearch(){
         sleep(500);
@@ -72,4 +128,3 @@ public class SearchPage {
     }
 
 }
-

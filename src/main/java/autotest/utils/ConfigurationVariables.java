@@ -27,6 +27,7 @@ public class ConfigurationVariables {
     public String techLogin = System.getProperty("techLogin");
     public String techPassword = System.getProperty("techPassword");
 
+    public String urlStornBooking;
     public String urlPromin;
     public String urlTest;
     public String urlPrerelease;
@@ -41,6 +42,7 @@ public class ConfigurationVariables {
 
     public String phone;
     public String otp;
+
     public String lastName;
     public String firstName;
     public String sex;
@@ -48,6 +50,14 @@ public class ConfigurationVariables {
     public String citizenship;
     public String docSN;
     public String docExpDate;
+
+    public String lastNameChd;
+    public String firstNameChd;
+    public String sexChd;
+    public String birthDateChd;
+    public String citizenshipChd;
+    public String docSNChd;
+    public String docExpDateChd;
 
 
     static {
@@ -84,6 +94,7 @@ public class ConfigurationVariables {
         if (techPassword == null || techPassword.equalsIgnoreCase(""))
             techPassword = getProperty(configurationData, "techPassword");
 
+        urlStornBooking = getProperty(configurationData, "urlStornBooking");
         urlPromin = getProperty(configurationData, "urlPromin");
         urlTest = getProperty(configurationData, "urlTest");
         urlPrerelease = getProperty(configurationData, "urlPrerelease");
@@ -95,6 +106,7 @@ public class ConfigurationVariables {
 
         phone = getProperty(testData, "phone");
         otp = getProperty(testData, "otp");
+
         lastName = getProperty(testData, "lastName");
         firstName = getProperty(testData, "firstName");
         sex = getProperty(testData, "sex");
@@ -102,6 +114,14 @@ public class ConfigurationVariables {
         citizenship = getProperty(testData, "citizenship");
         docSN = getProperty(testData, "docSN");
         docExpDate = getProperty(testData, "docExpDate");
+
+        lastNameChd = getProperty(testData, "lastNameChd");
+        firstNameChd = getProperty(testData, "firstNameChd");
+        sexChd = getProperty(testData, "sexChd");
+        birthDateChd = getProperty(testData, "birthDateChd");
+        citizenshipChd = getProperty(testData, "citizenshipChd");
+        docSNChd = getProperty(testData, "docSNChd");
+        docExpDateChd = getProperty(testData, "docExpDateChd");
 
     }
 

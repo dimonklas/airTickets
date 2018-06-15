@@ -8,6 +8,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
@@ -85,6 +86,7 @@ public class CustomerContactDataPage {
         inputOtpCodeField.shouldBe(visible, enabled).setValue(CV.otp);
         backBtn2.shouldBe(visible, enabled);
         sendBtn.shouldBe(visible, enabled).click();
+        inputOtpCodeField.waitUntil(disappear, 30 * 1000);
     }
 
     @Step("Клиентские данные уже были введены ранее - заполним их по кнопке")

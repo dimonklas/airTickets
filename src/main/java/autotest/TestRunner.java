@@ -70,7 +70,6 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        log.info("Sid = " + CV.prominSession);
         testSuite.front_12552(searchData, ticketData);
 
     }

@@ -43,8 +43,7 @@ public class ArchivePage {
         String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
         String actualStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
         Assert.assertEquals(actualStatus, expectedStatus);
-//        switchTo().window(1);
-//        refresh();
+        switchTo().window(1).close();
     }
 
 }

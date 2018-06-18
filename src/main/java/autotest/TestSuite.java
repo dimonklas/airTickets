@@ -93,10 +93,10 @@ class TestSuite {
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
-        passengersDataPage.fillCustomersData(CV.lastName, CV.firstName, CV.birthDate);
-        passengersDataPage.fillCitizenship(CV.citizenship);
-        passengersDataPage.setSex("M");
-        passengersDataPage.fillDocData(CV.docSN, CV.docExpDate);
+        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, "M");
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
         passengersDataPage.fillEmail("pedroDelgardo@mail.com");
         passengersDataPage.bookTicket();
 
@@ -183,8 +183,29 @@ class TestSuite {
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
-        passengersDataPage.checkPresenceOfTextElements(2, " Ребенок");
+        passengersDataPage.checkPresenceOfTextElements(2, "Ребенок");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
+
+
+        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, "M");
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
+
+        passengersDataPage.fillCustomersData(2, CV.lastNameChd, CV.firstNameChd, CV.birthDateChd);
+        passengersDataPage.fillCitizenship(2, CV.citizenshipChd);
+        passengersDataPage.setSex(2, "F");
+        passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd);
+
+        passengersDataPage.fillEmail("pedroDelgardo@mail.com");
+        passengersDataPage.bookTicket();
+
+        passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
+        String bookingCode = passengersDataPage.getBookingCode();
+        ticket.setBookingId(bookingCode);
+
+        passengersDataPage.openArchive();
+        archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
     }
 }

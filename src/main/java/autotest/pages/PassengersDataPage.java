@@ -18,30 +18,10 @@ public class PassengersDataPage {
     private SelenideElement
             passengersDataText = $(By.xpath(".//h2[text()='Данные о пассажирах']")),
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
-            preloaderBooking = $(By.xpath(".//*[contains(@data-ng-show,'vm.loader||vm.bookingData.loader')] //*[contains(@class,'circle-spinner__circle')]")),
             preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
             bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью']")),
             errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']"));
 
-    private SelenideElement
-            passengerTitle = $(By.xpath(".//*[@data-ng-bind='passenger.title']")),
-            surnameField = $(By.xpath(".//*[@name='lastname']")),
-            nameField = $(By.xpath(".//*[@name='firstname']")),
-            bdateField = $(By.xpath(".//*[@name='birthday']")),
-            citizenshipField = $(By.xpath(".//*[@name='citizenship']")),
-            docSNEnabledChkbox = $(By.xpath(".//label[@for='docs-0']")),
-            docExpDateChkbox = $(By.xpath(".//label[@for='withExpireDateLabel-0']")),
-            mileCardChkbox = $(By.xpath(".//label[@for='isBonusCard-0']")),
-            buyBaggageChkbox = $(By.xpath(".//label[@for='with-baggage-0']")),
-            docSerNumField = $(By.xpath(".//*[@name='docnum']")),
-            docExpDateField = $(By.xpath(".//*[@name='doc_expire_date']")),
-            mileCardField = $(By.xpath(".//*[@name='bonus_card']")),
-            eMailField = $(By.xpath(".//*[@name='email']"));
-
-
-    private SelenideElement
-            sexMaleChkbox = $(By.xpath(".//label[@title='Мужской']")),
-            sexFemaleChkbox = $(By.xpath(".//label[@title='Женский']"));
 
     private SelenideElement
             backBtn = $(By.xpath(".//*[@id='details'] //*[text()='Назад']/parent::a")),
@@ -54,30 +34,29 @@ public class PassengersDataPage {
     public void checkAvaliabilityOfCustomersDataFields() {
         passengersDataText.shouldBe(visible).scrollIntoView(true);
         preloader.waitUntil(disappear, 60*1000);
-        preloaderBaggage.shouldBe(visible);
-        preloaderBaggage.waitUntil(disappear, 180 * 1000);
+        preloaderBaggage.shouldBe(visible).waitUntil(disappear, 180 * 1000);
 
-        surnameField.shouldBe(visible, enabled);
-        nameField.shouldBe(visible, enabled);
-        sexMaleChkbox.shouldBe(visible, enabled);
-        sexFemaleChkbox.shouldBe(visible, enabled);
-        bdateField.shouldBe(visible, enabled);
-        citizenshipField.shouldBe(visible, enabled);
-        docSNEnabledChkbox.shouldBe(visible, enabled);
-        docExpDateChkbox.shouldBe(visible, enabled);
-        mileCardChkbox.shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='lastname']")).shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='firstname']")).shouldBe(visible, enabled);
+        $(By.xpath(".//label[@title='Мужской']")).shouldBe(visible, enabled);
+        $(By.xpath(".//label[@title='Женский']")).shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='birthday']")).shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='citizenship']")).shouldBe(visible, enabled);
+        $(By.xpath(".//label[@for='docs-0']")).shouldBe(visible, enabled);
+        $(By.xpath(".//label[@for='withExpireDateLabel-0']")).shouldBe(visible, enabled);
+        $(By.xpath(".//label[@for='isBonusCard-0']")).shouldBe(visible, enabled);
 //        buyBaggageChkbox.shouldBe(visible, enabled);
-        docSerNumField.shouldBe(visible, enabled);
-        docExpDateField.shouldBe(visible, enabled);
-        mileCardField.shouldBe(visible);
-        eMailField.shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='docnum']")).shouldBe(visible, enabled);
+        $(By.xpath(".//*[@name='doc_expire_date']")).shouldBe(visible, enabled);
+        $(By.xpath("(.//*[@name='bonus_card'])[1]")).shouldBe(visible);
+        $(By.xpath(".//*[@name='email']")).shouldBe(visible, enabled);
     }
 
 
 
     @Step("Проверим основные надписи для полей ввода данных")
     public void checkPresenceOfTextElements(int passNo, String passType){
-        passengerTitle.shouldBe(visible).should(matchesText(passType));
+        $(By.xpath(String.format("(.//*[@data-ng-bind='passenger.title'])[%s]", passNo))).shouldBe(visible).should(matchesText(passType));
 
         $(By.xpath(String.format("(.//label[text()='Фамилия'])[%s]", passNo))).shouldBe(visible);
         $(By.xpath(String.format("(.//label[text()='Имя'])[%s]", passNo))).shouldBe(visible);
@@ -91,8 +70,9 @@ public class PassengersDataPage {
         $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", passNo))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", passNo))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Укажите e-mail'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='На него будет выслан электронный билет'])[%s]", passNo))).shouldBe(visible);
+
+        $(By.xpath(".//*[text()='Укажите e-mail']")).shouldBe(visible);
+        $(By.xpath(".//*[text()='На него будет выслан электронный билет']")).shouldBe(visible);
 
     }
 
@@ -110,49 +90,52 @@ public class PassengersDataPage {
 
 
     @Step("Заполним клиентские данные: ФИО, пол, дата рождения и гражданство")
-    public void fillCustomersData(String surname, String name, String bDate){
-        surnameField.shouldBe(visible).setValue(surname);
-        nameField.setValue(name);
-        bdateField.setValue(bDate);
+    public void fillCustomersData(int passNo, String surname, String name, String bDate){
+        $(By.xpath(String.format("(.//*[@name='lastname'])[%s]", passNo))).shouldBe(visible).setValue(surname);
+        $(By.xpath(String.format("(.//*[@name='firstname'])[%s]", passNo))).setValue(name);
+        $(By.xpath(String.format("(.//*[@name='birthday'])[%s]", passNo))).setValue(bDate);
     }
 
     @Step("Укажем гражданство")
-    public void fillCitizenship(String citizenship){
-        citizenshipField.setValue(citizenship);
+    public void fillCitizenship(int passNo, String citizenship){
+        $(By.xpath(String.format("(.//*[@name='citizenship'])[%s]", passNo))).setValue(citizenship);
         $(By.xpath(String.format(".//strong[text()='%s']/ancestor::li", citizenship))).shouldBe(visible).click();
         $(By.xpath(".//*[contains(@ng-messages,'citizenship')] //*[contains(text(),'Заполните поле')]")).shouldNotBe(visible);
     }
 
     @Step("Установим пол")
-    public void setSex(String sex){
-        if("F".equalsIgnoreCase(sex)) sexFemaleChkbox.click();
-        else sexMaleChkbox.click();
+    public void setSex(int passNo, String sex){
+        if("F".equalsIgnoreCase(sex)) $(By.xpath(String.format("(.//label[@title='Женский'])[%s]", passNo))).click();
+        else $(By.xpath(String.format("(.//label[@title='Мужской'])[%s]", passNo))).click();
     }
 
     @Step("Заполним данные документов")
-    public void fillDocData(String serNum, String expDate){
+    public void fillDocData(int passNo, String serNum, String expDate){
         if(serNum != null) {
-            if( !$(By.id("docs-0")).isSelected() ) docSNEnabledChkbox.shouldBe(visible).click();
-            docSerNumField.shouldBe(enabled).setValue(serNum);
+            String id = String.format("docs-%s", passNo-1);
+            if( !$(By.id(id)).isSelected() ) $(By.xpath(String.format(".//label[@for='%s']", id))).shouldBe(visible).click();
+            $(By.xpath(String.format("(.//*[@name='docnum'])[%s]", passNo))).shouldBe(enabled).setValue(serNum);
         }
 
         if(expDate != null) {
-            if( !$(By.id("withExpireDateLabel-0")).isSelected() ) docExpDateChkbox.shouldBe(visible).click();
-            docExpDateField.shouldBe(enabled).setValue(expDate);
+            String id = String.format("withExpireDateLabel-%s", passNo-1);
+            if( !$(By.id(id)).isSelected() ) $(By.xpath(String.format(".//label[@for='%s']", id))).shouldBe(visible).click();
+            $(By.xpath(String.format("(.//*[@name='doc_expire_date'])[%s]", passNo))).shouldBe(enabled).setValue(expDate);
         }
     }
 
     @Step("Укажем мильную карту")
-    public void fillMileCard(String mileCardNumber){
+    public void fillMileCard(int passNo, String mileCardNumber){
         if (mileCardNumber != null) {
-            if(!$(By.id("isBonusCard-0")).isSelected()) mileCardChkbox.click();
-            mileCardField.shouldBe(enabled).setValue(mileCardNumber);
+            String id = String.format("isBonusCard-%s", passNo-1);
+            if(!$(By.id(id)).isSelected()) $(By.xpath(String.format(".//label[@for='%s']", id))).click();
+            $(By.xpath(String.format("(.//*[@name='bonus_card'])[%s]", passNo))).shouldBe(enabled).setValue(mileCardNumber);
         }
     }
 
     @Step("Заполним поле e-mail")
     public void fillEmail(String email){
-        eMailField.setValue(email);
+        $(By.xpath(".//*[@name='email']")).setValue(email);
     }
 
     @Step("Нажмем кнопку 'Забронировать (бесплатно)'")
@@ -181,6 +164,9 @@ public class PassengersDataPage {
     @Step("Перейдем в архив билетов")
     public void openArchive(){
         $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
+//
+//        String currUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+//        Assert.assertTrue(currUrl.contains("https://bilet-dev.isto.it.loc/archive/frame/exsite/?csid="), "Не перешли в архив");
     }
 
 }

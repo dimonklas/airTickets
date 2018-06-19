@@ -20,8 +20,10 @@ public class SearchData {
     private String classType;                //'Эконом', 'Бизнес'
     private String departureCity;            //Город вылета
     private String arrivalCity;              //Город прилета
-    private String departureDateForward;    //Дата вылета туда
-    private String departureDateBackward;      //Дата вылета обратно
+    private String departureCity_2;          //Город вылета 2
+    private String arrivalCity_2;            //Город прилета 2
+    private String departureDateForward;     //Дата вылета туда
+    private String departureDateBackward;    //Дата вылета обратно
 
     private int passengersCount;  //Количество пассажиров общее
     private int adultsCount = 1;    //Кол-во взрослых

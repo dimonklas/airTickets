@@ -64,4 +64,11 @@ public class Utils {
     }
 
 
+    public void stornBookedTicket(String ticketId, String depSid, String authKey){
+
+        String url = String.format("https://bilet-dev.isto.it.loc/archive/order/create/%s/storno?csid=%s", ticketId, authKey);
+
+    }
+
+
 }

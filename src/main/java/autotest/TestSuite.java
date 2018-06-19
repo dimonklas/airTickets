@@ -198,7 +198,7 @@ class TestSuite {
         passengersDataPage.setSex(2, "F");
         passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd);
 
-        passengersDataPage.fillEmail("pedroDelgardo@mail.com");
+        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
         passengersDataPage.bookTicket();
 
         passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
@@ -207,5 +207,38 @@ class TestSuite {
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
+    }
+
+
+    void front_15024(SearchData search, TicketData ticket){
+        MainPage mainPage = new MainPage();
+        SearchPage searchPage = new SearchPage();
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+
+        mainPage.openMainPage()
+                .openSearchPageViaChannel("Внешний Сайт")
+                .submitOpenFrame();
+
+        Utils.switchFrame();
+
+        searchPage.selectWaysForTicket(search.getWaysType());
+        searchPage.selectClass(search.getClassType());
+        searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
+                                           search.getDepartureCity_2(), search.getArrivalCity_2());
+        searchPage.setDatesForDifficultRoute(180, 210);
+        searchPage.setPassengersCountForDifficultRoute(1, 0);
+        searchPage.submitSearch();
+        searchPage.preloader.should(appear);
+
+        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
+        //Получим id-шнки блоков с результатами поиска
+        List<String> ids = searchResultsPage.getIdOfSearchResults();
+        String id = ids.get(0);
+
+        searchResultsPage.checkCompanyPresence(id, 2);
+
     }
 }

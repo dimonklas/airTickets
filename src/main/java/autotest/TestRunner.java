@@ -71,7 +71,34 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         testSuite.front_12552(searchData, ticketData);
+    }
 
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15024:Покупка авиабилета для одного взрослого сложный маршрут ( внешний сайт )",
+            groups = {"Покупка билетов"},
+            priority = 30)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15024")
+    public void a3_front_15024(){
+
+        SearchData searchData = new SearchData(s -> {
+            s.setWaysType("Сложный маршрут");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Москва");
+            s.setArrivalCity("Минск");
+            s.setDepartureCity_2("Киев");
+            s.setArrivalCity_2("Мюнхен");
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(210));
+            s.setPassengersCount(1);
+        });
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+        });
+
+        testSuite.front_15024(searchData, ticketData);
     }
 
 

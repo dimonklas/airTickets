@@ -14,14 +14,8 @@ public class SearchPage {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-//
     public SelenideElement
            preloader = $(By.xpath(".//*[@alt='loader-plane']"));
-//            oneWayRadioBtn = $(By.xpath(".//label[contains(text(),'Только туда')]")),
-//            bothWaysRadioBtn = $(By.xpath(".//label[contains(text(),'Туда и обратно')]")),
-//            economyClassRadioBtn = $(By.xpath(".//label[contains(text(),'Эконом')]")),
-//            businessClassRadioBtn = $(By.xpath(".//label[contains(text(),'Бизнес')]")),
-//            plusMinus3daysChkBox = $(By.xpath(".//label[contains(text(),'+/-3')]"));
 
     private SelenideElement
             fromField = $(By.name("departure")),
@@ -43,12 +37,26 @@ public class SearchPage {
     @Step("Выберем место вылета {city}")
     public void setDepartureCity(String city){
         fromField.shouldBe(enabled).setValue(city);
+        sleep(100);
     }
 
     @Step("Выберем место вылета обратно {city}")
     public void setArrivalCity(String city){
         toField.shouldBe(enabled).setValue(city);
+        sleep(100);
     }
+
+
+    @Step("Выберем города вылета/назначения для сложного маршрута")
+    public void setDifficultRouteCities(String departure, String arrival, String departure2, String arrival2){
+        $(By.xpath("(.//*[@name='difficult_departure'])[1]")).shouldBe(visible, enabled).setValue(departure);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[1]")).shouldBe(visible, enabled).setValue(arrival);
+        sleep(100);
+        $(By.xpath("(.//*[@name='difficult_departure'])[2]")).shouldBe(visible, enabled).setValue(departure2);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[2]")).shouldBe(visible, enabled).setValue(arrival2);
+        sleep(100);
+    }
+
 
     @Step("Установим дату вылета {daysFromToday} дней от сегодня")
     public void setFirstDate(int daysFromToday){
@@ -64,14 +72,44 @@ public class SearchPage {
         executeJavaScript(jsCode);
     }
 
+
+    @Step("Установим даты вылета для сложного маршрута")
+    public void setDatesForDifficultRoute(int daysFromToday, int daysFromToday2){
+        String jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[0]).scope()" +
+                ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday);
+        executeJavaScript(jsCode);
+
+        jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[1]).scope()" +
+                ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday2);
+        executeJavaScript(jsCode);
+    }
+
+
     @Step("Установим количество пассажиров")
     public void setPassengersCount(int adult, int child){
         int totalCount = adult + child;
 
         $x(".//*[@data-pc-models='vm.models.passengers']").shouldBe(visible).click();
+
         setAdultsCount(adult);
         setChildrenCount(child);
         Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
+                "Неправильно установили количество пассажиров");
+    }
+
+
+    @Step("Установим количество пассажиров")
+    public void setPassengersCountForDifficultRoute(int adult, int child){
+        int totalCount = adult + child;
+
+        $x("(.//*[@data-pc-models='vm.models.passengers'])[2]").shouldBe(visible).click();
+
+        setAdultsCount(adult);
+        setChildrenCount(child);
+        Assert.assertTrue(
+                $x("(.//*[@data-pc-models='vm.models.passengers']//input)[2]")
+                        .getValue()
+                        .contains(String.valueOf(totalCount)),
                 "Неправильно установили количество пассажиров");
     }
 
@@ -89,7 +127,7 @@ public class SearchPage {
                sleep(500);
                }
            } else {
-               for (int i = actCount; i > (actCount - adultsCount); i--) {
+               for (int i = actCount; i >= (actCount - adultsCount); i--) {
                    removeCount.click();
                    sleep(500);
                }
@@ -112,7 +150,7 @@ public class SearchPage {
                     sleep(600);
                 }
             } else {
-                for (int i = actCount; i > (actCount - childCount); i--) {
+                for (int i = actCount; i >= (actCount - childCount); i--) {
                     removeCount.click();
                     sleep(600);
                 }

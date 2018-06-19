@@ -2,6 +2,7 @@ package autotest.pages;
 
 
 import autotest.utils.ConfigurationVariables;
+import autotest.utils.exception.NotClickedException;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.testng.Assert;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class PassengersDataPage {
 
@@ -142,6 +144,9 @@ public class PassengersDataPage {
     public void bookTicket(){
         bookingBtn.shouldBe(visible).scrollIntoView(true).click();
         errorText.shouldNot(appear);
+        if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").is(appear)){
+            throw new NotClickedException("Ошибка при бронировании билета");
+        }
         bookingMessageText.waitUntil(appear, 120*1000).shouldBe(visible).scrollTo();
     }
 

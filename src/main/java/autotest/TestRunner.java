@@ -102,5 +102,30 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15091:Добавление перелета при сложном маршруте (внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 40)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15091")
+    public void a4_front_15091(){
+        SearchData searchData = new SearchData(s -> {
+            s.setWaysType("Сложный маршрут");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Москва");
+            s.setArrivalCity("Минск");
+            s.setDepartureCity_2("Киев");
+            s.setArrivalCity_2("Мюнхен");
+            s.setDepartureCity_3("Стамбул");
+            s.setArrivalCity_3("Киев");
+            s.setDepartureCity_4("Киев");
+            s.setArrivalCity_4("Мадрид");
+            s.setPassengersCount(1);
+        });
+
+        testSuite.front_15091(searchData);
+    }
+
+
 }
 

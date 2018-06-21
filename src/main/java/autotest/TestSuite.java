@@ -244,7 +244,7 @@ class TestSuite {
         searchResultsPage.pressSelectButton(id);
 
         ticketInfoPage.waitForTicketRulesBtn();
-        ticketInfoPage.checkTicketDifficultDetails();
+        ticketInfoPage.checkTicketDifficultDetails(2);
 
         customerContactDataPage.checkPresenceOfContactDataBlock();
         customerContactDataPage.enterUserData();
@@ -261,6 +261,42 @@ class TestSuite {
 
         paymentPage.title.shouldBe(visible);
         paymentPage.doPaymentByCard(null, null, null);
+    }
 
+
+    void front_15091(SearchData search){
+        MainPage mainPage = new MainPage();
+        SearchPage searchPage = new SearchPage();
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+
+        mainPage.openMainPage()
+                .openSearchPageViaChannel("Внешний Сайт")
+                .submitOpenFrame();
+
+        Utils.switchFrame();
+
+        searchPage.selectWaysForTicket(search.getWaysType());
+        searchPage.selectClass(search.getClassType());
+        searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
+                                           search.getDepartureCity_2(), search.getArrivalCity_2(),
+                                           search.getDepartureCity_3(), search.getArrivalCity_3(),
+                                           search.getDepartureCity_4(), search.getArrivalCity_4());
+        searchPage.removeLastDifficultRoute();
+        searchPage.setDatesForDifficultRoute(180, 190, 210);
+        searchPage.setPassengersCountForDifficultRoute(1, 0);
+        searchPage.submitSearch();
+        searchPage.preloader.should(appear);
+
+        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
+        //Получим id-шнки блоков с результатами поиска
+        List<String> ids = searchResultsPage.getIdOfSearchResults();
+        String id = ids.get(0);
+
+        searchResultsPage.checkPresenceOfTicketsCost(id);
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketDifficultDetails(3);
     }
 }

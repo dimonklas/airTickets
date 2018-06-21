@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
+import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -58,6 +59,34 @@ public class SearchPage {
     }
 
 
+    @Step("Выберем города вылета/назначения для сложного маршрута")
+    public void setDifficultRouteCities(String departure, String arrival, String departure2, String arrival2,
+                                        String departure3, String arrival3, String departure4, String arrival4){
+        $(By.xpath("(.//*[@name='difficult_departure'])[1]")).shouldBe(visible, enabled).setValue(departure);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[1]")).shouldBe(visible, enabled).setValue(arrival);
+        sleep(100);
+        $(By.xpath("(.//*[@name='difficult_departure'])[2]")).shouldBe(visible, enabled).setValue(departure2);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[2]")).shouldBe(visible, enabled).setValue(arrival2);
+        sleep(100);
+
+        $x(".//*[text()='Добавить рейс']/parent::button").shouldBe(visible, enabled).click();
+        $(By.xpath("(.//*[@name='difficult_departure'])[3]")).shouldBe(visible, enabled).setValue(departure3);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[3]")).shouldBe(visible, enabled).setValue(arrival3);
+        sleep(100);
+
+        $x(".//*[text()='Добавить рейс']/parent::button").shouldBe(visible, enabled).click();
+        $(By.xpath("(.//*[@name='difficult_departure'])[4]")).shouldBe(visible, enabled).setValue(departure4);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[4]")).shouldBe(visible, enabled).setValue(arrival4);
+        sleep(100);
+    }
+
+    @Step("Удалим последний добавленный маршрут и проверим, что строка поиска пропала")
+    public void removeLastDifficultRoute(){
+        $x(".//*[contains(@class,'difficult-flight__remove')]").shouldBe(visible, enabled).click();
+        $(By.xpath("(.//*[@name='difficult_departure'])[4]")).should(disappear);
+        $(By.xpath("(.//*[@name='difficult_arrival'])[4]")).should(disappear);
+    }
+
     @Step("Установим дату вылета {daysFromToday} дней от сегодня")
     public void setFirstDate(int daysFromToday){
         String jsCode = String.format("angular.element(document.querySelector(\"[ng-model='rangeStart']\")).scope()" +
@@ -81,6 +110,21 @@ public class SearchPage {
 
         jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[1]).scope()" +
                 ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday2);
+        executeJavaScript(jsCode);
+    }
+
+    @Step("Установим даты вылета для сложного маршрута")
+    public void setDatesForDifficultRoute(int daysFromToday, int daysFromToday2, int daysFromToday3){
+        String jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[0]).scope()" +
+                ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday);
+        executeJavaScript(jsCode);
+
+        jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[1]).scope()" +
+                ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday2);
+        executeJavaScript(jsCode);
+
+        jsCode = String.format("angular.element(document.getElementsByName('difficult_date')[2]).scope()" +
+                ".flight.date=new Date().setDate(new Date().getDate() + %s);", daysFromToday3);
         executeJavaScript(jsCode);
     }
 

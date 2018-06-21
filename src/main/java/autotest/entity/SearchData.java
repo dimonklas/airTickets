@@ -22,6 +22,10 @@ public class SearchData {
     private String arrivalCity;              //Город прилета
     private String departureCity_2;          //Город вылета 2
     private String arrivalCity_2;            //Город прилета 2
+    private String departureCity_3;          //Город вылета 3
+    private String arrivalCity_3;            //Город прилета 3
+    private String departureCity_4;          //Город вылета 4
+    private String arrivalCity_4;            //Город прилета 4
     private String departureDateForward;     //Дата вылета туда
     private String departureDateBackward;    //Дата вылета обратно
 

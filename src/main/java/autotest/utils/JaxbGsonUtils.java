@@ -27,12 +27,12 @@ public class JaxbGsonUtils {
 		return unmarshaller.unmarshal(reader);
 	}
 
-	public String objectToJson(Object obj) throws JAXBException {
+	public String objectToJson(Object obj)  {
 		Gson gson = new Gson();
 		return gson.toJson(obj);
 	}
 
-	public Object jsonToObject(String json,Class clas) throws JAXBException {
+	public Object jsonToObject(String json,Class clas)  {
 		Gson gson = new Gson();
 		return gson.fromJson(json, clas);
 	}

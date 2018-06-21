@@ -9,9 +9,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class PassengersDataPage {
 
@@ -36,7 +34,12 @@ public class PassengersDataPage {
     public void checkAvaliabilityOfCustomersDataFields() {
         passengersDataText.shouldBe(visible).scrollIntoView(true);
         preloader.waitUntil(disappear, 60*1000);
-        preloaderBaggage.shouldBe(visible).waitUntil(disappear, 180 * 1000);
+
+        try {
+            preloaderBaggage.shouldBe(visible).waitUntil(disappear, 180 * 1000);
+        } catch (com.codeborne.selenide.ex.ElementShould ex) {
+            preloaderBaggage.should(disappears);
+        }
 
         $(By.xpath(".//*[@name='lastname']")).shouldBe(visible, enabled);
         $(By.xpath(".//*[@name='firstname']")).shouldBe(visible, enabled);
@@ -143,11 +146,20 @@ public class PassengersDataPage {
     @Step("Нажмем кнопку 'Забронировать (бесплатно)'")
     public void bookTicket(){
         bookingBtn.shouldBe(visible).scrollIntoView(true).click();
+        sleep(100);
         errorText.shouldNot(appear);
-        if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").is(appear)){
+        if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").isDisplayed()){
             throw new NotClickedException("Ошибка при бронировании билета");
         }
         bookingMessageText.waitUntil(appear, 120*1000).shouldBe(visible).scrollTo();
+    }
+
+    @Step("Нажмем кнопку 'Купить'")
+    public void buyTicket(){
+        buyBtn.shouldBe(visible).scrollIntoView(true).click();
+        sleep(100);
+        errorText.shouldNot(appear);
+        $x(".//*[text()='Выберите способ оплаты']").shouldBe(visible);
     }
 
 

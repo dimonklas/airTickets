@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Condition.visible;
 
 @Log4j
 class TestSuite {
@@ -97,7 +98,7 @@ class TestSuite {
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
         passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
-        passengersDataPage.fillEmail("pedroDelgardo@mail.com");
+        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
         passengersDataPage.bookTicket();
 
         passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
@@ -186,8 +187,6 @@ class TestSuite {
         passengersDataPage.checkPresenceOfTextElements(2, "Ребенок");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
-
-
         passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
@@ -217,6 +216,7 @@ class TestSuite {
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel("Внешний Сайт")
@@ -238,7 +238,29 @@ class TestSuite {
         List<String> ids = searchResultsPage.getIdOfSearchResults();
         String id = ids.get(0);
 
-        searchResultsPage.checkCompanyPresence(id, 2);
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketDifficultDetails();
+
+        customerContactDataPage.checkPresenceOfContactDataBlock();
+        customerContactDataPage.enterUserData();
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, "M");
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
+        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        paymentPage.doPaymentByCard(null, null, null);
 
     }
 }

@@ -14,12 +14,13 @@ public class TicketInfoPage {
     private SelenideElement
         ticketRulesBtn = $(By.xpath(".//*[text()='Правила билета']/../parent::button")),
         ticketForwardDetails = $(By.xpath(".//*[@id='details'] //div[@data-segments='vm.ticket.forward.segments']")),
-        ticketBackwarddDetails = $(By.xpath(".//*[@id='details'] //div[@data-segments='vm.ticket.backward.segments']"));
+        ticketBackwarddDetails = $(By.xpath(".//*[@id='details'] //div[@data-segments='vm.ticket.backward.segments']")),
+        ticketDifficultDetails = $(By.xpath(".//*[@id='details'] //div[@data-segments='difficultFlight.segments']"));
 
 
     @Step("Дождемся появления кнопки 'Правила билета'")
     public void waitForTicketRulesBtn(){
-        ticketRulesBtn.waitUntil(appears, 30 * 1000).shouldBe(enabled);
+        ticketRulesBtn.waitUntil(appears, 45 * 1000).shouldBe(enabled);
     }
 
     @Step("Проверим наличие данных билета 'туда'")
@@ -33,4 +34,7 @@ public class TicketInfoPage {
     }
 
 
+    public void checkTicketDifficultDetails(){
+        ticketDifficultDetails.shouldBe(visible);
+    }
 }

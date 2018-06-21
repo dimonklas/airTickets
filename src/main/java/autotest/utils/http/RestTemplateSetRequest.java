@@ -45,12 +45,6 @@ public class RestTemplateSetRequest {
      */
     public Object requestMethodPost(String url, String body, HttpHeaders headers, Class className) {
         return restTemplateTrustCert.restTemplateTrustCertificate().postForObject(url, new HttpEntity<>(body, headers), className);
-//        try {
-//            return restTemplateTrustCert.restTemplateTrustCertificate().postForObject(url, new HttpEntity<>(body, headers), className);
-//        }catch (Exception e){
-//            throw new RuntimeException(e.getMessage());
-//        }
-
     }
 
     /**

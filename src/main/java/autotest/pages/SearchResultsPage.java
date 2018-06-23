@@ -1,8 +1,10 @@
 package autotest.pages;
 
 
+import autotest.utils.Utils;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -10,10 +12,10 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 
 public class SearchResultsPage {
 
@@ -22,8 +24,10 @@ public class SearchResultsPage {
         searchResults = $$(By.xpath(".//div[contains(@class,'flights-list__item')]")),
         chooseBtn = $$(By.xpath(".//button[contains(text(),'Выбрать')]"));
 
-//    private SelenideElement
-//        chooseBtn = $(By.xpath(""));
+    private SelenideElement
+        loadMoreResultsBtn = $x(".//button[text()='Загрузить больше результатов']");
+
+    private static int daysCounter;
 
     public List<String> getIdOfSearchResults(){
         searchResults.shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
@@ -172,4 +176,74 @@ public class SearchResultsPage {
     }
 
 
+    @Step("Проверим наличие таблицы с результатами поиска")
+    public void checkMatrixFlightsPresence(){
+        $x(".//*[@data-matrix-flights='vm.matrixFlights']").scrollIntoView(true).shouldBe(visible);
+    }
+
+
+    @Step("Проверим, что выбранные даты и цены соответствуют данным в билетах (для всех результатов)")
+    public void checkResultsForPlusMinus3Days(int daysFwdSearch, String depCity, String arrCity){
+        String xpathBase = ".//*[text()='%s']/following::*[text()='%s']/ancestor::*[@*[starts-with(.,'forwPeriod')]] " +
+                "//*[contains(@data-ng-bind,'amount.UAH')][text()!='']/..";
+
+        List<String> days = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+        for(int i = daysFwdSearch-3; i <= daysFwdSearch+3; ++i) {
+            days.add(Utils.dateFormatted("E", i));
+            dates.add(Utils.dateFormatted("dd.MM", i));
+        }
+
+        for(int i = 0; i < 7; ++i){
+            String day = days.get(i);
+            String date = dates.get(i);
+            int dayFwdFlight = daysFwdSearch - 3 + i;
+            String xPath_column = String.format(xpathBase, day, date);
+            daysCounter = 0;
+            //Перебираем все заполненные клетки матрицы и проверяем отображаемые данные
+            $$x(xPath_column).shouldHaveSize(7-i).forEach(element -> {
+                    //Кликаем по клетке матрицы
+                    element.shouldBe(visible).click();
+                    String id = getIdOfSearchResults().get(0);
+
+                    checkDepartureCityNameForward(id, depCity);
+                    checkArrivalCityNameForward(id, arrCity);
+                    checkDepartureCityNameBackward(id, arrCity);
+                    checkArrivalCityNameBackward(id, depCity);
+                    checkCompanyPresence(id, 2);
+
+                    checkDepartureAitportNameForward(id);
+                    checkArrivalAitportNameForward(id);
+                    checkDepartureAitportNameBackward(id);
+                    checkArrivalAitportNameBackward(id);
+
+                    checkDepartureDateForward(id, Utils.dateForFlightSearchResults(dayFwdFlight));
+                    checkArrivalDateForward(id, Utils.dateForFlightSearchResults(dayFwdFlight), Utils.dateForFlightSearchResults(dayFwdFlight+1));
+                    checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter));
+                    checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter), Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter + 1));
+                    ++daysCounter;
+                    String regex = "[0-9]{1,2}:[0-9]{2}";
+                    checkPresenceOfDepartureTimeForward(id, regex);
+                    checkPresenceOfArrivalTimeForward(id, regex);
+                    checkPresenceOfDepartureTimeBackward(id, regex);
+                    checkPresenceOfArrivalTimeBackward(id, regex);
+
+                    regex = "[0-9ч]{2,3}[0-9м\\s]{3,4}";
+                    checkPresenceOfFlyingTimeForward(id, regex);
+                    checkPresenceOfFlyingTimeBackward(id, regex);
+
+                    String price = $x("//*[text()='Стоимость:']/following-sibling::*").getText().trim();
+                    String priceMatrix = element.getText().trim();
+
+                    Assert.assertEquals(price, priceMatrix, "Цена в результирующей таблице поиска '+/-3 дня' и в билете не совпадает");
+                    //Проверка доступности кнопки 'Загрузить больше результатов' для дней +/-3 дня от точной даты поиска
+                    if(dayFwdFlight == daysFwdSearch && daysCounter == 1 && getIdOfSearchResults().size() > 1) {
+                        loadMoreResultsBtn.shouldNotBe(visible);
+                    } else loadMoreResultsBtn.shouldBe(visible, enabled);
+            });
+        }
+
+
+
+    }
 }

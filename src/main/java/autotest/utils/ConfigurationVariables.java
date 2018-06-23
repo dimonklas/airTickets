@@ -30,6 +30,7 @@ public class ConfigurationVariables {
     public String urlStornBooking;
     public String urlPromin;
     public String urlTest;
+    public String urlTestArch;
     public String urlPrerelease;
 
     public String prominSession;
@@ -58,6 +59,14 @@ public class ConfigurationVariables {
     public String citizenshipChd;
     public String docSNChd;
     public String docExpDateChd;
+
+    public String lastNameInf;
+    public String firstNameInf;
+    public String sexInf;
+    public String birthDateInf;
+    public String citizenshipInf;
+    public String docSNInf;
+    public String docExpDateInf;
 
 
     static {
@@ -97,6 +106,7 @@ public class ConfigurationVariables {
         urlStornBooking = getProperty(configurationData, "urlStornBooking");
         urlPromin = getProperty(configurationData, "urlPromin");
         urlTest = getProperty(configurationData, "urlTest");
+        urlTestArch = getProperty(configurationData, "urlTestArch");
         urlPrerelease = getProperty(configurationData, "urlPrerelease");
 
         dbClass = getProperty(configurationData, "dbClass");
@@ -122,6 +132,14 @@ public class ConfigurationVariables {
         citizenshipChd = getProperty(testData, "citizenshipChd");
         docSNChd = getProperty(testData, "docSNChd");
         docExpDateChd = getProperty(testData, "docExpDateChd");
+
+        lastNameInf = getProperty(testData, "lastNameInf");
+        firstNameInf = getProperty(testData, "firstNameInf");
+        sexInf = getProperty(testData, "sexInf");
+        birthDateInf = getProperty(testData, "birthDateInf");
+        citizenshipInf = getProperty(testData, "citizenshipInf");
+        docSNInf = getProperty(testData, "docSNInf");
+        docExpDateInf = getProperty(testData, "docExpDateInf");
 
     }
 

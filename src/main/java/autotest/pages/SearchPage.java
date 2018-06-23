@@ -29,6 +29,11 @@ public class SearchPage {
         $(By.xpath(xPath)).shouldBe(visible, enabled).click();
     }
 
+    @Step("Отметим чек-бокс '+/-3 дня'")
+    public void selectPlusMinus3Days(boolean isNeedCheck){
+        if(isNeedCheck) $x(".//*[contains(text(),'+/-3')]").shouldBe(visible, enabled).click();
+    }
+
     @Step("Выберем класс '{classType}'")
     public void selectClass(String classType){
         String xPath = String.format(".//label[contains(text(),'%s')]", classType);
@@ -130,13 +135,14 @@ public class SearchPage {
 
 
     @Step("Установим количество пассажиров")
-    public void setPassengersCount(int adult, int child){
-        int totalCount = adult + child;
+    public void setPassengersCount(int adult, int child, int infant){
+        int totalCount = adult + child + infant;
 
         $x(".//*[@data-pc-models='vm.models.passengers']").shouldBe(visible).click();
 
         setAdultsCount(adult);
         setChildrenCount(child);
+        setInfantCount(infant);
         Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
                 "Неправильно установили количество пассажиров");
     }
@@ -180,14 +186,25 @@ public class SearchPage {
     }
 
 
-    @Step("Установим кол-во взрослых: {adultsCount}")
+    @Step("Установим кол-во детей: {childCount}")
     private void setChildrenCount(int childCount) {
-        int actCount = Integer.parseInt($x(".//input[@data-ng-model='models.chd']").shouldBe(visible).getValue());
+        String xPathBase = ".//input[@data-ng-model='models.chd']";
+        int actCount = Integer.parseInt($x(xPathBase).shouldBe(visible).getValue());
+        setPassCount(actCount, childCount, xPathBase);
+    }
 
+    @Step("Установим кол-во младенцев: {infantCount}")
+    private void setInfantCount(int infantCount){
+        String xPathBase = ".//input[@data-ng-model='models.inf']";
+        int actCount = Integer.parseInt($x(xPathBase).shouldBe(visible).getValue());
+        setPassCount(actCount, infantCount, xPathBase);
+    }
+
+    private void setPassCount(int actCount, int childCount, String xPathBase){
         if(actCount != childCount) {
             SelenideElement
-                    addCount = $x(".//input[@data-ng-model='models.chd']/../div[contains(@data-ng-click,'addPassenger')]").shouldBe(enabled, visible),
-                    removeCount = $x(".//input[@data-ng-model='models.chd']/../div[contains(@data-ng-click,'removePassenger')]").shouldBe(enabled, visible);
+                    addCount = $x(xPathBase + "/../div[contains(@data-ng-click,'addPassenger')]").shouldBe(enabled, visible),
+                    removeCount = $x(xPathBase + "/../div[contains(@data-ng-click,'removePassenger')]").shouldBe(enabled, visible);
             if (actCount < childCount) {
                 for (int i = 0; i < (childCount - actCount); ++i) {
                     addCount.click();
@@ -201,7 +218,6 @@ public class SearchPage {
             }
         }
     }
-
 
     @Step("Подтвердим поиск")
     public void submitSearch(){

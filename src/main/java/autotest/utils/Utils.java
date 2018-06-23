@@ -34,12 +34,21 @@ public class Utils {
         return sdf.format(Calendar.getInstance().getTime());
     }
 
+    //Вернет дату в формате "05.05 Пт"
     public static String dateForFlightSearchResults(int days){
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, days);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM E");
+        return sdf.format(calendar.getTime()).toLowerCase();
+    }
+
+    public static String dateFormatted(String formatDate, int days){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, days);
+        SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
         return sdf.format(calendar.getTime()).toLowerCase();
     }
 

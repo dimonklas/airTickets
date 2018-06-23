@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
-//@Feature("Бронирование билетов")
 @Listeners({AllureOnFailListener.class})
 public class TestRunner extends SetUpAndTearDown {
 
@@ -30,10 +29,13 @@ public class TestRunner extends SetUpAndTearDown {
     public void a1_front_14514(){
 
         SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
             s.setDepartureCity("Краков");
             s.setArrivalCity("Варшава");
+            s.setDaysFwd(180);
+            s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
             s.setPassengersCount(1);
@@ -44,7 +46,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         log.info("Sid = " + CV.prominSession);
-        testSuite.front_14514(searchData, ticketData);
+        testSuite.bookTickets(searchData, ticketData);
     }
 
 
@@ -64,6 +66,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
             s.setPassengersCount(2);
+            s.setChildCount(1);
         });
 
         TicketData ticketData = new TicketData(t -> {
@@ -127,5 +130,88 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
-}
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15848:Покупка билета для одного взрослого +- 3 дня (внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 50)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15848")
+    public void a5_front_15848(){
+        SearchData searchData = new SearchData(s -> {
+            s.setWaysType("Туда и обратно");
+            s.setPlusMinus3days(true);
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(180));
+            s.setDaysFwd(180);
+            s.setDaysBckwd(180);
+            s.setPassengersCount(1);
+        });
 
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+        });
+
+        testSuite.front_15848(searchData, ticketData);
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14517:Бронировка билета для взрослого и младенца (внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 60)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14517")
+    public void a6_front_14517(){
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDaysFwd(180);
+            s.setDaysBckwd(185);
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
+            s.setPassengersCount(2);
+            s.setInfantCount(1);
+        });
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+        });
+
+        testSuite.bookTickets(searchData, ticketData);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 70)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
+    public void a7_front_15720(){
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDaysFwd(183);
+            s.setDaysBckwd(188);
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(188));
+//            s.setPassengersCount(1);
+            s.setFakeDoc(true);
+        });
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+        });
+
+        testSuite.bookTickets(searchData, ticketData);
+    }
+
+}

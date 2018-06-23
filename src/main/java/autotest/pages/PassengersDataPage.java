@@ -60,21 +60,21 @@ public class PassengersDataPage {
 
 
     @Step("Проверим основные надписи для полей ввода данных")
-    public void checkPresenceOfTextElements(int passNo, String passType){
-        $(By.xpath(String.format("(.//*[@data-ng-bind='passenger.title'])[%s]", passNo))).shouldBe(visible).should(matchesText(passType));
+    public void checkPresenceOfTextElements(int index, String passType){
+        $(By.xpath(String.format("(.//*[@data-ng-bind='passenger.title'])[%s]", index))).shouldBe(visible).should(matchesText(passType));
 
-        $(By.xpath(String.format("(.//label[text()='Фамилия'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Имя'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Пол'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Дата рождения'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Гражданство'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Серия, № документа'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", passNo))).shouldBe(visible);
-//        $(By.xpath(String.format("(.//label[text()='Докупить багаж'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", passNo))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", passNo))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Фамилия'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Имя'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Пол'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Дата рождения'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Гражданство'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Серия, № документа'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", index))).shouldBe(visible);
+//        $(By.xpath(String.format("(.//label[text()='Докупить багаж'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", index))).shouldBe(visible);
+        $(By.xpath(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index))).shouldBe(visible);
 
         $(By.xpath(".//*[text()='Укажите e-mail']")).shouldBe(visible);
         $(By.xpath(".//*[text()='На него будет выслан электронный билет']")).shouldBe(visible);
@@ -95,46 +95,49 @@ public class PassengersDataPage {
 
 
     @Step("Заполним клиентские данные: ФИО, пол, дата рождения и гражданство")
-    public void fillCustomersData(int passNo, String surname, String name, String bDate){
-        $(By.xpath(String.format("(.//*[@name='lastname'])[%s]", passNo))).shouldBe(visible).setValue(surname);
-        $(By.xpath(String.format("(.//*[@name='firstname'])[%s]", passNo))).setValue(name);
-        $(By.xpath(String.format("(.//*[@name='birthday'])[%s]", passNo))).setValue(bDate);
+    public void fillCustomersData(int index, String surname, String name, String bDate){
+        $(By.xpath(String.format("(.//*[@name='lastname'])[%s]", index))).shouldBe(visible).setValue(surname);
+        $(By.xpath(String.format("(.//*[@name='firstname'])[%s]", index))).setValue(name);
+        $(By.xpath(String.format("(.//*[@name='birthday'])[%s]", index))).setValue(bDate);
     }
 
     @Step("Укажем гражданство")
-    public void fillCitizenship(int passNo, String citizenship){
-        $(By.xpath(String.format("(.//*[@name='citizenship'])[%s]", passNo))).setValue(citizenship);
+    public void fillCitizenship(int index, String citizenship){
+        $(By.xpath(String.format("(.//*[@name='citizenship'])[%s]", index))).setValue(citizenship);
         $(By.xpath(String.format(".//strong[text()='%s']/ancestor::li", citizenship))).shouldBe(visible).click();
         $(By.xpath(".//*[contains(@ng-messages,'citizenship')] //*[contains(text(),'Заполните поле')]")).shouldNotBe(visible);
     }
 
     @Step("Установим пол")
-    public void setSex(int passNo, String sex){
-        if("F".equalsIgnoreCase(sex)) $(By.xpath(String.format("(.//label[@title='Женский'])[%s]", passNo))).click();
-        else $(By.xpath(String.format("(.//label[@title='Мужской'])[%s]", passNo))).click();
+    public void setSex(int index, String sex){
+        if("F".equalsIgnoreCase(sex)) $(By.xpath(String.format("(.//label[@title='Женский'])[%s]", index))).click();
+        else $(By.xpath(String.format("(.//label[@title='Мужской'])[%s]", index))).click();
     }
 
     @Step("Заполним данные документов")
-    public void fillDocData(int passNo, String serNum, String expDate){
-        if(serNum != null) {
-            String id = String.format("docs-%s", passNo-1);
-            if( !$(By.id(id)).isSelected() ) $(By.xpath(String.format(".//label[@for='%s']", id))).shouldBe(visible).click();
-            $(By.xpath(String.format("(.//*[@name='docnum'])[%s]", passNo))).shouldBe(enabled).setValue(serNum);
+    public void fillDocData(int index, String serNum, String expDate, boolean isFakeDoc){
+        SelenideElement serNumChBox = $x(String.format(".//*[@for='docs-%s']", index-1)),
+                        expDateChBox = $x(String.format(".//*[@for='withExpireDateLabel-%s']", index-1)),
+                        serNumField = $x(String.format("(.//*[@name='docnum'])[%s]", index)),
+                        expDateField = $x(String.format("(.//*[@name='doc_expire_date'])[%s]", index));
+
+        if(isFakeDoc) {
+            if (serNumField.isEnabled()) serNumChBox.click();
+            serNumField.shouldBe(disabled);
+            if(expDateField.isEnabled()) expDateChBox.click();
+            expDateField.shouldBe(disabled);
         }
 
-        if(expDate != null) {
-            String id = String.format("withExpireDateLabel-%s", passNo-1);
-            if( !$(By.id(id)).isSelected() ) $(By.xpath(String.format(".//label[@for='%s']", id))).shouldBe(visible).click();
-            $(By.xpath(String.format("(.//*[@name='doc_expire_date'])[%s]", passNo))).shouldBe(enabled).setValue(expDate);
-        }
+        if(serNum != null && !isFakeDoc) serNumField.shouldBe(enabled).setValue(serNum);
+        if(expDate != null && !isFakeDoc) expDateField.shouldBe(enabled).setValue(expDate);
     }
 
     @Step("Укажем мильную карту")
-    public void fillMileCard(int passNo, String mileCardNumber){
+    public void fillMileCard(int index, String mileCardNumber){
         if (mileCardNumber != null) {
-            String id = String.format("isBonusCard-%s", passNo-1);
+            String id = String.format("isBonusCard-%s", index-1);
             if(!$(By.id(id)).isSelected()) $(By.xpath(String.format(".//label[@for='%s']", id))).click();
-            $(By.xpath(String.format("(.//*[@name='bonus_card'])[%s]", passNo))).shouldBe(enabled).setValue(mileCardNumber);
+            $(By.xpath(String.format("(.//*[@name='bonus_card'])[%s]", index))).shouldBe(enabled).setValue(mileCardNumber);
         }
     }
 

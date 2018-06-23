@@ -33,11 +33,6 @@ public class MainPage {
         return this;
     }
 
-    @Step("Откроем архив билетов")
-    public void openArchivePage(){
-        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", new AuthData().getDep_sid());
-        open(archiveUrl);
-    }
 
     @Step("Перейдем на страницу поиска билетов через канал {channel}")
     public MainPage openSearchPageViaChannel(String channel){
@@ -47,11 +42,23 @@ public class MainPage {
         return this;
     }
 
+    @Step("Откроем архив билетов")
+    public void openArchivePage(){
+        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", new AuthData().getDep_sid());
+        open(archiveUrl);
+    }
+
     @Step("Перейдем в архив билетов через канал {channel}")
     public MainPage openArchivePageViaChannel(String channel){
         String xPath = String.format(".//optgroup[@label='Архив']/option[contains(text(),'%s')]", channel);
         channelList.shouldBe(visible, enabled).click();
         $(By.xpath(xPath)).shouldBe(visible).click();
+        return this;
+    }
+
+    @Step("Заполним поле моб. телефона")
+    public MainPage fillPhoneField(String number){
+        $(By.id("field-phone")).shouldBe(visible, enabled).setValue(number);
         return this;
     }
 

@@ -18,7 +18,7 @@ class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-    void front_14514(SearchData search, TicketData ticket){
+    void bookTickets(SearchData search, TicketData ticket){
 
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
@@ -29,7 +29,7 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openMainPage()
-                .openSearchPageViaChannel("Внешний Сайт")
+                .openSearchPageViaChannel(search.getChannel())
                 .submitOpenFrame();
 
 
@@ -37,11 +37,12 @@ class TestSuite {
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
+        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
         searchPage.setDepartureCity(search.getDepartureCity());
         searchPage.setArrivalCity(search.getArrivalCity());
-        searchPage.setFirstDate(180);
-        searchPage.setSecondDate(185);
-        searchPage.setPassengersCount(1, 0);
+        searchPage.setFirstDate(search.getDaysFwd());
+        searchPage.setSecondDate(search.getDaysBckwd());
+        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
 
         searchPage.submitSearch();
         searchPage.preloader.should(appear);
@@ -63,10 +64,10 @@ class TestSuite {
         searchResultsPage.checkDepartureAitportNameBackward(id);
         searchResultsPage.checkArrivalAitportNameBackward(id);
 
-        searchResultsPage.checkDepartureDateForward(id, Utils.dateForFlightSearchResults(180));
-        searchResultsPage.checkArrivalDateForward(id, Utils.dateForFlightSearchResults(180), Utils.dateForFlightSearchResults(180+1));
-        searchResultsPage.checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(185));
-        searchResultsPage.checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(185), Utils.dateForFlightSearchResults(185+1));
+        searchResultsPage.checkDepartureDateForward(id, Utils.dateForFlightSearchResults(search.getDaysFwd()));
+        searchResultsPage.checkArrivalDateForward(id, Utils.dateForFlightSearchResults(search.getDaysFwd()), Utils.dateForFlightSearchResults(search.getDaysFwd()+1));
+        searchResultsPage.checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(search.getDaysBckwd()));
+        searchResultsPage.checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(search.getDaysBckwd()), Utils.dateForFlightSearchResults(search.getDaysBckwd()+1));
 
         String regex = "[0-9]{1,2}:[0-9]{2}";
         searchResultsPage.checkPresenceOfDepartureTimeForward(id, regex);
@@ -90,14 +91,36 @@ class TestSuite {
         customerContactDataPage.checkPresenceOfContactDataBlock();
         customerContactDataPage.enterUserData();
 
+        int indexChild = 2;
+        int indexInfant = 2;
+        if(search.getInfantCount() == 1 && search.getChildCount() == 1) indexInfant = 3;
+
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
+        if(search.getChildCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexChild, "Ребенок");
+        if(search.getInfantCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexInfant, "Младенец");
+
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
         passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
         passengersDataPage.fillCitizenship(1, CV.citizenship);
-        passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
+        passengersDataPage.setSex(1, CV.sex);
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+
+        if (search.getChildCount() == 1) {
+            passengersDataPage.fillCustomersData(indexChild, CV.lastNameChd, CV.firstNameChd, CV.birthDateChd);
+            passengersDataPage.fillCitizenship(indexChild, CV.citizenshipChd);
+            passengersDataPage.setSex(indexChild, CV.sexChd);
+            passengersDataPage.fillDocData(indexChild, CV.docSNChd, CV.docExpDateChd, search.isFakeDocChld());
+        }
+
+        if (search.getInfantCount() == 1) {
+            passengersDataPage.fillCustomersData(indexInfant, CV.lastNameInf, CV.firstNameInf, CV.birthDateInf);
+            passengersDataPage.fillCitizenship(indexInfant, CV.citizenshipInf);
+            passengersDataPage.setSex(indexInfant, CV.sexInf);
+            passengersDataPage.fillDocData(indexInfant, CV.docSNInf, CV.docExpDateInf, search.isFakeDocInf());
+        }
+
         passengersDataPage.fillEmail("kedroDelgardo@mail.com");
         passengersDataPage.bookTicket();
 
@@ -129,11 +152,12 @@ class TestSuite {
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
+        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
         searchPage.setDepartureCity(search.getDepartureCity());
         searchPage.setArrivalCity(search.getArrivalCity());
         searchPage.setFirstDate(180);
         searchPage.setSecondDate(185);
-        searchPage.setPassengersCount(1, 1);
+        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
 
         searchPage.submitSearch();
         searchPage.preloader.should(appear);
@@ -190,12 +214,12 @@ class TestSuite {
         passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
 
         passengersDataPage.fillCustomersData(2, CV.lastNameChd, CV.firstNameChd, CV.birthDateChd);
         passengersDataPage.fillCitizenship(2, CV.citizenshipChd);
         passengersDataPage.setSex(2, "F");
-        passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd);
+        passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd, search.isFakeDocChld());
 
         passengersDataPage.fillEmail("kedroDelgardo@mail.com");
         passengersDataPage.bookTicket();
@@ -226,10 +250,11 @@ class TestSuite {
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
+        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
         searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
                                            search.getDepartureCity_2(), search.getArrivalCity_2());
         searchPage.setDatesForDifficultRoute(180, 210);
-        searchPage.setPassengersCountForDifficultRoute(1, 0);
+        searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
         searchPage.submitSearch();
         searchPage.preloader.should(appear);
 
@@ -255,7 +280,7 @@ class TestSuite {
         passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate);
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
         passengersDataPage.fillEmail("kedroDelgardo@mail.com");
         passengersDataPage.buyTicket();
 
@@ -278,13 +303,14 @@ class TestSuite {
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
+        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
         searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
                                            search.getDepartureCity_2(), search.getArrivalCity_2(),
                                            search.getDepartureCity_3(), search.getArrivalCity_3(),
                                            search.getDepartureCity_4(), search.getArrivalCity_4());
         searchPage.removeLastDifficultRoute();
         searchPage.setDatesForDifficultRoute(180, 190, 210);
-        searchPage.setPassengersCountForDifficultRoute(1, 0);
+        searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
         searchPage.submitSearch();
         searchPage.preloader.should(appear);
 
@@ -299,4 +325,67 @@ class TestSuite {
         ticketInfoPage.waitForTicketRulesBtn();
         ticketInfoPage.checkTicketDifficultDetails(3);
     }
+
+
+    void front_15848(SearchData search, TicketData ticket){
+        MainPage mainPage = new MainPage();
+        SearchPage searchPage = new SearchPage();
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+
+        mainPage.openMainPage()
+                .openSearchPageViaChannel("Внешний Сайт")
+                .submitOpenFrame();
+
+
+        Utils.switchFrame();
+
+        searchPage.selectWaysForTicket(search.getWaysType());
+        searchPage.selectClass(search.getClassType());
+        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
+        searchPage.setDepartureCity(search.getDepartureCity());
+        searchPage.setArrivalCity(search.getArrivalCity());
+        searchPage.setFirstDate(search.getDaysFwd());
+        searchPage.setSecondDate(search.getDaysBckwd());
+        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
+
+        searchPage.submitSearch();
+        searchPage.preloader.should(appear);
+        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
+
+        searchResultsPage.checkMatrixFlightsPresence();
+        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketForwardDetails();
+        ticketInfoPage.checkTicketBackwardDetails();
+
+        customerContactDataPage.checkPresenceOfContactDataBlock();
+        customerContactDataPage.enterUserData();
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+
+        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, "M");
+        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        paymentPage.doPaymentByCard(null, null, null);
+    }
+
+
 }

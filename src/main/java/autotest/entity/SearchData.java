@@ -14,7 +14,7 @@ public class SearchData {
         build.accept(this);
     }
 
-
+    private String channel;                  //Канал обслуживания
     private String waysType;                 //'Только туда', 'Туда и обратно', 'Сложный маршрут'
     private boolean plusMinus3days = false;  //Чекбокс '+/- 3 дня'
     private String classType;                //'Эконом', 'Бизнес'
@@ -28,11 +28,15 @@ public class SearchData {
     private String arrivalCity_4;            //Город прилета 4
     private String departureDateForward;     //Дата вылета туда
     private String departureDateBackward;    //Дата вылета обратно
+    private int daysFwd;                     // Вылет туде через ... дней
+    private int daysBckwd;                   // Вылет обратно через ... дней
 
     private int passengersCount;  //Количество пассажиров общее
     private int adultsCount = 1;    //Кол-во взрослых
-    private int kidsCount = 0;      //Кол-во детей от 2-12 лет
-    private int babiesCount = 0;    //кол-во младенцев < 2лет
+    private int childCount = 0;      //Кол-во детей от 2-12 лет
+    private int infantCount = 0;    //кол-во младенцев < 2лет
 
-
+    private boolean fakeDoc = false;    //При заполнении клиентских данных нет при себе паспорта
+    private boolean fakeDocChld = false;    //При заполнении клиентских данных нет при себе паспорта ребенка
+    private boolean fakeDocInf = false;    //При заполнении клиентских данных нет при себе паспорта младенца
 }

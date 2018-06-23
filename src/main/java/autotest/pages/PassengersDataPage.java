@@ -184,7 +184,7 @@ public class PassengersDataPage {
     @Step("Перейдем в архив билетов")
     public void openArchive(){
         $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
-//
+
 //        String currUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
 //        Assert.assertTrue(currUrl.contains("https://bilet-dev.isto.it.loc/archive/frame/exsite/?csid="), "Не перешли в архив");
     }

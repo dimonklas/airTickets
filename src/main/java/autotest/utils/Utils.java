@@ -1,7 +1,11 @@
 package autotest.utils;
 
+import autotest.entity.AuthData;
+import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
+import org.springframework.http.HttpHeaders;
 import org.testng.Assert;
 import org.xml.sax.InputSource;
 
@@ -73,11 +77,22 @@ public class Utils {
     }
 
 
-    public void stornBookedTicket(String ticketId, String depSid, String authKey){
+    public static void stornBookedTicket(String ticketId){
+        RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
+        String url = String.format("https://bilet-dev.isto.it.loc/archive/order/create/%s/storno?csid=%s", ticketId, AuthData.getAuth_key());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Host", "bilet-dev.isto.it.loc");
+        headers.add("Accept", "application/json, text/plain, */*");
+        headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        headers.add("Cookie", String.format("dep_sid=%s; auth_key=%s;", AuthData.getDep_sid(), AuthData.getAuth_key()));
 
-        String url = String.format("https://bilet-dev.isto.it.loc/archive/order/create/%s/storno?csid=%s", ticketId, authKey);
-
+        restTemplateSetRequest.requestMethodPost(url, null, headers, String.class);
     }
 
-
+    public static void setCookieData(){
+        sleep(1000);
+        AuthData.setCookies(WebDriverRunner.getWebDriver().manage().getCookies());
+        AuthData.setAuth_key(WebDriverRunner.getWebDriver().manage().getCookieNamed("auth_key").getValue());
+        AuthData.setDep_sid(WebDriverRunner.getWebDriver().manage().getCookieNamed("dep_sid").getValue());
+    }
 }

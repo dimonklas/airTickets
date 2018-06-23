@@ -54,9 +54,16 @@ public class SetUpAndTearDown {
         }
     }
 
-    @AfterTest(alwaysRun = true)
+    @AfterSuite(alwaysRun = true)
     public void stornBookedTickets(){
         LOGGER.info("Сторнирование бронировок");
+        try{
+            new TestSuite().stornBookings();
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("message\": \"\\u041")) LOGGER.info("Сторнирование прошло успешно");
+            else LOGGER.error("При сторнировании возникли ошибки\n" + e.getMessage());
+        }
+
     }
 
     @AfterTest(alwaysRun = true)

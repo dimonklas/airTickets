@@ -2,9 +2,10 @@ package autotest.pages;
 
 import autotest.entity.AuthData;
 import autotest.utils.ConfigurationVariables;
+import autotest.utils.Utils;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.enabled;
@@ -13,6 +14,7 @@ import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
+@Log4j
 public class MainPage {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
@@ -29,7 +31,6 @@ public class MainPage {
     @Step("Откроем главную страницу")
     public MainPage openMainPage(){
         open(baseUrl);
-        new AuthData().setCookies(WebDriverRunner.getWebDriver().manage().getCookies());
         return this;
     }
 
@@ -44,7 +45,8 @@ public class MainPage {
 
     @Step("Откроем архив билетов")
     public void openArchivePage(){
-        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", new AuthData().getDep_sid());
+        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", AuthData.getAuth_key());
+        log.info("Url = " + archiveUrl);
         open(archiveUrl);
     }
 
@@ -65,7 +67,10 @@ public class MainPage {
     @Step("Нажмем кнопку 'Сгенерировать фрейм'")
     public MainPage submitOpenFrame(){
         generateFrameBtn.shouldBe(enabled).click();
+        Utils.setCookieData();
         return this;
     }
+
+
 
 }

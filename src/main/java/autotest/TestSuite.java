@@ -1,6 +1,7 @@
 package autotest;
 
 
+import autotest.entity.AuthData;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.pages.*;
@@ -12,6 +13,9 @@ import java.util.List;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.refresh;
+import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 @Log4j
 class TestSuite {
@@ -387,5 +391,24 @@ class TestSuite {
         paymentPage.doPaymentByCard(null, null, null);
     }
 
+
+    void stornBookings(){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+        mainPage.openMainPage().openSearchPageViaChannel("Внешний Сайт").submitOpenFrame();
+        log.info("auth = " + AuthData.getAuth_key());
+        log.info("dep = " + AuthData.getDep_sid());
+        mainPage.openArchivePage();
+        switchTo().defaultContent();
+        archivePage.auth();
+        archivePage.searchBtn.shouldBe(visible);
+
+        List<String> tickets_ids = archivePage.getTickets_id();
+        tickets_ids.forEach(Utils::stornBookedTicket);
+        sleep(30 * 1000);
+        refresh();
+        tickets_ids = archivePage.getTickets_id();
+        if(tickets_ids.size() > 0) tickets_ids.forEach(Utils::stornBookedTicket);
+    }
 
 }

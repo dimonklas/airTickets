@@ -82,8 +82,6 @@ public class ConfigurationVariables {
                 e.printStackTrace();
             }
         }
-
-
     }
 
 

@@ -46,7 +46,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         log.info("Sid = " + CV.prominSession);
-        testSuite.bookTickets(searchData, ticketData);
+//        testSuite.bookTickets(searchData, ticketData);
     }
 
 
@@ -73,7 +73,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        testSuite.front_12552(searchData, ticketData);
+//        testSuite.front_12552(searchData, ticketData);
     }
 
 
@@ -101,7 +101,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        testSuite.front_15024(searchData, ticketData);
+//        testSuite.front_15024(searchData, ticketData);
     }
 
 
@@ -126,7 +126,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-        testSuite.front_15091(searchData);
+//        testSuite.front_15091(searchData);
     }
 
 
@@ -154,7 +154,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        testSuite.front_15848(searchData, ticketData);
+//        testSuite.front_15848(searchData, ticketData);
     }
 
 
@@ -183,7 +183,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        testSuite.bookTickets(searchData, ticketData);
+//        testSuite.bookTickets(searchData, ticketData);
     }
 
     @Test(  enabled = true,
@@ -203,7 +203,6 @@ public class TestRunner extends SetUpAndTearDown {
             s.setDaysBckwd(188);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(188));
-//            s.setPassengersCount(1);
             s.setFakeDoc(true);
         });
 
@@ -213,5 +212,4 @@ public class TestRunner extends SetUpAndTearDown {
 
         testSuite.bookTickets(searchData, ticketData);
     }
-
 }

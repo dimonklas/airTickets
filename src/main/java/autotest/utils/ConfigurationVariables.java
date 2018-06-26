@@ -22,6 +22,7 @@ public class ConfigurationVariables {
     final private static Logger LOGGER = Logger.getLogger(ConfigurationVariables.class);
 
     public String currentBrowser = System.getProperty("currentBrowser");
+    public String locale = System.getProperty("locale");
     public String userLogin = System.getProperty("userLogin");
     public String userPassword = System.getProperty("userPassword");
     public String techLogin = System.getProperty("techLogin");
@@ -88,6 +89,9 @@ public class ConfigurationVariables {
     private ConfigurationVariables() {
         if (currentBrowser == null || currentBrowser.equalsIgnoreCase(""))
             currentBrowser = getProperty(configurationData, "currentBrowser");
+
+        if (locale == null || locale.equalsIgnoreCase(""))
+            locale = getProperty(configurationData, "locale");
 
         if (userLogin == null || userLogin.equalsIgnoreCase(""))
             userLogin = getProperty(configurationData, "userLogin");

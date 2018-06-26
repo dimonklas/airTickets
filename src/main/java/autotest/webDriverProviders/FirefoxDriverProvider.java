@@ -36,7 +36,17 @@ public class FirefoxDriverProvider implements WebDriverProvider {
         firefoxProfile.setPreference("javascript.enabled", true);
         firefoxProfile.setPreference("geo.enabled", false);
 
-        firefoxProfile.setPreference("intl.accept_languages", "ru,uk,en-us,en");
+        switch (configVariables.locale) {
+            case "UA" : firefoxProfile.setPreference("intl.accept_languages", "uk,ru,en-us,en");
+                break;
+            case "RU" : firefoxProfile.setPreference("intl.accept_languages", "ru,uk,en-us,en");
+                break;
+            case "EN" : firefoxProfile.setPreference("intl.accept_languages", "en-us,en,ru,uk");
+                break;
+            default: firefoxProfile.setPreference("intl.accept_languages", "ru,uk,en-us,en");
+        }
+
+
 
         firefoxProfile.setPreference("browser.cache.disk.enable", false);
         firefoxProfile.setPreference("browser.cache.memory.enable", false);

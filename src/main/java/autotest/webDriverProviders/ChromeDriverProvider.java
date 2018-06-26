@@ -1,7 +1,9 @@
 package autotest.webDriverProviders;
 
+import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.WebDriverProvider;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -19,7 +21,10 @@ import java.util.stream.Collectors;
  * Плагины браузера(Add-ons) автоматом добавлятся, если поместисть файлы (*.crx) в /src/main/resources/extensions
  * Драйвер браузера автоматически загружается и прописывается в classPath
  */
+@Log4j
 public class ChromeDriverProvider implements WebDriverProvider {
+
+    private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
@@ -29,14 +34,25 @@ public class ChromeDriverProvider implements WebDriverProvider {
         chromePrefs.put("profile.default_content_settings.popups", 0);
         chromePrefs.put("download.default_directory", System.getProperty("user.dir"));
 
+        switch (CV.locale) {
+            case "UA" : chromePrefs.put("intl.accept_languages", "uk,en-us,en,ru");
+                break;
+            case "RU" : chromePrefs.put("intl.accept_languages", "ru,en-us,en");
+                break;
+            case "EN" : chromePrefs.put("intl.accept_languages", "en-us,en");
+                break;
+            default: chromePrefs.put("intl.accept_languages", "uk,en-us,en,ru");
+        }
+
+
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", chromePrefs);
 //        options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
+
         options.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         options.addExtensions(listExtensions());
 
         ChromeDriver driver = new ChromeDriver(options);
-
         System.setProperty("browser", options.getBrowserName() + " " + driver.getCapabilities().getVersion());
         System.setProperty("driver.version", ChromeDriverManager.getInstance().getDownloadedVersion());
 

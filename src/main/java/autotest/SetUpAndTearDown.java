@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeSuite;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 
 import static java.lang.System.getProperty;
@@ -24,9 +25,25 @@ public class SetUpAndTearDown {
     private static final Logger LOGGER = Logger.getLogger(SetUpAndTearDown.class);
     private final ConfigurationVariables configVariables = ConfigurationVariables.getInstance();
     private final String browser = configVariables.currentBrowser;
+    private final String locale = configVariables.locale;
 
     @BeforeSuite(alwaysRun = true)
     public void SetUpBrowser() throws Exception {
+
+        switch (locale) {
+            case "UA" : Locale.setDefault(new Locale("uk", "ua"));
+                LOGGER.info("Set locale to uk-UA");
+                break;
+            case "RU" : Locale.setDefault(new Locale("ru", "ua"));
+                LOGGER.info("Set locale to ru-UA");
+                break;
+            case "EN" : Locale.setDefault(new Locale("en", "ua"));
+                LOGGER.info("Set locale to en-UA");
+                break;
+            default: Locale.setDefault(new Locale("uk", "ua"));
+                LOGGER.info("Locale is uk-UA");
+        }
+
         switch (browser){
             case "firefox" :
                 System.setProperty("selenide.browser", "autotest.webDriverProviders.FirefoxDriverProvider");

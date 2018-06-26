@@ -1,6 +1,5 @@
 package autotest.pages;
 
-import autotest.entity.AuthData;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import com.codeborne.selenide.SelenideElement;
@@ -45,9 +44,7 @@ public class MainPage {
 
     @Step("Откроем архив билетов")
     public void openArchivePage(){
-        String archiveUrl = String.format("https://bilet-dev.isto.it.loc/archive/?csid=%s", AuthData.getAuth_key());
-        log.info("Url = " + archiveUrl);
-        open(archiveUrl);
+        open(Utils.getArchiveUrl());
     }
 
     @Step("Перейдем в архив билетов через канал {channel}")
@@ -67,7 +64,6 @@ public class MainPage {
     @Step("Нажмем кнопку 'Сгенерировать фрейм'")
     public MainPage submitOpenFrame(){
         generateFrameBtn.shouldBe(enabled).click();
-        Utils.setCookieData();
         return this;
     }
 

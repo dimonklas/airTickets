@@ -2,6 +2,7 @@ package autotest;
 
 import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -20,7 +21,7 @@ import static java.util.Optional.ofNullable;
 
 public class SetUpAndTearDown {
 
-    static final Logger LOGGER = Logger.getLogger(SetUpAndTearDown.class);
+    private static final Logger LOGGER = Logger.getLogger(SetUpAndTearDown.class);
     private final ConfigurationVariables configVariables = ConfigurationVariables.getInstance();
     private final String browser = configVariables.currentBrowser;
 
@@ -54,16 +55,11 @@ public class SetUpAndTearDown {
         }
     }
 
+    @Step("Сторнирование бронировок")
     @AfterSuite(alwaysRun = true)
-    public void stornBookedTickets(){
+    public void stornBookedTickets() throws Exception {
         LOGGER.info("Сторнирование бронировок");
-        try{
-            new TestSuite().stornBookings();
-        } catch (RuntimeException e) {
-            if (e.getMessage().contains("message\": \"\\u041")) LOGGER.info("Сторнирование прошло успешно");
-            else LOGGER.error("При сторнировании возникли ошибки\n" + e.getMessage());
-        }
-
+        new TestSuite().stornBookings();
     }
 
     @AfterTest(alwaysRun = true)

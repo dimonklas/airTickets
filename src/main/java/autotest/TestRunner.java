@@ -27,7 +27,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 10)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14514")
     public void a1_front_14514(){
-
+        log.info(">>>> a1_front_14514() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
@@ -45,8 +45,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-        log.info("Sid = " + CV.prominSession);
-//        testSuite.bookTickets(searchData, ticketData);
+        testSuite.bookTickets(searchData, ticketData);
     }
 
 
@@ -57,7 +56,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 20)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-12552")
     public void a2_front_12552(){
-
+        log.info(">>>> a2_front_12552() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
@@ -73,7 +72,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-//        testSuite.front_12552(searchData, ticketData);
+        testSuite.front_12552(searchData, ticketData);
     }
 
 
@@ -84,7 +83,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 30)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15024")
     public void a3_front_15024(){
-
+        log.info(">>>> a3_front_15024() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setWaysType("Сложный маршрут");
             s.setClassType("Эконом");
@@ -101,7 +100,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-//        testSuite.front_15024(searchData, ticketData);
+        testSuite.front_15024(searchData, ticketData);
     }
 
 
@@ -112,6 +111,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 40)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15091")
     public void a4_front_15091(){
+        log.info(">>>> a4_front_15091() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setWaysType("Сложный маршрут");
             s.setClassType("Эконом");
@@ -126,7 +126,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-//        testSuite.front_15091(searchData);
+        testSuite.front_15091(searchData);
     }
 
 
@@ -137,6 +137,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 50)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15848")
     public void a5_front_15848(){
+        log.info(">>>> a5_front_15848() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setWaysType("Туда и обратно");
             s.setPlusMinus3days(true);
@@ -154,7 +155,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-//        testSuite.front_15848(searchData, ticketData);
+        testSuite.front_15848(searchData, ticketData);
     }
 
 
@@ -165,6 +166,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 60)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14517")
     public void a6_front_14517(){
+        log.info(">>>> a6_front_14517() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
@@ -183,7 +185,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
-//        testSuite.bookTickets(searchData, ticketData);
+        testSuite.bookTickets(searchData, ticketData);
     }
 
     @Test(  enabled = true,
@@ -193,6 +195,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 70)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
     public void a7_front_15720(){
+        log.info(">>>> a7_front_15720() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
@@ -212,4 +215,7 @@ public class TestRunner extends SetUpAndTearDown {
 
         testSuite.bookTickets(searchData, ticketData);
     }
+
+
+
 }

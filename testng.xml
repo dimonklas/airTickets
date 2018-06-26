@@ -3,7 +3,6 @@
 <suite name="Регрессионное тестирование сайта покупки авиабилетов" parallel="tests" thread-count="1" verbose="1">
 
 
-
 	<test name="Покупка билетов" >
 		<groups>
 			<run>
@@ -14,5 +13,17 @@
 			<class name="autotest.TestRunner" />
 		</classes>
 	</test>
+
+	<test name="Архив билетов" >
+		<groups>
+			<run>
+				<include name="Архив билетов"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunner" />
+		</classes>
+	</test>
+
 
 </suite>

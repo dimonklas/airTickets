@@ -2,7 +2,6 @@ package autotest.pages;
 
 
 import autotest.utils.ConfigurationVariables;
-import autotest.utils.Utils;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -31,18 +30,14 @@ public class ArchivePage {
 
     @Step("Авторизация на форме архива")
     public void auth(){
-        try {
-            $(By.xpath(".//*[text()='Авторизация']")).shouldBe(visible);
-        } catch (Error e) {
-            e.getMessage();
-        }
-        if( $(By.xpath(".//*[text()='Авторизация']")).isDisplayed() && phoneInputField.isEnabled() ) {
-            phoneInputField.setValue(CV.phone);
+        if(!$(By.xpath(".//*[text()='Авторизация']")).isDisplayed()) sleep(3000);
+        if( $(By.xpath(".//*[text()='Авторизация']")).isDisplayed()) {
+            phoneInputField.shouldBe(visible, enabled).setValue(CV.phone);
             submitPhoneBtn.click();
             otpcodeField.shouldBe(visible, enabled).setValue(CV.otp);
             submitOtpBtn.click();
             $(By.xpath(".//div[@class='tickets-filters']")).waitUntil(appear, 30 * 1000);
-            Utils.setCookieData();
+            searchBtn.should(appear);
         }
     }
 
@@ -60,13 +55,16 @@ public class ArchivePage {
     }
 
     public List<String> getTickets_id(){
-        ElementsCollection elements = $$x(".//*[text()='Забронирован, не оплачен']/ancestor::section").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+        $$x(".//*[contains(@id,'ticket-')]").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+        ElementsCollection bookedTicketsId = $$x(".//*[text()='Забронирован, не оплачен']/ancestor::section");
         List<String> idList = new ArrayList<>();
-        elements.forEach(element -> {
-            String attrValue =  element.getAttribute("id");
-            String id = attrValue.substring(attrValue.lastIndexOf("-")+1);
-            idList.add(id);
-        });
+        if(bookedTicketsId.size() > 0) {
+            bookedTicketsId.forEach(element -> {
+                String attrValue =  element.getAttribute("id");
+                String id = attrValue.substring(attrValue.lastIndexOf("-")+1);
+                idList.add(id);
+            });
+        }
         return idList;
     }
 

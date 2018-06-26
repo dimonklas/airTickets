@@ -49,11 +49,11 @@ public class PassengersDataPage {
         $(By.xpath(".//*[@name='citizenship']")).shouldBe(visible, enabled);
         $(By.xpath(".//label[@for='docs-0']")).shouldBe(visible, enabled);
         $(By.xpath(".//label[@for='withExpireDateLabel-0']")).shouldBe(visible, enabled);
-        $(By.xpath(".//label[@for='isBonusCard-0']")).shouldBe(visible, enabled);
+//        $(By.xpath(".//label[@for='isBonusCard-0']")).shouldBe(visible, enabled);
 //        buyBaggageChkbox.shouldBe(visible, enabled);
         $(By.xpath(".//*[@name='docnum']")).shouldBe(visible, enabled);
         $(By.xpath(".//*[@name='doc_expire_date']")).shouldBe(visible, enabled);
-        $(By.xpath("(.//*[@name='bonus_card'])[1]")).shouldBe(visible);
+//        $(By.xpath("(.//*[@name='bonus_card'])[1]")).shouldBe(visible);
         $(By.xpath(".//*[@name='email']")).shouldBe(visible, enabled);
     }
 
@@ -70,7 +70,7 @@ public class PassengersDataPage {
         $(By.xpath(String.format("(.//label[text()='Гражданство'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//label[text()='Серия, № документа'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", index))).shouldBe(visible);
-        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", index))).shouldBe(visible);
+//        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", index))).shouldBe(visible);
 //        $(By.xpath(String.format("(.//label[text()='Докупить багаж'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", index))).shouldBe(visible);
@@ -83,8 +83,8 @@ public class PassengersDataPage {
 
     @Step("Проверим наличие кнопок 'Назад', 'Забронировать (бесплатно)', 'Купить' и текста со сроком бронирования")
     public void checkPresenceAndAvaliabilityOfButtons(){
-        backBtn.shouldBe(visible, enabled);
-        bookingBtn.shouldBe(visible, enabled);
+        backBtn.shouldBe(visible, enabled).scrollIntoView(true);;
+        bookingBtn.shouldBe(visible, enabled).scrollIntoView(true);;
         buyBtn.shouldBe(visible, enabled);
         Assert.assertTrue(
                 $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)
@@ -149,8 +149,11 @@ public class PassengersDataPage {
     @Step("Нажмем кнопку 'Забронировать (бесплатно)'")
     public void bookTicket(){
         bookingBtn.shouldBe(visible).scrollIntoView(true).click();
-        sleep(100);
-        errorText.shouldNot(appear);
+        sleep(200);
+        if(errorText.isDisplayed()) {
+            passengersDataText.scrollIntoView(true);
+            Assert.fail("Ошибка заполнения клиентских даных. После нажатие на кнопку 'Забронировать' появился текст 'Проверьте заполнение пассажирских данных'");
+        }
         if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").isDisplayed()){
             throw new NotClickedException("Ошибка при бронировании билета");
         }
@@ -184,9 +187,6 @@ public class PassengersDataPage {
     @Step("Перейдем в архив билетов")
     public void openArchive(){
         $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
-
-//        String currUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
-//        Assert.assertTrue(currUrl.contains("https://bilet-dev.isto.it.loc/archive/frame/exsite/?csid="), "Не перешли в архив");
     }
 
 }

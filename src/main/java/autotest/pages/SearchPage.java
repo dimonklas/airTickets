@@ -43,13 +43,13 @@ public class SearchPage {
     @Step("Выберем место вылета {city}")
     public void setDepartureCity(String city){
         fromField.shouldBe(enabled).setValue(city);
-        sleep(100);
+        sleep(200);
     }
 
     @Step("Выберем место вылета обратно {city}")
     public void setArrivalCity(String city){
         toField.shouldBe(enabled).setValue(city);
-        sleep(100);
+        sleep(200);
     }
 
 
@@ -57,10 +57,10 @@ public class SearchPage {
     public void setDifficultRouteCities(String departure, String arrival, String departure2, String arrival2){
         $(By.xpath("(.//*[@name='difficult_departure'])[1]")).shouldBe(visible, enabled).setValue(departure);
         $(By.xpath("(.//*[@name='difficult_arrival'])[1]")).shouldBe(visible, enabled).setValue(arrival);
-        sleep(100);
+        sleep(200);
         $(By.xpath("(.//*[@name='difficult_departure'])[2]")).shouldBe(visible, enabled).setValue(departure2);
         $(By.xpath("(.//*[@name='difficult_arrival'])[2]")).shouldBe(visible, enabled).setValue(arrival2);
-        sleep(100);
+        sleep(200);
     }
 
 
@@ -69,20 +69,20 @@ public class SearchPage {
                                         String departure3, String arrival3, String departure4, String arrival4){
         $(By.xpath("(.//*[@name='difficult_departure'])[1]")).shouldBe(visible, enabled).setValue(departure);
         $(By.xpath("(.//*[@name='difficult_arrival'])[1]")).shouldBe(visible, enabled).setValue(arrival);
-        sleep(100);
+        sleep(200);
         $(By.xpath("(.//*[@name='difficult_departure'])[2]")).shouldBe(visible, enabled).setValue(departure2);
         $(By.xpath("(.//*[@name='difficult_arrival'])[2]")).shouldBe(visible, enabled).setValue(arrival2);
-        sleep(100);
+        sleep(200);
 
         $x(".//*[text()='Добавить рейс']/parent::button").shouldBe(visible, enabled).click();
         $(By.xpath("(.//*[@name='difficult_departure'])[3]")).shouldBe(visible, enabled).setValue(departure3);
         $(By.xpath("(.//*[@name='difficult_arrival'])[3]")).shouldBe(visible, enabled).setValue(arrival3);
-        sleep(100);
+        sleep(200);
 
         $x(".//*[text()='Добавить рейс']/parent::button").shouldBe(visible, enabled).click();
         $(By.xpath("(.//*[@name='difficult_departure'])[4]")).shouldBe(visible, enabled).setValue(departure4);
         $(By.xpath("(.//*[@name='difficult_arrival'])[4]")).shouldBe(visible, enabled).setValue(arrival4);
-        sleep(100);
+        sleep(200);
     }
 
     @Step("Удалим последний добавленный маршрут и проверим, что строка поиска пропала")

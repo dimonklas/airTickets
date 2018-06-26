@@ -12,8 +12,6 @@ import lombok.extern.log4j.Log4j;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.util.Locale;
-
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
@@ -216,33 +214,6 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         testSuite.bookTickets(searchData, ticketData);
-    }
-
-    @Test(groups = {"Тест"})
-    public void test() {
-
-
-//        Locale.setDefault(new Locale("ru", "ua"));
-//        Locale.setDefault(new Locale("en", "ua"));
-
-        Locale loc = Locale.getDefault();
-
-        log.info("Дата = " + Utils.dateForFlightSearchResults(180));
-        log.info("Дата = " + Utils.dateForFlightSearchResults(181));
-        log.info("Дата = " + Utils.dateForFlightSearchResults(182));
-        log.info("Дата = " + Utils.dateForFlightSearchResults(185));
-
-        log.info("getDisplayName : " + loc.getDisplayName());
-        log.info("loc.getDisplayName (loc) : " + loc.getDisplayName (loc));
-        log.info("loc.getLanguage () : " + loc.getLanguage ());
-        log.info("loc.getDisplayLanguage () : " + loc.getDisplayLanguage ());
-        log.info("loc.getDisplayLanguage (loc) : " + loc.getDisplayLanguage (loc));
-        log.info("loc.getCountry () : " + loc.getCountry ());
-        log.info("******************************************");
-//        for (Locale locale : Locale.getAvailableLocales()) {
-//            log.info("Avaible lang :" + locale.getLanguage());
-//        }
-
     }
 
 }

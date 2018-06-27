@@ -69,6 +69,8 @@ public class ConfigurationVariables {
     public String docSNInf;
     public String docExpDateInf;
 
+    public String email;
+
 
     static {
 
@@ -142,6 +144,8 @@ public class ConfigurationVariables {
         citizenshipInf = getProperty(testData, "citizenshipInf");
         docSNInf = getProperty(testData, "docSNInf");
         docExpDateInf = getProperty(testData, "docExpDateInf");
+
+        email = getProperty(testData, "email");
 
     }
 

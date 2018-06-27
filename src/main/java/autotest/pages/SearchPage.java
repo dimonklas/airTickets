@@ -50,13 +50,15 @@ public class SearchPage {
     @Step("Выберем место вылета {city}")
     public void setDepartureCity(String city){
         fromField.shouldBe(enabled).setValue(city);
-        $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").shouldNotBe(and("Выпадающий список городов", visible));
+        $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").should(appear).waitUntil(disappear, 5*1000);
+        //shouldNotBe(and("Выпадающий список городов", visible));
     }
 
     @Step("Выберем место вылета обратно {city}")
     public void setArrivalCity(String city){
         toField.shouldBe(enabled).setValue(city);
-        $x(".//*[@name='arrival']/following-sibling::*[contains(@id,'typeahead')]").shouldNotBe(and("Выпадающий список городов", visible));
+        $x(".//*[@name='arrival']/following-sibling::*[contains(@id,'typeahead')]").should(appear).waitUntil(disappear, 5*1000);
+        //.shouldNotBe(and("Выпадающий список городов", visible));
     }
 
     @Step("Выберем города вылета/назначения для сложного маршрута")

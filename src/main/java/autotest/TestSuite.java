@@ -135,7 +135,7 @@ class TestSuite {
             passengersDataPage.fillDocData(indexInfant, CV.docSNInf, CV.docExpDateInf, search.isFakeDocInf());
         }
 
-        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.fillEmail(CV.email);
         passengersDataPage.bookTicket();
 
         passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
@@ -213,7 +213,7 @@ class TestSuite {
         passengersDataPage.setSex(2, "F");
         passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd, search.isFakeDocChld());
 
-        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.fillEmail(CV.email);
         passengersDataPage.bookTicket();
 
         passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
@@ -252,7 +252,7 @@ class TestSuite {
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
         passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
-        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.fillEmail(CV.email);
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);
@@ -305,7 +305,7 @@ class TestSuite {
         passengersDataPage.fillCitizenship(1, CV.citizenship);
         passengersDataPage.setSex(1, "M");
         passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
-        passengersDataPage.fillEmail("kedroDelgardo@mail.com");
+        passengersDataPage.fillEmail(CV.email);
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);

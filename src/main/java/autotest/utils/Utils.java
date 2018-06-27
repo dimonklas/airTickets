@@ -120,9 +120,10 @@ public class Utils {
         try {
             restTemplateSetRequest.requestMethodPost(url, null, headers, String.class);
         } catch (Exception e) {
-            LOG.info("Ошибка выполнения запроса на сторнировку бронирования.\n" + StringEscapeUtils.unescapeJava(e.getMessage()));
-               if (!e.getMessage().contains("была принята ранее"))
-                   throw new RuntimeException("Ошибка выполнения запроса на сторнировку бронирования.\n" + StringEscapeUtils.unescapeJava(e.getMessage()));
+            String msg = StringEscapeUtils.unescapeJava(e.getMessage());
+            LOG.info("Ошибка выполнения запроса на сторнировку бронирования.\n" + msg);
+               if (!msg.contains("была принята ранее"))
+                   throw new RuntimeException("Ошибка выполнения запроса на сторнировку бронирования.\n" + msg);
         }
         LOG.info(ticketId + " Ok");
         sleep(5 * 1000);

@@ -1,16 +1,24 @@
 package autotest;
 
+import autotest.dto.custData.ClientData;
+import autotest.dto.custData.ClientDataItem;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import autotest.utils.listeners.AllureOnFailListener;
 import autotest.utils.listeners.RunTestAgainIfFailed;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Link;
 import lombok.extern.log4j.Log4j;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
@@ -233,6 +241,25 @@ public class TestRunner extends SetUpAndTearDown {
 
         testSuite.searchTickets(searchData);
         testSuite.bookTickets(searchData, ticketData);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "тестовый тест",
+            groups = {"Покупка билетов"},
+            priority = 70)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
+    public void testEmail() throws FileNotFoundException {
+        log.info(">>>> Запуск тестового теста...");
+
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/custData.json"));
+        ClientData clientData = gson.fromJson(reader, ClientData.class);
+
+        ClientDataItem cl = clientData.getClientData().get(5);
+        log.info(cl.getBirthDate());
+
+
     }
 
 }

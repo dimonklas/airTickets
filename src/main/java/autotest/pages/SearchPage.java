@@ -4,12 +4,14 @@ import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
+@Log4j
 public class SearchPage {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
@@ -50,45 +52,47 @@ public class SearchPage {
     @Step("Выберем место вылета {city}")
     public void setDepartureCity(String city){
         fromField.shouldBe(enabled).setValue(city);
-        $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").should(appear).waitUntil(disappear, 5*1000);
-        //shouldNotBe(and("Выпадающий список городов", visible));
+        $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").waitUntil(disappear, 5*1000);
     }
 
     @Step("Выберем место вылета обратно {city}")
     public void setArrivalCity(String city){
         toField.shouldBe(enabled).setValue(city);
-        $x(".//*[@name='arrival']/following-sibling::*[contains(@id,'typeahead')]").should(appear).waitUntil(disappear, 5*1000);
-        //.shouldNotBe(and("Выпадающий список городов", visible));
+        $x(".//*[@name='arrival']/following-sibling::*[contains(@id,'typeahead')]").waitUntil(disappear, 5*1000);
     }
 
     @Step("Выберем города вылета/назначения для сложного маршрута")
     public void setDifficultRouteCities(String departure, String arrival, String departure2, String arrival2,
                                         String departure3, String arrival3, String departure4, String arrival4){
 
+        while ($$x(".//*[@name='difficult_departure']").size() > 2) {
+            $x("(.//*[contains(@class,'difficult-flight__remove')])[last()]").shouldBe(visible, enabled).click();
+        }
+
         departureField.shouldHaveSize(2).get(0).shouldBe(visible, enabled).setValue(departure);
-        citiesListBoxDeparture.shouldHaveSize(2).get(0).shouldNotBe(visible);
+        citiesListBoxDeparture.shouldHaveSize(2).get(0).waitUntil(disappear, 5*1000);
         arrivalField.shouldHaveSize(2).get(0).shouldBe(visible, enabled).setValue(arrival);
-        citiesListBoxArrival.shouldHaveSize(2).get(0).shouldNotBe(visible);
+        citiesListBoxArrival.shouldHaveSize(2).get(0).waitUntil(disappear, 5*1000);
 
         departureField.get(1).shouldBe(visible, enabled).setValue(departure2);
-        citiesListBoxDeparture.get(1).shouldNotBe(visible);
+        citiesListBoxDeparture.get(1).waitUntil(disappear, 5*1000);
         arrivalField.get(1).shouldBe(visible, enabled).setValue(arrival2);
-        citiesListBoxArrival.get(1).shouldNotBe(visible);
+        citiesListBoxArrival.get(1).waitUntil(disappear, 5*1000);
 
         if(departure3 != null) {
             addRouteBtn.shouldBe(visible, enabled).click();
             departureField.shouldHaveSize(3).get(2).shouldBe(visible, enabled).setValue(departure3);
-            citiesListBoxDeparture.shouldHaveSize(3).get(2).shouldNotBe(visible);
+            citiesListBoxDeparture.shouldHaveSize(3).get(2).waitUntil(disappear, 5*1000);
             arrivalField.shouldHaveSize(3).get(2).shouldBe(visible, enabled).setValue(arrival3);
-            citiesListBoxArrival.shouldHaveSize(3).get(2).shouldNotBe(visible);
+            citiesListBoxArrival.shouldHaveSize(3).get(2).waitUntil(disappear, 5*1000);
         }
 
         if(departure4 != null) {
             addRouteBtn.click();
             departureField.shouldHaveSize(4).get(3).shouldBe(visible, enabled).setValue(departure4);
-            citiesListBoxDeparture.shouldHaveSize(4).get(3).shouldNotBe(visible);
+            citiesListBoxDeparture.shouldHaveSize(4).get(3).waitUntil(disappear, 5*1000);
             arrivalField.shouldHaveSize(4).get(3).shouldBe(visible, enabled).setValue(arrival4);
-            citiesListBoxArrival.shouldHaveSize(4).get(3).shouldNotBe(visible);
+            citiesListBoxArrival.shouldHaveSize(4).get(3).waitUntil(disappear, 5*1000);
         }
     }
 

@@ -11,7 +11,8 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 @Log4j
 class TestSuite {
@@ -325,10 +326,6 @@ class TestSuite {
         List<String> tickets_ids = archivePage.getTickets_id();
         if(tickets_ids.size() > 0) {
             tickets_ids.forEach(Utils::stornBookedTicket);
-            sleep(30 * 1000);
-            refresh();
-            tickets_ids = archivePage.getTickets_id();
-            if(tickets_ids.size() > 0) tickets_ids.forEach(Utils::stornBookedTicket);
         } else log.info("Забронированных билетов не найдено");
 
     }

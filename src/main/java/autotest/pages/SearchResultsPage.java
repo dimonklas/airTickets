@@ -2,6 +2,7 @@ package autotest.pages;
 
 
 import autotest.utils.Utils;
+import autotest.utils.exception.NotClickedException;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -12,9 +13,7 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class SearchResultsPage {
@@ -172,7 +171,14 @@ public class SearchResultsPage {
     @Step("Нажимаем кнопку 'Выбрать'")
     public void pressSelectButton(String id){
         String xPath = String.format(".//*[@id='%s'] //button[contains(text(),'Выбрать')]", id);
-        $(By.xpath(xPath)).shouldBe(visible).click();
+        $x(xPath).shouldBe(visible, enabled).click();
+        try{
+            $x(xPath).should(disappear);
+        } catch (Error er) {
+            $x(xPath).shouldBe(visible, enabled).click();
+            sleep(200);
+            if ($x(xPath).isDisplayed()) throw new NotClickedException("Не нажалась кнопка 'Выбрать'");
+        }
     }
 
 

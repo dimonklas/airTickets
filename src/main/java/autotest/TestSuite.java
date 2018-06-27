@@ -10,9 +10,7 @@ import lombok.extern.log4j.Log4j;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.and;
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 @Log4j
@@ -20,39 +18,53 @@ class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-    void bookTickets(SearchData search, TicketData ticket){
-
+    void searchTickets(SearchData search){
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
-        SearchResultsPage searchResultsPage = new SearchResultsPage();
-        TicketInfoPage ticketInfoPage = new TicketInfoPage();
-        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
-        PassengersDataPage passengersDataPage = new PassengersDataPage();
-        ArchivePage archivePage = new ArchivePage();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel(search.getChannel())
                 .submitOpenFrame();
-
 
         Utils.switchFrame();
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
         searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
-        searchPage.setDepartureCity(search.getDepartureCity());
-        searchPage.setArrivalCity(search.getArrivalCity());
-        searchPage.setFirstDate(search.getDaysFwd());
-        searchPage.setSecondDate(search.getDaysBckwd());
-        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
+
+        if("Сложный маршрут".equalsIgnoreCase(search.getWaysType())) {
+            searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
+                                               search.getDepartureCity_2(), search.getArrivalCity_2(),
+                                               search.getDepartureCity_3(), search.getArrivalCity_4(),
+                                               search.getDepartureCity_3(), search.getArrivalCity_4());
+            searchPage.setDatesForDifficultRoute(search.getDaysForDifficult_1(),
+                                                 search.getDaysForDifficult_2(),
+                                                 search.getDaysForDifficult_3(),
+                                                 search.getDaysForDifficult_4());
+            if(search.isNeedRemoveLastRoute()) searchPage.removeLastDifficultRoute();
+            searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
+        } else {
+            searchPage.setDepartureCity(search.getDepartureCity());
+            searchPage.setArrivalCity(search.getArrivalCity());
+            searchPage.setFirstDate(search.getDaysFwd());
+            searchPage.setSecondDate(search.getDaysBckwd());
+            searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
+        }
 
         searchPage.submitSearch();
-        searchPage.preloader.should(appear);
+        searchPage.preloader.should(appear).waitUntil(disappears, 180 * 1000);
+    }
 
-        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
-        //Получим id-шнки блоков с результатами поиска
-        List<String> ids = searchResultsPage.getIdOfSearchResults();
-        String id = ids.get(0);
+    void bookTickets(SearchData search, TicketData ticket){
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        ArchivePage archivePage = new ArchivePage();
+
+
+        //Получим id блока с результатами поиска
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
 
         searchResultsPage.checkCompanyPresence(id, 2);
 
@@ -137,34 +149,12 @@ class TestSuite {
 
 
     void front_12552(SearchData search, TicketData ticket){
-        MainPage mainPage = new MainPage();
-        SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openMainPage()
-                .openSearchPageViaChannel("Внешний Сайт")
-                .submitOpenFrame();
-
-
-        Utils.switchFrame();
-
-        searchPage.selectWaysForTicket(search.getWaysType());
-        searchPage.selectClass(search.getClassType());
-        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
-        searchPage.setDepartureCity(search.getDepartureCity());
-        searchPage.setArrivalCity(search.getArrivalCity());
-        searchPage.setFirstDate(180);
-        searchPage.setSecondDate(185);
-        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
-
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear);
-
-        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
         //Получим id-шнки блоков с результатами поиска
         List<String> ids = searchResultsPage.getIdOfSearchResults();
         String id = ids.get(0);
@@ -236,34 +226,13 @@ class TestSuite {
 
 
     void front_15024(SearchData search, TicketData ticket){
-        MainPage mainPage = new MainPage();
-        SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
         PaymentPage paymentPage = new PaymentPage();
 
-        mainPage.openMainPage()
-                .openSearchPageViaChannel("Внешний Сайт")
-                .submitOpenFrame();
-
-        Utils.switchFrame();
-
-        searchPage.selectWaysForTicket(search.getWaysType());
-        searchPage.selectClass(search.getClassType());
-        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
-        searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
-                                           search.getDepartureCity_2(), search.getArrivalCity_2());
-        searchPage.setDatesForDifficultRoute(180, 210);
-        searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear);
-
-        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
-        //Получим id-шнки блоков с результатами поиска
-        List<String> ids = searchResultsPage.getIdOfSearchResults();
-        String id = ids.get(0);
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
 
         String price = searchResultsPage.checkPresenceOfTicketsCost(id);
         ticket.setPrice(price);
@@ -292,34 +261,10 @@ class TestSuite {
 
 
     void front_15091(SearchData search){
-        MainPage mainPage = new MainPage();
-        SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
 
-        mainPage.openMainPage()
-                .openSearchPageViaChannel("Внешний Сайт")
-                .submitOpenFrame();
-
-        Utils.switchFrame();
-
-        searchPage.selectWaysForTicket(search.getWaysType());
-        searchPage.selectClass(search.getClassType());
-        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
-        searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
-                                           search.getDepartureCity_2(), search.getArrivalCity_2(),
-                                           search.getDepartureCity_3(), search.getArrivalCity_3(),
-                                           search.getDepartureCity_4(), search.getArrivalCity_4());
-        searchPage.removeLastDifficultRoute();
-        searchPage.setDatesForDifficultRoute(180, 190, 210);
-        searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear);
-
-        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
-        //Получим id-шнки блоков с результатами поиска
-        List<String> ids = searchResultsPage.getIdOfSearchResults();
-        String id = ids.get(0);
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
 
         searchResultsPage.checkPresenceOfTicketsCost(id);
         searchResultsPage.pressSelectButton(id);
@@ -330,33 +275,11 @@ class TestSuite {
 
 
     void front_15848(SearchData search, TicketData ticket){
-        MainPage mainPage = new MainPage();
-        SearchPage searchPage = new SearchPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
         PaymentPage paymentPage = new PaymentPage();
-
-        mainPage.openMainPage()
-                .openSearchPageViaChannel("Внешний Сайт")
-                .submitOpenFrame();
-
-
-        Utils.switchFrame();
-
-        searchPage.selectWaysForTicket(search.getWaysType());
-        searchPage.selectClass(search.getClassType());
-        searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
-        searchPage.setDepartureCity(search.getDepartureCity());
-        searchPage.setArrivalCity(search.getArrivalCity());
-        searchPage.setFirstDate(search.getDaysFwd());
-        searchPage.setSecondDate(search.getDaysBckwd());
-        searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
-
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear);
-        Utils.waitUntilPreloaderRemove(searchPage.preloader, 180);
 
         searchResultsPage.checkMatrixFlightsPresence();
         searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());

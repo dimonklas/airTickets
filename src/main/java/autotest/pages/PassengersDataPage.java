@@ -20,7 +20,8 @@ public class PassengersDataPage {
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
             preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
             bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью']")),
-            errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']"));
+            errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']")),
+            errorText2 = $x(".//*[contains(@class,'alert-danger')]");
 
 
     private SelenideElement
@@ -154,7 +155,8 @@ public class PassengersDataPage {
             passengersDataText.scrollIntoView(true);
             Assert.fail("Ошибка заполнения клиентских даных. После нажатие на кнопку 'Забронировать' появился текст 'Проверьте заполнение пассажирских данных'");
         }
-        if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").isDisplayed()){
+        if ($x(".//*[contains(text(),'произошла ошибка') and contains(text(),'Обновите страницу и попробуйте заново')]").isDisplayed() ||
+                errorText2.isDisplayed()){
             throw new NotClickedException("Ошибка при бронировании билета");
         }
         bookingMessageText.waitUntil(appear, 120*1000).shouldBe(visible).scrollTo();

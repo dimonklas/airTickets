@@ -22,14 +22,19 @@ public class SearchData {
     private String arrivalCity;              //Город прилета
     private String departureCity_2;          //Город вылета 2
     private String arrivalCity_2;            //Город прилета 2
-    private String departureCity_3;          //Город вылета 3
-    private String arrivalCity_3;            //Город прилета 3
-    private String departureCity_4;          //Город вылета 4
-    private String arrivalCity_4;            //Город прилета 4
+    private String departureCity_3 = null;          //Город вылета 3
+    private String arrivalCity_3 = null;            //Город прилета 3
+    private String departureCity_4 = null;          //Город вылета 4
+    private String arrivalCity_4 = null;            //Город прилета 4
+    private boolean needRemoveLastRoute = false;    //Нужно ли удалить последний добавленный сложный маршрут
     private String departureDateForward;     //Дата вылета туда
     private String departureDateBackward;    //Дата вылета обратно
     private int daysFwd;                     // Вылет туде через ... дней
-    private int daysBckwd;                   // Вылет обратно через ... дней
+    private int daysBckwd = -1;                   // Вылет обратно через ... дней
+    private int daysForDifficult_1;         //Вылет для сложного маршрута №1 через ... дней
+    private int daysForDifficult_2;         //Вылет для сложного маршрута №2 через ... дней
+    private int daysForDifficult_3 = -1;         //Вылет для сложного маршрута №3 через ... дней
+    private int daysForDifficult_4 = -1;         //Вылет для сложного маршрута №4 через ... дней
 
     private int passengersCount;  //Количество пассажиров общее
     private int adultsCount = 1;    //Кол-во взрослых

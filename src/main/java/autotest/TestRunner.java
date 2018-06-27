@@ -45,6 +45,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.bookTickets(searchData, ticketData);
     }
 
@@ -58,10 +59,13 @@ public class TestRunner extends SetUpAndTearDown {
     public void a2_front_12552(){
         log.info(">>>> a2_front_12552() is running...");
         SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
             s.setDepartureCity("Краков");
             s.setArrivalCity("Варшава");
+            s.setDaysFwd(180);
+            s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
             s.setPassengersCount(2);
@@ -72,6 +76,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.front_12552(searchData, ticketData);
     }
 
@@ -85,12 +90,15 @@ public class TestRunner extends SetUpAndTearDown {
     public void a3_front_15024(){
         log.info(">>>> a3_front_15024() is running...");
         SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
             s.setWaysType("Сложный маршрут");
             s.setClassType("Эконом");
             s.setDepartureCity("Москва");
             s.setArrivalCity("Минск");
             s.setDepartureCity_2("Киев");
             s.setArrivalCity_2("Мюнхен");
+            s.setDaysForDifficult_1(180);
+            s.setDaysForDifficult_2(210);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(210));
             s.setPassengersCount(1);
@@ -100,6 +108,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.front_15024(searchData, ticketData);
     }
 
@@ -113,6 +122,7 @@ public class TestRunner extends SetUpAndTearDown {
     public void a4_front_15091(){
         log.info(">>>> a4_front_15091() is running...");
         SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
             s.setWaysType("Сложный маршрут");
             s.setClassType("Эконом");
             s.setDepartureCity("Москва");
@@ -123,9 +133,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity_3("Киев");
             s.setDepartureCity_4("Киев");
             s.setArrivalCity_4("Мадрид");
+            s.setNeedRemoveLastRoute(true);
+            s.setDaysForDifficult_1(180);
+            s.setDaysForDifficult_2(190);
+            s.setDaysForDifficult_3(210);
             s.setPassengersCount(1);
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.front_15091(searchData);
     }
 
@@ -139,6 +154,7 @@ public class TestRunner extends SetUpAndTearDown {
     public void a5_front_15848(){
         log.info(">>>> a5_front_15848() is running...");
         SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setPlusMinus3days(true);
             s.setClassType("Эконом");
@@ -155,6 +171,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.front_15848(searchData, ticketData);
     }
 
@@ -185,6 +202,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.bookTickets(searchData, ticketData);
     }
 
@@ -213,6 +231,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
+        testSuite.searchTickets(searchData);
         testSuite.bookTickets(searchData, ticketData);
     }
 

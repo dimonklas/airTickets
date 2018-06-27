@@ -2,6 +2,7 @@ package autotest.utils.listeners;
 
 import autotest.utils.exception.NotClickedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
@@ -30,7 +31,8 @@ public class RunTestAgainIfFailed implements IRetryAnalyzer {
 
     private boolean isRetrieble(Throwable throwable) {
         List<Class> list = Arrays.asList(
-                NotClickedException.class
+                NotClickedException.class,
+                NoSuchElementException.class
         );
 
         return list.stream().anyMatch(clazz -> {

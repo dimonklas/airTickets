@@ -132,6 +132,9 @@
                             ${suiteFile}
                         </suiteXmlFile>
                     </suiteXmlFiles>
+                    <reportsDirectory>TestReport</reportsDirectory>
+                    <testSourceDirectory>${basedir}/src/main/java/autotest</testSourceDirectory>
+                    <testClassesDirectory>${project.build.directory}/classes/</testClassesDirectory>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
                     </argLine>

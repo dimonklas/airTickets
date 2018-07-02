@@ -166,7 +166,10 @@ public class PassengersDataPage {
     public void buyTicket(){
         buyBtn.shouldBe(visible).scrollIntoView(true).click();
         sleep(100);
-        errorText.shouldNot(appear);
+        if(errorText.isDisplayed()) {
+            passengersDataText.scrollIntoView(true);
+            Assert.fail("Ошибка заполнения клиентских даных. После нажатие на кнопку 'Забронировать' появился текст 'Проверьте заполнение пассажирских данных'");
+        }
         $x(".//*[text()='Выберите способ оплаты']").shouldBe(visible);
     }
 

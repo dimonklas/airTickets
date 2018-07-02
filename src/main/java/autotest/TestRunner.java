@@ -1,6 +1,5 @@
 package autotest;
 
-import autotest.dto.custData.ClientData;
 import autotest.dto.custData.ClientDataItem;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
@@ -8,8 +7,6 @@ import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import autotest.utils.listeners.AllureOnFailListener;
 import autotest.utils.listeners.RunTestAgainIfFailed;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Link;
 import lombok.extern.log4j.Log4j;
@@ -17,7 +14,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 
 @Log4j
@@ -49,12 +45,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.bookTickets(searchData, ticketData);
+        testSuite.bookTickets(searchData, cl, ticketData);
     }
 
 
@@ -80,12 +78,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChildCount(1);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.front_12552(searchData, ticketData);
+        testSuite.front_12552(searchData, cl, ticketData);
     }
 
 
@@ -112,12 +112,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.front_15024(searchData, ticketData);
+        testSuite.front_15024(searchData, cl, ticketData);
     }
 
 
@@ -149,7 +151,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.front_15091(searchData);
+        testSuite.front_15091();
     }
 
 
@@ -175,12 +177,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.front_15848(searchData, ticketData);
+        testSuite.front_15848(searchData, cl, ticketData);
     }
 
 
@@ -206,12 +210,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setInfantCount(1);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.bookTickets(searchData, ticketData);
+        testSuite.bookTickets(searchData, cl, ticketData);
     }
 
     @Test(  enabled = true,
@@ -235,30 +241,22 @@ public class TestRunner extends SetUpAndTearDown {
             s.setFakeDoc(true);
         });
 
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
         });
 
         testSuite.searchTickets(searchData);
-        testSuite.bookTickets(searchData, ticketData);
+        testSuite.bookTickets(searchData, cl, ticketData);
     }
 
     @Test(  enabled = true,
-            retryAnalyzer = RunTestAgainIfFailed.class,
             description = "тестовый тест",
-            groups = {"Покупка билетов"},
-            priority = 70)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
+            groups = {"тест билетов"},
+            priority = 7000)
     public void testEmail() throws FileNotFoundException {
         log.info(">>>> Запуск тестового теста...");
-
-        Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/custData.json"));
-        ClientData clientData = gson.fromJson(reader, ClientData.class);
-
-        ClientDataItem cl = clientData.getClientData().get(5);
-        log.info(cl.getBirthDate());
-
 
     }
 

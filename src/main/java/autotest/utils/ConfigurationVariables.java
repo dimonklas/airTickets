@@ -1,11 +1,18 @@
 package autotest.utils;
 
 import autotest.bl.ProminSessionBL;
+import autotest.dto.custData.ClientData;
+import autotest.dto.custData.ClientDataItem;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Properties;
 
 public class ConfigurationVariables {
@@ -28,6 +35,8 @@ public class ConfigurationVariables {
     public String techLogin = System.getProperty("techLogin");
     public String techPassword = System.getProperty("techPassword");
 
+    public List<ClientDataItem> clientData;
+
     public String urlStornBooking;
     public String urlPromin;
     public String urlTest;
@@ -45,11 +54,13 @@ public class ConfigurationVariables {
     public String phone;
     public String otp;
 
+    public String citizenship;
+
     public String lastName;
     public String firstName;
     public String sex;
     public String birthDate;
-    public String citizenship;
+
     public String docSN;
     public String docExpDate;
 
@@ -57,7 +68,6 @@ public class ConfigurationVariables {
     public String firstNameChd;
     public String sexChd;
     public String birthDateChd;
-    public String citizenshipChd;
     public String docSNChd;
     public String docExpDateChd;
 
@@ -65,7 +75,6 @@ public class ConfigurationVariables {
     public String firstNameInf;
     public String sexInf;
     public String birthDateInf;
-    public String citizenshipInf;
     public String docSNInf;
     public String docExpDateInf;
 
@@ -85,6 +94,8 @@ public class ConfigurationVariables {
                 e.printStackTrace();
             }
         }
+
+        instance.clientData = getClientDataFromFile().getClientData();
     }
 
 
@@ -133,7 +144,6 @@ public class ConfigurationVariables {
         firstNameChd = getProperty(testData, "firstNameChd");
         sexChd = getProperty(testData, "sexChd");
         birthDateChd = getProperty(testData, "birthDateChd");
-        citizenshipChd = getProperty(testData, "citizenshipChd");
         docSNChd = getProperty(testData, "docSNChd");
         docExpDateChd = getProperty(testData, "docExpDateChd");
 
@@ -141,7 +151,6 @@ public class ConfigurationVariables {
         firstNameInf = getProperty(testData, "firstNameInf");
         sexInf = getProperty(testData, "sexInf");
         birthDateInf = getProperty(testData, "birthDateInf");
-        citizenshipInf = getProperty(testData, "citizenshipInf");
         docSNInf = getProperty(testData, "docSNInf");
         docExpDateInf = getProperty(testData, "docExpDateInf");
 
@@ -169,6 +178,17 @@ public class ConfigurationVariables {
     private static String getProperty(Properties properties, String propertyKey) {
         // получаем значение свойства
         return properties.getProperty(propertyKey);
+    }
+
+    private static ClientData getClientDataFromFile() {
+        Gson gson = new Gson();
+        JsonReader reader = null;
+        try {
+            reader = new JsonReader(new FileReader("src/main/resources/custData.json"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return gson.fromJson(reader, ClientData.class);
     }
 
     //возвращаем инстанс объекта

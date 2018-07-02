@@ -21,6 +21,7 @@ import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.Set;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -84,6 +85,11 @@ public class Utils {
             counter++;
             if(counter > iterations) Assert.fail("Произошла ошибка (не пропал прелоадер), см. скриншот");
         }
+    }
+
+    public static int randomCl(){
+        int min = 0, max = 199;
+        return new Random().nextInt((max - min) + 1) + min;
     }
 
 

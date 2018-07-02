@@ -1,6 +1,7 @@
 package autotest;
 
 
+import autotest.dto.custData.ClientDataItem;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.pages.*;
@@ -56,7 +57,7 @@ class TestSuite {
         searchPage.preloader.should(appear).waitUntil(disappears, 180 * 1000);
     }
 
-    void bookTickets(SearchData search, TicketData ticket){
+    void bookTickets(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -117,23 +118,23 @@ class TestSuite {
 
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
-        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
         passengersDataPage.fillCitizenship(1, CV.citizenship);
-        passengersDataPage.setSex(1, CV.sex);
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
 
         if (search.getChildCount() == 1) {
-            passengersDataPage.fillCustomersData(indexChild, CV.lastNameChd, CV.firstNameChd, CV.birthDateChd);
-            passengersDataPage.fillCitizenship(indexChild, CV.citizenshipChd);
-            passengersDataPage.setSex(indexChild, CV.sexChd);
-            passengersDataPage.fillDocData(indexChild, CV.docSNChd, CV.docExpDateChd, search.isFakeDocChld());
+            passengersDataPage.fillCustomersData(indexChild, client.getLastName(), client.getFirstNameChd(), client.getBirthDateChd());
+            passengersDataPage.fillCitizenship(indexChild, CV.citizenship);
+            passengersDataPage.setSex(indexChild, client.getSexChd());
+            passengersDataPage.fillDocData(indexChild, client.getDocSNChd(), client.getDocExpDateChd(), search.isFakeDocChld());
         }
 
         if (search.getInfantCount() == 1) {
-            passengersDataPage.fillCustomersData(indexInfant, CV.lastNameInf, CV.firstNameInf, CV.birthDateInf);
-            passengersDataPage.fillCitizenship(indexInfant, CV.citizenshipInf);
-            passengersDataPage.setSex(indexInfant, CV.sexInf);
-            passengersDataPage.fillDocData(indexInfant, CV.docSNInf, CV.docExpDateInf, search.isFakeDocInf());
+            passengersDataPage.fillCustomersData(indexInfant, client.getLastName(), client.getFirstNameInf(), client.getBirthDateInf());
+            passengersDataPage.fillCitizenship(indexInfant, CV.citizenship);
+            passengersDataPage.setSex(indexInfant, client.getSexInf());
+            passengersDataPage.fillDocData(indexInfant, client.getDocSNInf(), client.getDocExpDateInf(), search.isFakeDocInf());
         }
 
         passengersDataPage.fillEmail(CV.email);
@@ -149,7 +150,7 @@ class TestSuite {
 
 
 
-    void front_12552(SearchData search, TicketData ticket){
+    void front_12552(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -204,15 +205,15 @@ class TestSuite {
         passengersDataPage.checkPresenceOfTextElements(2, "Ребенок");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
-        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
         passengersDataPage.fillCitizenship(1, CV.citizenship);
-        passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
 
-        passengersDataPage.fillCustomersData(2, CV.lastNameChd, CV.firstNameChd, CV.birthDateChd);
-        passengersDataPage.fillCitizenship(2, CV.citizenshipChd);
-        passengersDataPage.setSex(2, "F");
-        passengersDataPage.fillDocData(2, CV.docSNChd, CV.docExpDateChd, search.isFakeDocChld());
+        passengersDataPage.fillCustomersData(2, client.getLastName(), client.getFirstNameChd(), client.getBirthDateChd());
+        passengersDataPage.fillCitizenship(2, CV.citizenship);
+        passengersDataPage.setSex(2, client.getSexChd());
+        passengersDataPage.fillDocData(2, client.getDocSNChd(), client.getDocExpDateChd(), search.isFakeDocChld());
 
         passengersDataPage.fillEmail(CV.email);
         passengersDataPage.bookTicket();
@@ -226,7 +227,7 @@ class TestSuite {
     }
 
 
-    void front_15024(SearchData search, TicketData ticket){
+    void front_15024(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -249,10 +250,10 @@ class TestSuite {
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
-        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
         passengersDataPage.fillCitizenship(1, CV.citizenship);
-        passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
         passengersDataPage.buyTicket();
 
@@ -261,7 +262,7 @@ class TestSuite {
     }
 
 
-    void front_15091(SearchData search){
+    void front_15091(){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
 
@@ -275,7 +276,7 @@ class TestSuite {
     }
 
 
-    void front_15848(SearchData search, TicketData ticket){
+    void front_15848(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -302,10 +303,10 @@ class TestSuite {
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
-        passengersDataPage.fillCustomersData(1, CV.lastName, CV.firstName, CV.birthDate);
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
         passengersDataPage.fillCitizenship(1, CV.citizenship);
-        passengersDataPage.setSex(1, "M");
-        passengersDataPage.fillDocData(1, CV.docSN, CV.docExpDate, search.isFakeDoc());
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
         passengersDataPage.buyTicket();
 

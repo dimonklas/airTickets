@@ -173,10 +173,10 @@ public class SearchResultsPage {
         String xPath = String.format(".//*[@id='%s'] //button[contains(text(),'Выбрать')]", id);
         $x(xPath).shouldBe(visible, enabled).click();
         try{
-            $x(xPath).should(disappear);
+            $x(xPath).waitUntil(not(visible), 5 * 1000);
         } catch (Error er) {
-            $x(xPath).shouldBe(visible, enabled).click();
-            sleep(200);
+            if ($x(xPath).isDisplayed()) executeJavaScript("arguments[0].click();", $x(xPath));
+            $x(xPath).waitUntil(not(visible), 5 * 1000);
             if ($x(xPath).isDisplayed()) throw new NotClickedException("Не нажалась кнопка 'Выбрать'");
         }
     }
@@ -210,6 +210,7 @@ public class SearchResultsPage {
             $$x(xPath_column).shouldHaveSize(7-i).forEach(element -> {
                     //Кликаем по клетке матрицы
                     element.shouldBe(visible).click();
+                    element.click();
                     String id = getIdOfSearchResults().get(0);
 
                     checkDepartureCityNameForward(id, depCity);

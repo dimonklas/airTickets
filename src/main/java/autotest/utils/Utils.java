@@ -5,6 +5,8 @@ import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import io.qameta.allure.Step;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -17,6 +19,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -95,7 +98,7 @@ public class Utils {
 
     public static String getArchiveUrl() {
         RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
-        String url = "https://bilet-dev.isto.it.loc/archive/frame/exsite/";
+        String url = "https://" + CV.urlBase + "/archive/frame/exsite/";
         String postBody ="data=%7B%22phone%22%3A%22%2B" + CV.phone.substring(1) + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";
 
         HttpHeaders headers = new HttpHeaders();
@@ -115,10 +118,10 @@ public class Utils {
     public static void stornBookedTicket(String ticketId) {
         LOG.info("Сторнируем " + ticketId + "...");
         RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
-        String url = String.format("https://bilet-dev.isto.it.loc/archive/order/create/%s/storno?csid=%s", ticketId, AuthData.getAuth_key());
+        String url = String.format("https://%s/archive/order/create/%s/storno?csid=%s", CV.urlBase, ticketId, AuthData.getAuth_key());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Host", "bilet-dev.isto.it.loc");
+        headers.add("Host", CV.urlBase);
         headers.add("Accept", "application/json, text/plain, */*");
         headers.add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         headers.add("Cookie", "dep_sid=" + AuthData.getDep_sid() + "; auth_key=" + AuthData.getAuth_key() + ";");
@@ -143,5 +146,13 @@ public class Utils {
             if (cookie.getName().startsWith("dep_sid")) AuthData.setDep_sid(cookie.getValue());
             if (cookie.getName().equalsIgnoreCase("pa")) AuthData.setPa(cookie.getValue());
         });
+    }
+
+    public static String pdfToString(String path) {
+        try {
+            return PdfTextExtractor.getTextFromPage(new PdfReader(path), 1);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

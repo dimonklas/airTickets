@@ -1,6 +1,7 @@
 package autotest.pages;
 
 
+import autotest.entity.TicketData;
 import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
@@ -67,5 +68,67 @@ public class ArchivePage {
         }
         return idList;
     }
+
+
+    @Step("Нажмем кнопку 'Подробнее' для бронировки {bookingId}")
+    public void pressMoreInfoButton(String bookingId){
+        $x(String.format(".//*[text()='%s']/following-sibling::*//button[text()='Подробнее']", bookingId)).shouldBe(visible, enabled).click();
+        $x(".//*[text()='Основная информация']").shouldBe(visible);
+        $x(String.format(".//*[text()='Ваше бронирование']/following-sibling::*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+    }
+
+    @Step("Проверим наличие кнопок: 'Оплатить', 'Аннулировать', 'Передать бронь', 'Бронировка', 'Правила билета'")
+    public void checkTicketMainInfoButtons(){
+        $x(".//*[text()='Оплатить']").shouldBe(exist, enabled);
+        $x(".//*[text()='Аннулировать']").shouldBe(exist, enabled);
+        $x(".//*[text()='Передать бронь']").shouldBe(exist, enabled);
+        $x(".//*[text()='Бронировка']").shouldBe(exist, enabled);
+        $x(".//*[text()='Правила билета']").shouldBe(exist, enabled);
+    }
+
+    @Step("Проверим наличие услуг: 'Багаж', 'Перевозка животных', 'Специальное питание' ")
+    public void checkTicketMainInfoServices(){
+        $x(".//button[@data-ng-show='vm.permissions.baggage']").shouldBe(exist, enabled.because("Кнопка Услуги/Багаж - Заказать"));
+        $x(".//button[@data-ng-show='vm.permissions.pets']").shouldBe(exist, enabled.because("Кнопка Услуги/Перевозка животных - Заказать"));
+        $x(".//button[@data-ng-show='vm.permissions.food']").shouldBe(exist, enabled.because("Кнопка Услуги/Специальное питание - Заказать"));
+    }
+
+    @Step("Проверим наличие кнопки 'Крестик', которая позволяет вернуться на этап выбора ранее купленных/забронированных локаторов")
+    public void checkCloseButton(){
+        $x(".//*[@data-ng-click='vm.back()']").shouldBe(exist, enabled.because("Кнопка закрытия формы бронирования"));
+    }
+
+    @Step("Кликнем кнопку 'Оплатить'")
+    public void clickPayButton(){
+        $x(".//*[text()='Оплатить']").click();
+    }
+
+
+    @Step("Проверим отображение данных о пассажирах на форме покупки билета в архиве")
+    public void checkPassengersDataOnPaymentForm(TicketData ticket){
+        $x(".//*[text()='Данные о пассажирах']").shouldBe(visible);
+
+        Assert.assertTrue($(By.name("lastname")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getLastName()),
+                 "Фамилия клиента в архиве не соответствует введенной при бронировании");
+        Assert.assertTrue($(By.name("firstname")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getFirstName()),
+                "Имя клиента в архиве не соответствует введенному при бронировании");
+        Assert.assertTrue($(By.name("birthday")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getBirthDate()),
+                "Дата рождения клиента в архиве не соответствует введенной при бронировании");
+        Assert.assertTrue($(By.name("citizenship")).shouldBe(visible, disabled).getValue().equalsIgnoreCase("Ukraine"),
+                "Гражданство клиента в архиве не соответствует введенному при бронировании");
+        Assert.assertTrue($(By.name("docnum")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getDocSN()),
+                "Серия, № документа в архиве не соответствует введенному при бронировании");
+        Assert.assertTrue($(By.name("doc_expire_date")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getDocExpDate()),
+                "Срок действия документа в архиве не соответствует введенному при бронировании");
+    }
+
+    @Step("Проверим отображение стоимости билета")
+    public void checkPresenceOfTotalTicketsCost(){
+        $x(".//*[text()='Общая стоимость:']").shouldBe(visible);
+        String price = $x(".//*[@data-ng-bind='vm.product.formatTotal']").shouldBe(visible).getText();
+        Assert.assertFalse(price.isEmpty(), "Не отобразилась стоимость билета");
+    }
+
+
 
 }

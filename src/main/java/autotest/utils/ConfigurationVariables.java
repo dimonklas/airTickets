@@ -37,6 +37,8 @@ public class ConfigurationVariables {
 
     public List<ClientDataItem> clientData;
 
+    public String urlBase = System.getProperty("urlBase");;
+
     public String urlStornBooking;
     public String urlPromin;
     public String urlTest;
@@ -117,6 +119,9 @@ public class ConfigurationVariables {
 
         if (techPassword == null || techPassword.equalsIgnoreCase(""))
             techPassword = getProperty(configurationData, "techPassword");
+
+        if (urlBase == null || urlBase.equalsIgnoreCase(""))
+            urlBase = getProperty(configurationData, "urlBase");
 
         urlStornBooking = getProperty(configurationData, "urlStornBooking");
         urlPromin = getProperty(configurationData, "urlPromin");

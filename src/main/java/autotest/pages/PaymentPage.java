@@ -50,5 +50,23 @@ public class PaymentPage {
         payBtn.shouldBe(visible,enabled).click();
     }
 
+    public void doPaymentByCardFromArchive(String cardNumber, String cardExpDate, String cvv){
+        payByCardBtn.shouldBe(visible,enabled).click();
+        linkRules.shouldBe(visible,enabled);
+        linkServices.shouldBe(visible,enabled);
+        agreeChkBox.shouldBe(visible,enabled).click();
+
+        cardNumField_1.shouldBe(visible,enabled);
+        cardNumField_2.shouldBe(visible,enabled);
+        cardNumField_3.shouldBe(visible,enabled);
+        cardNumField_4.shouldBe(visible,enabled);
+
+        selectYear.shouldBe(visible,enabled);
+        selectMonth.shouldBe(visible,enabled);
+        cvvField.shouldBe(visible,enabled);
+
+        payBtn.shouldBe(visible,enabled).click();
+    }
+
 
 }

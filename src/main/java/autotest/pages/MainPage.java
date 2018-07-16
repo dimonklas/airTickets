@@ -19,7 +19,7 @@ public class MainPage {
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     public MainPage() {
-        baseUrl = CV.urlTest + CV.prominSession;
+        baseUrl =  String.format("https://%s/frame_noauth/?sid=%s", CV.urlBase, CV.prominSession);
     }
 
     private SelenideElement

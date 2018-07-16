@@ -32,7 +32,7 @@ public class ChromeDriverProvider implements WebDriverProvider {
 
         HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
-        chromePrefs.put("download.default_directory", System.getProperty("user.dir"));
+        chromePrefs.put("download.default_directory", "src/TestReport/downloads");
 
         switch (CV.locale) {
             case "UA" : chromePrefs.put("intl.accept_languages", "uk,en-us,en,ru");

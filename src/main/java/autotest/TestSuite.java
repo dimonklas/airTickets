@@ -2,6 +2,7 @@ package autotest;
 
 
 import autotest.dto.custData.ClientDataItem;
+import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.pages.*;
@@ -143,6 +144,8 @@ class TestSuite {
         passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
         String bookingCode = passengersDataPage.getBookingCode();
         ticket.setBookingId(bookingCode);
+
+        BookedTickets.getTicketsList().add(ticket);
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
@@ -314,6 +317,25 @@ class TestSuite {
         paymentPage.doPaymentByCard(null, null, null);
     }
 
+
+    void front_14506(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+        PaymentPage paymentPage = new PaymentPage();
+
+        mainPage.openArchivePage();
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").shouldBe(and("Кнопка поиск в фильтрах Архива билетов", visible));
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+        archivePage.clickPayButton();
+        archivePage.checkPassengersDataOnPaymentForm(ticket);
+        archivePage.checkPresenceOfTotalTicketsCost();
+        paymentPage.doPaymentByCardFromArchive(null, null, null);
+    }
 
     void stornBookings() {
         MainPage mainPage = new MainPage();

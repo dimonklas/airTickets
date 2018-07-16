@@ -1,6 +1,7 @@
 package autotest;
 
 import autotest.dto.custData.ClientDataItem;
+import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.utils.ConfigurationVariables;
@@ -48,7 +49,8 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
@@ -81,7 +83,8 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
@@ -115,7 +118,8 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
@@ -180,7 +184,8 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
@@ -213,7 +218,8 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
@@ -244,20 +250,38 @@ public class TestRunner extends SetUpAndTearDown {
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
         TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(CV.lastName.toUpperCase() + " " + CV.firstName.toUpperCase());
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
         });
 
         testSuite.searchTickets(searchData);
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
+
     @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14506:Оплата бронировки авиабилета в архиве",
+            groups = {"Архив билетов"},
+            priority = 100)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14506")
+    public void b1_front_14506(){
+        log.info(">>>> b1_front_14506() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        testSuite.front_14506(BookedTickets.getTicketsList().get(0));
+    }
+
+    @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},
             priority = 7000)
     public void testEmail() throws FileNotFoundException {
         log.info(">>>> Запуск тестового теста...");
-
+//        Utils.pdfToString("");
     }
 
 }

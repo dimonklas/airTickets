@@ -1,5 +1,6 @@
 package autotest.entity;
 
+import autotest.dto.custData.ClientDataItem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +24,7 @@ public class TicketData {
     private String bookingId;       //Id брони
     private String ticketStatus;    //Состояние брони/оплаты
     private String datePayment;      //Дата оплаты
+
+    private ClientDataItem clientDataItem; //Данные по клиенту
 
 }

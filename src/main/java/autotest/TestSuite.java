@@ -325,7 +325,7 @@ class TestSuite {
 
         mainPage.openArchivePage();
         switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").shouldBe(and("Кнопка поиск в фильтрах Архива билетов", visible));
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -337,13 +337,31 @@ class TestSuite {
         paymentPage.doPaymentByCardFromArchive(null, null, null);
     }
 
+
+    void front_17753(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage();
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+        archivePage.clickBaggageOrderButton();
+        archivePage.orderBaggage(ticket.getBookingId());
+
+    }
+
     void stornBookings() {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage();
         switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").shouldBe(and("Кнопка поиск в фильтрах Архива билетов", visible));
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
         Utils.setCookieData();
 
         List<String> tickets_ids = archivePage.getTickets_id();

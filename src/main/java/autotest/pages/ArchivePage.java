@@ -103,6 +103,37 @@ public class ArchivePage {
         $x(".//*[text()='Оплатить']").click();
     }
 
+    @Step("Нажмем кнопку 'Заказать багаж'")
+    public void clickBaggageOrderButton(){
+        $x(".//button[@data-ng-show='vm.permissions.baggage']").click();
+    }
+
+    @Step("Закажем багаж для выбранного рейса")
+    public void orderBaggage(String bookingId){
+        $x(".//*[text()='Шаг 1. Выберите рейс, на который хотите купить багаж']").shouldBe(visible);
+        $x(".//*[@for='checkbox-baggage-0']").shouldBe(visible, enabled).click();
+
+        $x(".//*[text()='Шаг 2. Выберите пассажиров']").shouldBe(visible);
+        $x(".//*[@for='checkbox-baggage-passenger-0']").shouldBe(visible, enabled);
+        String checked = executeJavaScript("return angular.element(document.getElementById('checkbox-baggage-passenger-0'))[0].form[2].checked").toString();
+        if (!checked.equalsIgnoreCase("true")) {
+            $x(".//*[@for='checkbox-baggage-passenger-0']").shouldBe(visible, enabled).click();
+        }
+
+        $x(".//*[text()='Шаг 3. Введите комментарий']").shouldBe(visible);
+        $(By.name("comment")).shouldBe(visible, enabled).setValue("Пара-тройка небольших клетчатых сумок по 3-4 кг каждая");
+
+        $x(".//*[@ng-message='required']").shouldNotBe(visible.because("Рейс или пассажир не выбран на форме"));
+        $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
+
+        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
+        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
+                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
+        $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+    }
 
     @Step("Проверим отображение данных о пассажирах на форме покупки билета в архиве")
     public void checkPassengersDataOnPaymentForm(TicketData ticket){

@@ -263,7 +263,7 @@ public class TestRunner extends SetUpAndTearDown {
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14506:Оплата бронировки авиабилета в архиве",
             groups = {"Архив билетов"},
-            priority = 100)
+            priority = 110)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14506")
     public void b1_front_14506(){
         log.info(">>>> b1_front_14506() is running...");
@@ -273,6 +273,23 @@ public class TestRunner extends SetUpAndTearDown {
         }
 
         testSuite.front_14506(BookedTickets.getTicketsList().get(0));
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-17753:Заказ багажа в архиве",
+            groups = {"Архив билетов"},
+            priority = 130)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17753")
+    public void b3_front_17753(){
+        log.info(">>>> b3_front_17753() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        testSuite.front_17753(BookedTickets.getTicketsList().get(0));
     }
 
     @Test(  enabled = false,

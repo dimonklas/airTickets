@@ -276,6 +276,23 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
+    @Test(  enabled = false,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14928:Скачивание правил билета после покупки билета в архиве (Архив)",
+            groups = {"Архив билетов"},
+            priority = 130)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14928")
+    public void b2_front_14928(){
+        log.info(">>>> b2_front_14928() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+//        testSuite.front_14928(BookedTickets.getTicketsList().get(0));
+    }
+
+
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-17753:Заказ багажа в архиве",
@@ -290,6 +307,23 @@ public class TestRunner extends SetUpAndTearDown {
         }
 
         testSuite.front_17753(BookedTickets.getTicketsList().get(0));
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-17763:Заказ перевозки животных в архиве (Архив)",
+            groups = {"Архив билетов"},
+            priority = 140)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17763")
+    public void b4_front_17763(){
+        log.info(">>>> b4_front_17763() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        testSuite.front_17763(BookedTickets.getTicketsList().get(0));
     }
 
     @Test(  enabled = false,

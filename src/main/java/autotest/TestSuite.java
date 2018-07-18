@@ -352,7 +352,23 @@ class TestSuite {
         archivePage.checkCloseButton();
         archivePage.clickBaggageOrderButton();
         archivePage.orderBaggage(ticket.getBookingId());
+    }
 
+
+    void front_17763(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage();
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+        archivePage.clickPetsTransferButton();
+        archivePage.orderPetsTransfer("Собака", ticket.getBookingId());
     }
 
     void stornBookings() {

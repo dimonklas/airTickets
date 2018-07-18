@@ -108,6 +108,11 @@ public class ArchivePage {
         $x(".//button[@data-ng-show='vm.permissions.baggage']").click();
     }
 
+    @Step("Нажмем кнопку 'Перевозка животных - Заказать'")
+    public void clickPetsTransferButton(){
+        $x(".//button[@data-ng-show='vm.permissions.pets']").click();
+    }
+
     @Step("Закажем багаж для выбранного рейса")
     public void orderBaggage(String bookingId){
         $x(".//*[text()='Шаг 1. Выберите рейс, на который хотите купить багаж']").shouldBe(visible);
@@ -116,7 +121,7 @@ public class ArchivePage {
         $x(".//*[text()='Шаг 2. Выберите пассажиров']").shouldBe(visible);
         $x(".//*[@for='checkbox-baggage-passenger-0']").shouldBe(visible, enabled);
         String checked = executeJavaScript("return angular.element(document.getElementById('checkbox-baggage-passenger-0'))[0].form[2].checked").toString();
-        if (!checked.equalsIgnoreCase("true")) {
+        if (checked.equalsIgnoreCase("false")) {
             $x(".//*[@for='checkbox-baggage-passenger-0']").shouldBe(visible, enabled).click();
         }
 
@@ -125,6 +130,42 @@ public class ArchivePage {
 
         $x(".//*[@ng-message='required']").shouldNotBe(visible.because("Рейс или пассажир не выбран на форме"));
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
+
+        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
+        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
+                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
+        $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+    }
+
+
+    @Step("Закажем багаж для выбранного рейса")
+    public void orderPetsTransfer(String pet, String bookingId){
+        $x(".//*[text()='Шаг 1. Выберите тип животного']").shouldBe(visible);
+        $x(String.format(".//*[text()='%s']", pet)).shouldBe(visible, enabled.because("Radiobtn Кошка/Собака")).click();
+
+        $x(".//*[text()='Шаг 2. Укажите размер клетки']").shouldBe(visible);
+        $(By.name("h")).shouldBe(visible, enabled).setValue("20");
+        $(By.name("w")).shouldBe(visible, enabled).setValue("30");
+        $(By.name("l")).shouldBe(visible, enabled).setValue("40");
+
+        $x(".//*[text()='Шаг 3. Укажите вес питомца вместе с клеткой']").shouldBe(visible);
+        $(By.name("weight")).shouldBe(visible, enabled).setValue("5");
+
+        $x(".//*[text()='Шаг 4. На каких рейсах будет лететь питомец?']").shouldBe(visible);
+        $x(".//*[@for='checkbox-baggage-0']").shouldBe(visible, enabled);
+        String checked = executeJavaScript("return angular.element(document.getElementById('checkbox-baggage-0'))[0].form[6].checked").toString();
+        if (checked.equalsIgnoreCase("false")) {
+            $x(".//*[@for='checkbox-baggage-0']").click();
+        }
+
+        $x(".//*[text()='Шаг 5. Введите комментарий (при необходимости)']").shouldBe(visible);
+        $(By.name("comment")).shouldBe(visible, enabled).setValue("Кот-пес");
+
+        $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
+        $x(".//*[@data-ng-message='required']").shouldNotBe(visible.because("Размер клетки или вес или рейс не указан на форме"));
 
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
@@ -159,6 +200,7 @@ public class ArchivePage {
         String price = $x(".//*[@data-ng-bind='vm.product.formatTotal']").shouldBe(visible).getText();
         Assert.assertFalse(price.isEmpty(), "Не отобразилась стоимость билета");
     }
+
 
 
 

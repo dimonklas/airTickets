@@ -26,6 +26,9 @@ public class ArchivePage {
             otpcodeField = $(By.name("otpcode")),
             submitOtpBtn = $x(".//button[text()='Отправить']");
 
+    private String alertText = "Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
+            "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.";
+
     @Step("Авторизация на форме архива")
     public void auth(){
         if(!$(By.xpath(".//*[text()='Авторизация']")).isDisplayed()) sleep(3000);
@@ -116,6 +119,22 @@ public class ArchivePage {
         $x(".//button[@data-ng-show='vm.permissions.food']").click();
     }
 
+
+    @Step("Нажмем кнопку 'Аннулировать' ")
+    public void clickStornBookingButton(String bookingId){
+        $x(".//a[text()='Аннулировать']").click();
+        $x(".//*[text()='Подтверждения действия']").shouldBe(visible);
+        $x(".//*[text()='Вы уверены, что хотите отменить билет?']").shouldBe(visible);
+        $x(".//*[@data-ng-click='modal.close()']").shouldBe(visible, enabled.because("Кнопка (крестик) отмены Аннуляции бронирования"));
+        $x(".//*[text()='Подтвердить']").shouldBe(visible.because("Кнопка подтверждения отмены бронирования")).click();
+
+        $x(String.format(".//*[text()='%s']", alertText)).waitUntil(appear, 30*1000);
+        $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+
+        $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+        $x(".//a[text()='Аннулировать']").shouldNotBe(visible.because("После аннуляции кнопка должна пропасть"));
+    }
+
     @Step("Закажем багаж для выбранного рейса")
     public void orderBaggage(String bookingId){
         $x(".//*[text()='Шаг 1. Выберите рейс, на который хотите купить багаж']").shouldBe(visible);
@@ -136,8 +155,7 @@ public class ArchivePage {
 
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
-        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
-                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -172,8 +190,7 @@ public class ArchivePage {
 
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
-        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
-                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -191,8 +208,7 @@ public class ArchivePage {
 
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
-        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
-                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -222,6 +238,7 @@ public class ArchivePage {
         String price = $x(".//*[@data-ng-bind='vm.product.formatTotal']").shouldBe(visible).getText();
         Assert.assertFalse(price.isEmpty(), "Не отобразилась стоимость билета");
     }
+
 
 
 

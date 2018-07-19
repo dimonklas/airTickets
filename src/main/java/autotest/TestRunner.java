@@ -343,6 +343,24 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.front_17767(BookedTickets.getTicketsList().get(0));
     }
 
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-17714:Аннулирование брони авиабилета в архиве",
+            groups = {"Архив билетов"},
+            priority = 170)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17714")
+    public void b7_front_17714(){
+        log.info(">>>> b7_front_17714() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        testSuite.front_17714(BookedTickets.getTicketsList().get(0));
+        BookedTickets.getTicketsList().remove(0);
+    }
+
     @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},

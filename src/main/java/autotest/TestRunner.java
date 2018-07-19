@@ -326,6 +326,23 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.front_17763(BookedTickets.getTicketsList().get(0));
     }
 
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-17767:Заказ специального питания в архиве (Архив)",
+            groups = {"Архив билетов"},
+            priority = 150)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17767")
+    public void b5_front_17767(){
+        log.info(">>>> b5_front_17767() is running...");
+
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        testSuite.front_17767(BookedTickets.getTicketsList().get(0));
+    }
+
     @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},

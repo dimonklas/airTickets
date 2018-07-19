@@ -331,13 +331,14 @@ class TestSuite {
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkTicketMainInfoServices();
         archivePage.checkCloseButton();
+
         archivePage.clickPayButton();
         archivePage.checkPassengersDataOnPaymentForm(ticket);
         archivePage.checkPresenceOfTotalTicketsCost();
         paymentPage.doPaymentByCardFromArchive(null, null, null);
     }
 
-
+    //Заказ доп. багажа
     void front_17753(TicketData ticket){
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
@@ -350,11 +351,12 @@ class TestSuite {
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkTicketMainInfoServices();
         archivePage.checkCloseButton();
+
         archivePage.clickBaggageOrderButton();
         archivePage.orderBaggage(ticket.getBookingId());
     }
 
-
+    //Заказ перевозки животных
     void front_17763(TicketData ticket){
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
@@ -367,8 +369,31 @@ class TestSuite {
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkTicketMainInfoServices();
         archivePage.checkCloseButton();
+
         archivePage.clickPetsTransferButton();
         archivePage.orderPetsTransfer("Собака", ticket.getBookingId());
+        archivePage.clickPetsTransferButton();
+        archivePage.orderPetsTransfer("Кошка", ticket.getBookingId());
+    }
+
+    //Заказ специального питания
+    void front_17767(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage();
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+
+        archivePage.clickFoodOrderButton();
+        archivePage.orderFood("Диабетическое", ticket.getBookingId());
+        archivePage.clickFoodOrderButton();
+        archivePage.orderFood("Вегетарианское", ticket.getBookingId());
     }
 
     void stornBookings() {

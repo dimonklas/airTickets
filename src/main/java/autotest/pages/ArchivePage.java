@@ -20,9 +20,6 @@ public class ArchivePage {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-    public SelenideElement
-            searchBtn = $x(".//button[text()='Поиск']");
-
     private SelenideElement
             phoneInputField = $(By.name("phone")),
             submitPhoneBtn = $x(".//button[text()='Далее']"),
@@ -38,7 +35,7 @@ public class ArchivePage {
             otpcodeField.shouldBe(visible, enabled).setValue(CV.otp);
             submitOtpBtn.click();
             $(By.xpath(".//div[@class='tickets-filters']")).waitUntil(appear, 30 * 1000);
-            searchBtn.should(appear);
+            $x(".//button[text()='Поиск']").should(appear);
         }
     }
 
@@ -113,6 +110,12 @@ public class ArchivePage {
         $x(".//button[@data-ng-show='vm.permissions.pets']").click();
     }
 
+
+    @Step("Нажмем кнопку 'Специальное питание - Заказать'")
+    public void clickFoodOrderButton(){
+        $x(".//button[@data-ng-show='vm.permissions.food']").click();
+    }
+
     @Step("Закажем багаж для выбранного рейса")
     public void orderBaggage(String bookingId){
         $x(".//*[text()='Шаг 1. Выберите рейс, на который хотите купить багаж']").shouldBe(visible);
@@ -166,6 +169,25 @@ public class ArchivePage {
 
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
         $x(".//*[@data-ng-message='required']").shouldNotBe(visible.because("Размер клетки или вес или рейс не указан на форме"));
+
+        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
+        $x(".//*[text()='Заявка принята и будет обработана в течение 24 часов. Результат обработки будет направлен на e-mail, " +
+                "который Вы указывали при покупке. Если для внесения изменений необходима доплата, ее необходимо произвести в день получения ответа.']").shouldBe(visible);
+        $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
+        $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+    }
+
+    @Step("Закажем специальное питание для выбранного рейса")
+    public void orderFood(String foodType, String bookingId){
+        $x(".//*[text()='Шаг 1. Выберите тип питания']").shouldBe(visible);
+        $x(String.format(".//*[text()='%s']", foodType)).shouldBe(visible, enabled.because("Radiobtn Кошерное/Вегетарианское/Детское/Диабетическое")).click();
+        $x(".//*[text()='Шаг 2. Введите комментарий (при необходимости)']").shouldBe(visible);
+        $(By.name("comment")).shouldBe(visible, enabled).setValue("Кофе без сахара, овощи с говядиной");
+
+        $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
+        $x(".//*[@class='text-error']").shouldNotBe(visible.because("Не выбрали тип питания"));
 
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));

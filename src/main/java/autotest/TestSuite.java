@@ -13,15 +13,15 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.switchTo;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j
 class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
-    void searchTickets(SearchData search){
+
+    void performSearch(SearchData search){
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
 
@@ -30,6 +30,19 @@ class TestSuite {
                 .submitOpenFrame();
 
         Utils.switchFrame();
+
+        fillSearchTicketsForm(search);
+        searchPage.submitSearch();
+        if (searchPage.isInputDataErrorPresent()) {
+            fillSearchTicketsForm(search);
+            searchPage.submitSearch();
+        }
+
+        searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
+    }
+
+    private void fillSearchTicketsForm(SearchData search){
+        SearchPage searchPage = new SearchPage();
 
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
@@ -53,9 +66,6 @@ class TestSuite {
             searchPage.setSecondDate(search.getDaysBckwd());
             searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
         }
-
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear).waitUntil(disappears, 180 * 1000);
     }
 
     void bookTickets(SearchData search, ClientDataItem client, TicketData ticket){
@@ -148,7 +158,11 @@ class TestSuite {
         BookedTickets.getTicketsList().add(ticket);
 
         passengersDataPage.openArchive();
+        switchTo().window(1);
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
+        switchTo().window(1).close();
     }
 
 
@@ -226,7 +240,10 @@ class TestSuite {
         ticket.setBookingId(bookingCode);
 
         passengersDataPage.openArchive();
+        switchTo().window(1);
+        switchTo().defaultContent();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
+        switchTo().window(1).close();
     }
 
 
@@ -323,7 +340,7 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
@@ -343,7 +360,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
@@ -361,7 +378,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
@@ -381,7 +398,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
@@ -402,7 +419,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
@@ -412,7 +429,51 @@ class TestSuite {
         archivePage.checkCloseButton();
 
         archivePage.clickStornBookingButton(ticket.getBookingId());
+        archivePage.closeMainInfoBlock();
+        sleep(10 * 1000);
+        refresh();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+    }
 
+
+    //Передача брони в архиве
+    void front_19457(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage(CV.phone.substring(1));
+        switchTo().defaultContent();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+
+        archivePage.clickTransferBookingButton();
+        archivePage.transferBooking(ticket.getBookingId(), CV.phone2);
+        archivePage.deleteTransferedBooking();
+
+        archivePage.clickTransferBookingButton();
+        archivePage.transferBooking(ticket.getBookingId(), CV.phone2);
+
+        mainPage.openArchivePage(CV.phone2.substring(1));
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkPassengersData(ticket);
+        archivePage.checkTicketMainInfoButtonsForTransferedBooking();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+
+        archivePage.clickStornBookingButton(ticket.getBookingId());
+        archivePage.closeMainInfoBlock();
+        sleep(10 * 1000);
+        refresh();
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+
+        mainPage.openArchivePage(CV.phone.substring(1));
+        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
     }
 
 
@@ -420,7 +481,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage();
+        mainPage.openArchivePage(CV.phone.substring(1));
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
         Utils.setCookieData();

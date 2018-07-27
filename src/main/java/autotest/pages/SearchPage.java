@@ -40,7 +40,12 @@ public class SearchPage {
 
     @Step("Отметим чек-бокс '+/-3 дня'")
     public void selectPlusMinus3Days(boolean isNeedCheck){
-        if(isNeedCheck) $x(".//*[contains(text(),'+/-3')]").shouldBe(visible, enabled).click();
+        Boolean isChecked = executeJavaScript("return angular.element(document.getElementsByClassName('pb-checkbox'))[0].firstElementChild.checked");
+        if(isNeedCheck && !isChecked) {
+            $x(".//*[contains(text(),'+/-3')]").shouldBe(visible, enabled).click();
+        } else if (!isNeedCheck && isChecked) {
+            $x(".//*[contains(text(),'+/-3')]").shouldBe(visible, enabled).click();
+        }
     }
 
     @Step("Выберем класс '{classType}'")
@@ -234,6 +239,10 @@ public class SearchPage {
     public void submitSearch(){
         sleep(500);
         submitSearchBtn.shouldBe(visible, enabled).click();
+    }
+
+    public Boolean isInputDataErrorPresent() {
+        return $$x(".//*[@data-ng-message='required' or @data-ng-message='is_object']").size() > 0;
     }
 
 }

@@ -54,6 +54,8 @@ public class ConfigurationVariables {
 
 
     public String phone;
+    public String phone2;
+
     public String otp;
 
     public String citizenship;
@@ -135,6 +137,7 @@ public class ConfigurationVariables {
         passwordDataBase = getProperty(configurationData, "passwordDataBase");
 
         phone = getProperty(testData, "phone");
+        phone2 = getProperty(testData, "phone2");
         otp = getProperty(testData, "otp");
 
         lastName = getProperty(testData, "lastName");

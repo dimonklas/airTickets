@@ -53,7 +53,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
@@ -87,7 +87,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.front_12552(searchData, cl, ticketData);
     }
 
@@ -122,7 +122,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.front_15024(searchData, cl, ticketData);
     }
 
@@ -154,7 +154,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.front_15091();
     }
 
@@ -188,7 +188,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.front_15848(searchData, cl, ticketData);
     }
 
@@ -222,7 +222,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
@@ -254,7 +254,7 @@ public class TestRunner extends SetUpAndTearDown {
             t.setClientDataItem(cl);
         });
 
-        testSuite.searchTickets(searchData);
+        testSuite.performSearch(searchData);
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
@@ -356,10 +356,29 @@ public class TestRunner extends SetUpAndTearDown {
         if(BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
-
-        testSuite.front_17714(BookedTickets.getTicketsList().get(0));
+        TicketData ticketData = BookedTickets.getTicketsList().get(0);
         BookedTickets.getTicketsList().remove(0);
+        testSuite.front_17714(ticketData);
     }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19457:Передать бронь",
+            groups = {"Архив билетов"},
+            priority = 180)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19457")
+    public void b8_front_19457(){
+        log.info(">>>> b8_front_19457() is running...");
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        TicketData ticketData = BookedTickets.getTicketsList().get(0);
+        BookedTickets.getTicketsList().remove(0);
+        testSuite.front_19457(ticketData);
+    }
+
 
     @Test(  enabled = false,
             description = "тестовый тест",

@@ -42,9 +42,9 @@ public class MainPage {
         return this;
     }
 
-    @Step("Откроем архив билетов")
-    public void openArchivePage(){
-        open(Utils.getArchiveUrl());
+    @Step("Откроем архив билетов для {phoneNum}")
+    public void openArchivePage(String phoneNum){
+        open(Utils.getArchiveUrl(phoneNum));
     }
 
     @Step("Перейдем в архив билетов через канал {channel}")

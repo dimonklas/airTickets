@@ -45,14 +45,10 @@ public class ArchivePage {
 
     @Step("Проверим состояние забронированного билета")
     public void checkTicketStatus(String bookingCode, String expectedStatus){
-        switchTo().window(1);
-        switchTo().defaultContent();
-
         $$(By.xpath(".//section[contains(@id,'ticket-')]")).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
         String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
         String actualStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
         Assert.assertEquals(actualStatus, expectedStatus);
-        switchTo().window(1).close();
     }
 
     public List<String> getTickets_id(){
@@ -82,6 +78,14 @@ public class ArchivePage {
         $x(".//*[text()='Оплатить']").shouldBe(exist, enabled);
         $x(".//*[text()='Аннулировать']").shouldBe(exist, enabled);
         $x(".//*[text()='Передать бронь']").shouldBe(exist, enabled);
+        $x(".//*[text()='Бронировка']").shouldBe(exist, enabled);
+        $x(".//*[text()='Правила билета']").shouldBe(exist, enabled);
+    }
+
+    @Step("Проверим наличие кнопок: 'Оплатить', 'Аннулировать', 'Передать бронь', 'Бронировка', 'Правила билета' для переданной брони")
+    public void checkTicketMainInfoButtonsForTransferedBooking(){
+        $x(".//*[text()='Оплатить']").shouldBe(exist, enabled);
+        $x(".//*[text()='Аннулировать']").shouldBe(exist, enabled);
         $x(".//*[text()='Бронировка']").shouldBe(exist, enabled);
         $x(".//*[text()='Правила билета']").shouldBe(exist, enabled);
     }
@@ -119,6 +123,10 @@ public class ArchivePage {
         $x(".//button[@data-ng-show='vm.permissions.food']").click();
     }
 
+    @Step("Нажмем кнопку 'Передать бронь' ")
+    public void clickTransferBookingButton(){
+        $x(".//*[text()='Передать бронь']").click();
+    }
 
     @Step("Нажмем кнопку 'Аннулировать' ")
     public void clickStornBookingButton(String bookingId){
@@ -133,6 +141,10 @@ public class ArchivePage {
 
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
         $x(".//a[text()='Аннулировать']").shouldNotBe(visible.because("После аннуляции кнопка должна пропасть"));
+    }
+
+    public void closeMainInfoBlock(){
+        $x(".//*[@data-ng-click='vm.back()']").shouldBe(exist, enabled.because("Кнопка закрытия формы бронирования")).shouldBe(enabled).click();
     }
 
     @Step("Закажем багаж для выбранного рейса")
@@ -239,8 +251,48 @@ public class ArchivePage {
         Assert.assertFalse(price.isEmpty(), "Не отобразилась стоимость билета");
     }
 
+    @Step("Передадим бронирование")
+    public void transferBooking(String bookingId, String phoneNumber){
+        $x(".//*[text()='Передача брони']").shouldBe(visible);
+        $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
+        $x(".//*[text()='Введите номер телефона:']").shouldBe(visible);
+        $(By.name("phone")).shouldBe(visible).setValue(phoneNumber);
+        $x(".//*[text()='Передать']").shouldBe(visible, enabled).click();
 
+        $x(".//*[text()='Ссылка на Ваш билет в архивe:']").waitUntil(visible, 30*1000);
+        $x(".//*[text()='Бронь для нового телефона доступна по ссылке и в архиве билетов']").shouldBe(visible);
+        $x(".//*[text()='готово']").shouldBe(visible, enabled).click();
 
+        $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
+        $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+        $x(String.format(".//*[text()='Передана на']/following-sibling::*[text()='%s']", phoneNumber)).shouldBe(visible);
 
+        $x(".//*[@data-uib-popover='Скопировать ссылку для оплаты в буфер']").shouldBe(visible, enabled.because("Кнопка 'Скопировать ссылку для оплаты в буфер'"));
+        $x(".//*[@data-uib-popover='Удалить привязанный номер']").shouldBe(visible, enabled.because("Кнопка 'Удалить привязанный номер'"));
+    }
+
+    @Step("Удалим привязанный номер")
+    public void deleteTransferedBooking(){
+        $x(".//*[@data-uib-popover='Удалить привязанный номер']").shouldBe(visible, enabled.because("Кнопка 'Удалить привязанный номер'")).click();
+        $x(".//*[@data-ng-show='vm.permissions.set_payer_phone'] //*[@class='circle-spinner__outline']").waitUntil(disappear, 30 * 1000);
+        $x(".//*[text()='Передать бронь']").shouldBe(visible, enabled);
+        $x(".//*[@data-uib-popover='Скопировать ссылку для оплаты в буфер']").shouldNotBe(visible.because("Кнопка 'Скопировать ссылку для оплаты в буфер'"));
+        $x(".//*[@data-uib-popover='Удалить привязанный номер']").shouldNotBe(visible.because("Кнопка 'Удалить привязанный номер'"));
+    }
+
+    @Step("Проверим пассажирские данные забронированного билета")
+    public void checkPassengersData(TicketData ticket){
+        String fio = $x(".//*[@class='passengers-tb'] //*[@data-ng-bind='passenger.fio']").innerText();
+        Assert.assertEquals(ticket.getOwnerFIO(), fio, "ФИО не совпадают");
+
+        String bdate = $x(".//*[@class='passengers-tb'] //*[@data-ng-bind='passenger.birthdayFormat']").innerText();
+        Assert.assertEquals(ticket.getClientDataItem().getBirthDate(), bdate, "Дата рождения не совпадает");
+
+        String docSN = $x(".//*[@class='passengers-tb'] //*[@data-ng-bind='passenger.docnum']").innerText();
+        Assert.assertEquals(ticket.getClientDataItem().getDocSN(), docSN, "Серия/номер паспорта не совпадают");
+
+        String docExp = $x(".//*[@class='passengers-tb'] //*[contains(@data-ng-bind,'docExpireDateFormat')]").innerText();
+        Assert.assertEquals(ticket.getClientDataItem().getDocExpDate(), docExp.substring(1, docExp.length()-1), "Срок действия паспорта не совпадает");
+    }
 
 }

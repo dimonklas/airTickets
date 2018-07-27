@@ -96,10 +96,10 @@ public class Utils {
     }
 
 
-    public static String getArchiveUrl() {
+    public static String getArchiveUrl(String phoneNum) {
         RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
         String url = "https://" + CV.urlBase + "/archive/frame/exsite/";
-        String postBody ="data=%7B%22phone%22%3A%22%2B" + CV.phone.substring(1) + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";
+        String postBody ="data=%7B%22phone%22%3A%22%2B" + phoneNum + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");

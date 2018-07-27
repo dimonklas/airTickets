@@ -11,6 +11,9 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import io.qameta.allure.Step;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -173,5 +177,17 @@ public class Utils {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public static String docToString(String path){
+        String text = null;
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+            XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
+            text = extractor.getText();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        } return text;
     }
 }

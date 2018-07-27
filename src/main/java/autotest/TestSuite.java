@@ -9,11 +9,13 @@ import autotest.pages.*;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import lombok.extern.log4j.Log4j;
+import org.testng.Assert;
 
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 @Log4j
 class TestSuite {
@@ -361,11 +363,23 @@ class TestSuite {
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
-        archivePage.checkTicketMainInfoServices();
         archivePage.checkCloseButton();
 
+        archivePage.downloadTicketRulesFile();
 
+        String rules = Utils.pdfToString("downloads/fare_conditions.pdf");
 
+        Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
+        Assert.assertTrue(rules.contains("Краков - Варшава"), "Файл не содержит текст ''");
+        Assert.assertTrue(rules.contains("PENALTIES"), "Файл не содержит текст ''");
+        Assert.assertTrue(rules.contains("CANCELLATIONS"), "Файл не содержит текст ''");
+
+        archivePage.downloadBookingDocument();
+        String bookingDoc = Utils.docToString("downloads/booking.doc");
+        Assert.assertTrue(bookingDoc.contains("PASSENGER ITINERARY RECEIPT"), "Файл не содержит текст 'PASSENGER ITINERARY RECEIPT'");
+        Assert.assertTrue(bookingDoc.contains("NAME: " + ticket.getOwnerFIO()), "Файл не содержит ФИО " + ticket.getOwnerFIO());
+        Assert.assertTrue(bookingDoc.contains("Krakow, PL (Balice)"), "Файл не содержит текст 'Krakow, PL (Balice)'");
+        Assert.assertTrue(bookingDoc.contains("Warsaw, PL (F. Chopin)"), "Файл не содержит текст 'Warsaw, PL (F. Chopin)'");
     }
 
     //Заказ доп. багажа

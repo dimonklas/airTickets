@@ -276,7 +276,7 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = false,
+    @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14928:Скачивание правил билета после покупки билета в архиве (Архив)",
             groups = {"Архив билетов"},
@@ -288,7 +288,6 @@ public class TestRunner extends SetUpAndTearDown {
         if(BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
-
         testSuite.front_14928(BookedTickets.getTicketsList().get(0));
     }
 
@@ -386,7 +385,6 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 7000)
     public void testEmail() throws FileNotFoundException {
         log.info(">>>> Запуск тестового теста...");
-//        Utils.pdfToString("");
     }
 
 }

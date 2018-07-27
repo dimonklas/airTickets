@@ -53,6 +53,8 @@ public class FirefoxDriverProvider implements WebDriverProvider {
         firefoxProfile.setPreference("browser.cache.offline.enable", false);
         firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force", false);
         firefoxProfile.setPreference("browser.download.folderList",2);
+        firefoxProfile.setPreference("browser.download.useDownloadDir",true);
+        firefoxProfile.setPreference("browser.download.dir","downloads");
         firefoxProfile.setPreference("browser.download.manager.showWhenStarting",false);
         firefoxProfile.setPreference("browser.download.panel.shown",false);
         firefoxProfile.setPreference("browser.download.manager.alertOnEXEOpen", false);

@@ -65,6 +65,17 @@ public class SetUpAndTearDown {
     }
 
 
+    @BeforeSuite(alwaysRun = true)
+    void emptyDownloadsDir() throws IOException {
+        File[] files = new File("downloads").listFiles();
+        if(files != null && files.length > 0) {
+            for(File f: files) {
+                 FileUtils.deleteQuietly(f);
+            }
+        }
+    }
+
+
     @AfterSuite(alwaysRun = true)
     void closeBrowser() {
         if(WebDriverRunner.hasWebDriverStarted()) {

@@ -1,6 +1,7 @@
 package autotest.utils;
 
 import autotest.entity.AuthData;
+import autotest.pages.ArchivePage;
 import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -10,6 +11,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import io.qameta.allure.Step;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,6 +29,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class Utils {
@@ -136,6 +139,22 @@ public class Utils {
         }
         LOG.info(ticketId + " Ok");
         sleep(5 * 1000);
+    }
+
+    @Step("Дождемся смены статуса в архиве и проверим его значение")
+    public static void waitForBookingStatusChanged(String bookingCode, String expStatus){
+        String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
+        String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+        int counter = 0;
+        while (!expStatus.equalsIgnoreCase(actStatus) && counter < 5) {
+            sleep(10 * 1000);
+            refresh();
+            ArchivePage.waitForArchivePageLoad();
+            actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+            counter++;
+        }
+
+        Assert.assertEquals(actStatus, expStatus, "Не дождались смены статуса в архиве");
     }
 
     public static void setCookieData(){

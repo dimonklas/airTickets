@@ -10,8 +10,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Configuration.baseUrl;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j
 public class MainPage {
@@ -45,6 +44,8 @@ public class MainPage {
     @Step("Откроем архив билетов для {phoneNum}")
     public void openArchivePage(String phoneNum){
         open(Utils.getArchiveUrl(phoneNum));
+        switchTo().defaultContent();
+        ArchivePage.waitForArchivePageLoad();
     }
 
     @Step("Перейдем в архив билетов через канал {channel}")

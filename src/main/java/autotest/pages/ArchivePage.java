@@ -42,6 +42,9 @@ public class ArchivePage {
         }
     }
 
+    public static void waitForArchivePageLoad(){
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
+    }
 
     @Step("Проверим состояние забронированного билета")
     public void checkTicketStatus(String bookingCode, String expectedStatus){

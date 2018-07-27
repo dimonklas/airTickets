@@ -158,15 +158,12 @@ class TestSuite {
         BookedTickets.getTicketsList().add(ticket);
 
         passengersDataPage.openArchive();
-        switchTo().window(1);
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
         switchTo().window(1).close();
     }
 
 
-
+    //Покупка авиабилета для взрослого и ребенка (внешний сайт)
     void front_12552(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
@@ -240,8 +237,6 @@ class TestSuite {
         ticket.setBookingId(bookingCode);
 
         passengersDataPage.openArchive();
-        switchTo().window(1);
-        switchTo().defaultContent();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
         switchTo().window(1).close();
     }
@@ -282,6 +277,7 @@ class TestSuite {
     }
 
 
+    //Добавление перелета при сложном маршруте (внешний сайт)
     void front_15091(){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
@@ -296,6 +292,7 @@ class TestSuite {
     }
 
 
+    //Покупка билета для одного взрослого +- 3 дня (внешний сайт)
     void front_15848(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
@@ -335,14 +332,13 @@ class TestSuite {
     }
 
 
+    //Оплата бронировки авиабилета в архиве
     void front_14506(TicketData ticket){
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -355,14 +351,28 @@ class TestSuite {
         paymentPage.doPaymentByCardFromArchive(null, null, null);
     }
 
+
+    //Скачивание правил билета после покупки билета в архиве
+    void front_14928(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage(CV.phone.substring(1));
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+
+
+    }
+
     //Заказ доп. багажа
     void front_17753(TicketData ticket){
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -379,8 +389,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -399,8 +407,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -420,8 +426,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -430,10 +434,11 @@ class TestSuite {
 
         archivePage.clickStornBookingButton(ticket.getBookingId());
         archivePage.closeMainInfoBlock();
-        sleep(10 * 1000);
-        refresh();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
-        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
+//        sleep(10 * 1000);
+//        refresh();
+//        ArchivePage.waitForArchivePageLoad();
+//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
     }
 
 
@@ -443,8 +448,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        switchTo().defaultContent();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -467,13 +470,16 @@ class TestSuite {
 
         archivePage.clickStornBookingButton(ticket.getBookingId());
         archivePage.closeMainInfoBlock();
-        sleep(10 * 1000);
-        refresh();
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
-        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+
+        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
+//        sleep(20 * 1000);
+//        refresh();
+//        ArchivePage.waitForArchivePageLoad();
+//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
+//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
     }
 
 

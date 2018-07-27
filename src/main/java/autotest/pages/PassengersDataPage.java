@@ -192,7 +192,9 @@ public class PassengersDataPage {
     @Step("Перейдем в архив билетов")
     public void openArchive(){
         $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
-
+        switchTo().window(1);
+        switchTo().defaultContent();
+        ArchivePage.waitForArchivePageLoad();
     }
 
 }

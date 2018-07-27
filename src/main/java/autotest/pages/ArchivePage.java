@@ -298,4 +298,5 @@ public class ArchivePage {
         Assert.assertEquals(ticket.getClientDataItem().getDocExpDate(), docExp.substring(1, docExp.length()-1), "Срок действия паспорта не совпадает");
     }
 
+
 }

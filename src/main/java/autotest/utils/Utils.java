@@ -142,7 +142,7 @@ public class Utils {
     }
 
     @Step("Дождемся смены статуса в архиве и проверим его значение")
-    public static void waitForBookingStatusChanged(String bookingCode, String expStatus){
+    public static void waitAndCheckForBookingStatusChanged(String bookingCode, String expStatus){
         String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
         String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
         int counter = 0;

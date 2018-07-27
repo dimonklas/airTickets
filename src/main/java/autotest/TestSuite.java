@@ -365,6 +365,7 @@ class TestSuite {
         archivePage.checkCloseButton();
 
 
+
     }
 
     //Заказ доп. багажа
@@ -434,11 +435,7 @@ class TestSuite {
 
         archivePage.clickStornBookingButton(ticket.getBookingId());
         archivePage.closeMainInfoBlock();
-        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
-//        sleep(10 * 1000);
-//        refresh();
-//        ArchivePage.waitForArchivePageLoad();
-//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
     }
 
 
@@ -471,15 +468,10 @@ class TestSuite {
         archivePage.clickStornBookingButton(ticket.getBookingId());
         archivePage.closeMainInfoBlock();
 
-        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
-//        sleep(20 * 1000);
-//        refresh();
-//        ArchivePage.waitForArchivePageLoad();
-//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
 
         mainPage.openArchivePage(CV.phone.substring(1));
-        Utils.waitForBookingStatusChanged(ticket.getBookingId(), "Отменён");
-//        archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
     }
 
 

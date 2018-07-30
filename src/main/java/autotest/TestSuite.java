@@ -361,7 +361,7 @@ class TestSuite {
         archivePage.checkCloseButton();
 
         archivePage.downloadTicketRulesFile();
-
+        Utils.waitUntilFileDownload("fare_conditions.pdf");
         String rules = Utils.pdfToString("fare_conditions.pdf");
 
         Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
@@ -370,6 +370,7 @@ class TestSuite {
         Assert.assertTrue(rules.contains("CANCELLATIONS"), "Файл не содержит текст ''");
 
         archivePage.downloadBookingDocument();
+        Utils.waitUntilFileDownload("booking.doc");
         String bookingDoc = Utils.docToString("booking.doc");
         Assert.assertTrue(bookingDoc.contains("PASSENGER ITINERARY RECEIPT"), "Файл не содержит текст 'PASSENGER ITINERARY RECEIPT'");
         Assert.assertTrue(bookingDoc.contains("NAME: " + ticket.getOwnerFIO()), "Файл не содержит ФИО " + ticket.getOwnerFIO());

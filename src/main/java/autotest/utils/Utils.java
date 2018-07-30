@@ -29,7 +29,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.Set;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -170,8 +173,18 @@ public class Utils {
     }
 
     private static String getFilePath(String fileName){
-        File[] files = new File("downloads").listFiles();
-        return Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase(fileName)).findFirst().get().getPath();
+        if(System.getProperty("os.name").equalsIgnoreCase("Linux")) {
+            return "downloads/" + fileName;
+        } else return "downloads\\" + fileName;
+    }
+
+    public static void waitUntilFileDownload(String fileName){
+        File file = new File(Utils.getFilePath(fileName));
+        int counter = 0;
+        while (!file.exists() && counter < 5) {
+            sleep(5 * 1000);
+            counter++;
+        }
     }
 
     public static String pdfToString(String fileName) {

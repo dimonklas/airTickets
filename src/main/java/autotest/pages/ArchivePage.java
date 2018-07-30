@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -304,26 +303,10 @@ public class ArchivePage {
     @Step("Скачаем файл 'Правила билета'")
     public void downloadTicketRulesFile(){
         $x(".//a[text()='Правила билета']").click();
-
-        File file = null;
-        int counter = 0;
-        while (file == null && counter < 5) {
-            sleep(5 * 1000);
-            file = new File("downloads/fare_conditions.pdf");
-            counter++;
-        }
     }
 
     @Step("Скачаем файл 'Бронировка'")
     public void downloadBookingDocument(){
         $x(".//a[text()='Бронировка']").click();
-
-        File file = null;
-        int counter = 0;
-        while (file == null && counter < 5) {
-            sleep(5 * 1000);
-            file = new File("downloads/booking.doc");
-            counter++;
-        }
     }
 }

@@ -7,8 +7,10 @@ TestReport/
 target/
 .idea/
 surefire/
+downloads/
 
 # игнорировать каталоги .idea
 /.idea
 /allure-results
 /build
+/downloads

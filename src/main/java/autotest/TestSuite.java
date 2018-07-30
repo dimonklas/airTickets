@@ -35,11 +35,6 @@ class TestSuite {
 
         fillSearchTicketsForm(search);
         searchPage.submitSearch();
-        if (searchPage.isInputDataErrorPresent()) {
-            fillSearchTicketsForm(search);
-            searchPage.submitSearch();
-        }
-
         searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
     }
 

@@ -1,6 +1,7 @@
 package autotest.pages;
 
 import autotest.utils.ConfigurationVariables;
+import autotest.utils.exception.CityAutocompleteException;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -239,6 +240,7 @@ public class SearchPage {
     public void submitSearch(){
         sleep(500);
         submitSearchBtn.shouldBe(visible, enabled).click();
+        if (isInputDataErrorPresent()) throw new CityAutocompleteException("Не подтянулся город из выпадающего списка");
     }
 
     public Boolean isInputDataErrorPresent() {

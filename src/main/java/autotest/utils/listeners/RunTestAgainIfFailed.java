@@ -1,5 +1,6 @@
 package autotest.utils.listeners;
 
+import autotest.utils.exception.CityAutocompleteException;
 import autotest.utils.exception.NotClickedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
@@ -31,6 +32,7 @@ public class RunTestAgainIfFailed implements IRetryAnalyzer {
 
     private boolean isRetrieble(Throwable throwable) {
         List<Class> list = Arrays.asList(
+                CityAutocompleteException.class,
                 NotClickedException.class,
                 NoSuchElementException.class
         );

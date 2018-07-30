@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeSuite;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -66,12 +67,10 @@ public class SetUpAndTearDown {
 
 
     @BeforeSuite(alwaysRun = true)
-    void emptyDownloadsDir() throws IOException {
-        File[] files = new File("downloads").listFiles();
-        if(files != null && files.length > 0) {
-            for(File f: files) {
-                 FileUtils.deleteQuietly(f);
-            }
+    void emptyDownloadsDir()  {
+        if (!new File("downloads").mkdir()) {
+            File[] files = new File("downloads").listFiles();
+            Arrays.stream(files).forEach(FileUtils::deleteQuietly);
         }
     }
 

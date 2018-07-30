@@ -24,14 +24,12 @@ import org.xml.sax.InputSource;
 
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -171,23 +169,27 @@ public class Utils {
         });
     }
 
-    public static String pdfToString(String path) {
+    private static String getFilePath(String fileName){
+        File[] files = new File("downloads").listFiles();
+        return Arrays.stream(files).filter(file -> file.getName().equalsIgnoreCase(fileName)).findFirst().get().getPath();
+    }
+
+    public static String pdfToString(String fileName) {
         try {
-            return PdfTextExtractor.getTextFromPage(new PdfReader(path), 1);
+            return PdfTextExtractor.getTextFromPage(new PdfReader(getFilePath(fileName)), 1);
         } catch (IOException e) {
-            return null;
+            throw new RuntimeException("Ошибка чтения файла " + fileName + "\n" + e.getMessage());
         }
     }
 
-    public static String docToString(String path){
-        String text = null;
+    public static String docToString(String fileName){
         try {
-            FileInputStream fis = new FileInputStream(path);
+            FileInputStream fis = new FileInputStream(getFilePath(fileName));
             XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
             XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
-            text = extractor.getText();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        } return text;
+            return extractor.getText();
+        } catch(Exception e) {
+            throw new RuntimeException("Ошибка чтения файла " + fileName + "\n" + e.getMessage());
+        }
     }
 }

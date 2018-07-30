@@ -14,8 +14,6 @@ import lombok.extern.log4j.Log4j;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.io.FileNotFoundException;
-
 
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
@@ -383,7 +381,7 @@ public class TestRunner extends SetUpAndTearDown {
             description = "тестовый тест",
             groups = {"тест билетов"},
             priority = 7000)
-    public void testEmail() throws FileNotFoundException {
+    public void testEmail() {
         log.info(">>>> Запуск тестового теста...");
     }
 

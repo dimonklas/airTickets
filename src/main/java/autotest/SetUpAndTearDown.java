@@ -28,6 +28,7 @@ public class SetUpAndTearDown {
     private final String browser = CV.currentBrowser;
     private final String locale = CV.locale;
 
+
     @BeforeSuite(alwaysRun = true)
     public void SetUpBrowser() throws Exception {
 
@@ -72,11 +73,6 @@ public class SetUpAndTearDown {
             File[] files = new File(CV.downloadsDir).listFiles();
             Arrays.stream(files).forEach(FileUtils::deleteQuietly);
         }
-
-//        if (!new File("downloads").mkdir()) {
-//            File[] files = new File("downloads").listFiles();
-//            Arrays.stream(files).forEach(FileUtils::deleteQuietly);
-//        }
     }
 
 

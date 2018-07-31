@@ -379,7 +379,7 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},
             priority = 7000)
@@ -388,15 +388,6 @@ public class TestRunner extends SetUpAndTearDown {
 
 //        System.setProperty("isDebug", "true");
 //        TicketData ticketData = Utils.getTicketDataByLastName("KOSHOVYJ", "KJHJFD");
-        log.info("downloads Dir = " + CV.downloadsDir);
-
-        log.info("FilePath = " + CV.downloadsDir + "fare_conditions.pdf");
-
-        log.info("########### System properties");
-        System.getProperties().keySet().forEach(o -> {
-            log.info(" >> " + o.toString() + " : " + System.getProperty(o.toString()));
-        });
-
     }
 
 }

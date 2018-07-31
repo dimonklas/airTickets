@@ -35,7 +35,7 @@ public class ConfigurationVariables {
     public String techLogin = System.getProperty("techLogin");
     public String techPassword = System.getProperty("techPassword");
 
-    public String downloadsDir = System.getProperty("user.dir") + "\\downloads\\";
+    public String downloadsDir = System.getProperty("user.dir") + System.getProperty("file.separator") + "downloads" + System.getProperty("file.separator");
 
     public List<ClientDataItem> clientData;
 
@@ -88,7 +88,6 @@ public class ConfigurationVariables {
 
 
     static {
-
         fillMyProperties(configurationData, configFilePath);
         fillMyProperties(testData, testDataFilePath);
         instance = new ConfigurationVariables();
@@ -127,9 +126,9 @@ public class ConfigurationVariables {
         if (urlBase == null || urlBase.equalsIgnoreCase(""))
             urlBase = getProperty(configurationData, "urlBase");
 
-        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
-            downloadsDir = System.getProperty("user.dir") + "/downloads/";
-        }
+//        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+//            downloadsDir = System.getProperty("user.dir") + "/downloads/";
+//        }
 
 
         urlStornBooking = getProperty(configurationData, "urlStornBooking");

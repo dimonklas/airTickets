@@ -90,8 +90,10 @@ public class SetUpAndTearDown {
     @Step("Сторнирование бронировок")
     @AfterSuite(alwaysRun = true)
     public void stornBookedTickets() throws Exception {
-        LOGGER.info("Сторнирование бронировок");
-        new TestSuite().stornBookings();
+        if (!"true".equalsIgnoreCase(System.getProperty("isDebug"))) {
+            LOGGER.info("Сторнирование бронировок");
+            new TestSuite().stornBookings();
+        }
     }
 
     @AfterTest(alwaysRun = true)

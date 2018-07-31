@@ -205,20 +205,20 @@ public class Utils {
     }
 
     public static TicketData getTicketDataByLastName(String lastName){
-        ClientDataItem clientDataItem;
-        TicketData ticketData = null;
+        ClientDataItem clientDataItem = CV.clientData.get(0);
         boolean find = false;
-        int counter = 0;
-        while (!find && counter < CV.clientData.size()-1) {
-            clientDataItem = CV.clientData.get(counter);
+        int counter = 1;
+        while (!find && counter < CV.clientData.size()-2) {
             if (clientDataItem.getLastName().equalsIgnoreCase(lastName)) {
                 find = true;
-                ticketData = new TicketData(t -> {
-                    t.setOwnerFIO(clientDataItem.getLastName().toUpperCase() + " " + clientDataItem.getFirstName().toUpperCase());
-                    t.setClientDataItem(clientDataItem);
-                });
-            }
+            } else clientDataItem = CV.clientData.get(counter);
             counter++;
-        } return ticketData;
+        }
+
+        ClientDataItem cdi = clientDataItem;
+        return new TicketData(t -> {
+            t.setOwnerFIO(cdi.getLastName().toUpperCase() + " " + cdi.getFirstName().toUpperCase());
+            t.setClientDataItem(cdi);
+        });
     }
 }

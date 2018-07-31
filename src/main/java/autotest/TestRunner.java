@@ -386,6 +386,8 @@ public class TestRunner extends SetUpAndTearDown {
     public void testEmail() throws IOException {
         log.info(">>>> Запуск тестового теста...");
 
+//        System.setProperty("isDebug", "true");
+//        log.info(Utils.getTicketDataByLastName("KOSHOVYJ").getClientDataItem().toString());
         log.info("downloads Dir = " + CV.downloadsDir);
 
         log.info("FilePath = " + CV.downloadsDir + "fare_conditions.pdf");

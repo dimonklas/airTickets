@@ -14,6 +14,8 @@ import lombok.extern.log4j.Log4j;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+
 
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
@@ -79,7 +81,6 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
             t.setClientDataItem(cl);
@@ -286,6 +287,7 @@ public class TestRunner extends SetUpAndTearDown {
         if(BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
+
         testSuite.front_14928(BookedTickets.getTicketsList().get(0));
     }
 
@@ -377,12 +379,22 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = false,
+    @Test(  enabled = true,
             description = "тестовый тест",
             groups = {"тест билетов"},
             priority = 7000)
-    public void testEmail() {
+    public void testEmail() throws IOException {
         log.info(">>>> Запуск тестового теста...");
+
+        log.info("downloads Dir = " + CV.downloadsDir);
+
+        log.info("FilePath = " + CV.downloadsDir + "fare_conditions.pdf");
+
+        log.info("########### System properties");
+        System.getProperties().keySet().forEach(o -> {
+            log.info(" >> " + o.toString() + " : " + System.getProperty(o.toString()));
+        });
+
     }
 
 }

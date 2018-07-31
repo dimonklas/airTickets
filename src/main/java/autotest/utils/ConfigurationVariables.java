@@ -35,6 +35,8 @@ public class ConfigurationVariables {
     public String techLogin = System.getProperty("techLogin");
     public String techPassword = System.getProperty("techPassword");
 
+    public String downloadsDir = System.getProperty("user.dir") + "\\downloads\\";
+
     public List<ClientDataItem> clientData;
 
     public String urlBase = System.getProperty("urlBase");;
@@ -124,6 +126,11 @@ public class ConfigurationVariables {
 
         if (urlBase == null || urlBase.equalsIgnoreCase(""))
             urlBase = getProperty(configurationData, "urlBase");
+
+        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+            downloadsDir = System.getProperty("user.dir") + "/downloads/";
+        }
+
 
         urlStornBooking = getProperty(configurationData, "urlStornBooking");
         urlPromin = getProperty(configurationData, "urlPromin");

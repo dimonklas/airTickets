@@ -1,6 +1,8 @@
 package autotest.utils;
 
+import autotest.dto.custData.ClientDataItem;
 import autotest.entity.AuthData;
+import autotest.entity.TicketData;
 import autotest.pages.ArchivePage;
 import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
@@ -36,6 +38,7 @@ import java.util.Set;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+
 
 public class Utils {
 
@@ -172,24 +175,19 @@ public class Utils {
         });
     }
 
-    private static String getFilePath(String fileName){
-        if(System.getProperty("os.name").equalsIgnoreCase("Linux")) {
-            return "downloads/" + fileName;
-        } else return "downloads\\" + fileName;
-    }
-
     public static void waitUntilFileDownload(String fileName){
-        File file = new File(Utils.getFilePath(fileName));
+        File file = new File(CV.downloadsDir + fileName);
         int counter = 0;
-        while (!file.exists() && counter < 5) {
-            sleep(5 * 1000);
+        while (!file.exists() && counter <= 10) {
+            sleep(2 * 1000);
             counter++;
         }
+        sleep(3*1000);
     }
 
     public static String pdfToString(String fileName) {
         try {
-            return PdfTextExtractor.getTextFromPage(new PdfReader(getFilePath(fileName)), 1);
+            return PdfTextExtractor.getTextFromPage(new PdfReader(CV.downloadsDir + fileName), 1);
         } catch (IOException e) {
             throw new RuntimeException("Ошибка чтения файла " + fileName + "\n" + e.getMessage());
         }
@@ -197,12 +195,30 @@ public class Utils {
 
     public static String docToString(String fileName){
         try {
-            FileInputStream fis = new FileInputStream(getFilePath(fileName));
+            FileInputStream fis = new FileInputStream(CV.downloadsDir + fileName);
             XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
             XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
             return extractor.getText();
         } catch(Exception e) {
             throw new RuntimeException("Ошибка чтения файла " + fileName + "\n" + e.getMessage());
         }
+    }
+
+    public static TicketData getTicketDataByLastName(String lastName){
+        ClientDataItem clientDataItem;
+        TicketData ticketData = null;
+        boolean find = false;
+        int counter = 0;
+        while (!find && counter < CV.clientData.size()-1) {
+            clientDataItem = CV.clientData.get(counter);
+            if (clientDataItem.getLastName().equalsIgnoreCase(lastName)) {
+                find = true;
+                ticketData = new TicketData(t -> {
+                    t.setOwnerFIO(clientDataItem.getLastName().toUpperCase() + " " + clientDataItem.getFirstName().toUpperCase());
+                    t.setClientDataItem(clientDataItem);
+                });
+            }
+            counter++;
+        } return ticketData;
     }
 }

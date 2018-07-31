@@ -24,9 +24,9 @@ import static java.util.Optional.ofNullable;
 public class SetUpAndTearDown {
 
     private static final Logger LOGGER = Logger.getLogger(SetUpAndTearDown.class);
-    private final ConfigurationVariables configVariables = ConfigurationVariables.getInstance();
-    private final String browser = configVariables.currentBrowser;
-    private final String locale = configVariables.locale;
+    private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
+    private final String browser = CV.currentBrowser;
+    private final String locale = CV.locale;
 
     @BeforeSuite(alwaysRun = true)
     public void SetUpBrowser() throws Exception {
@@ -68,10 +68,15 @@ public class SetUpAndTearDown {
 
     @BeforeSuite(alwaysRun = true)
     void emptyDownloadsDir()  {
-        if (!new File("downloads").mkdir()) {
-            File[] files = new File("downloads").listFiles();
+        if (!new File(CV.downloadsDir).mkdir()) {
+            File[] files = new File(CV.downloadsDir).listFiles();
             Arrays.stream(files).forEach(FileUtils::deleteQuietly);
         }
+
+//        if (!new File("downloads").mkdir()) {
+//            File[] files = new File("downloads").listFiles();
+//            Arrays.stream(files).forEach(FileUtils::deleteQuietly);
+//        }
     }
 
 

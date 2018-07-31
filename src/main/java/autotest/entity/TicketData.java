@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 @Setter
 public class TicketData {
 
-    public TicketData(Consumer<TicketData> build){
-        build.accept(this);
+    public TicketData(Consumer<TicketData> builder){
+        builder.accept(this);
     }
 
 
@@ -27,4 +27,18 @@ public class TicketData {
 
     private ClientDataItem clientDataItem; //Данные по клиенту
 
+    @Override
+    public String toString() {
+        return "TicketData{" +
+                "price='" + price + '\'' +
+                ", ownerFIO='" + ownerFIO + '\'' +
+                ", dateDepartureForward='" + dateDepartureForward + '\'' +
+                ", dateDepartureBackward='" + dateDepartureBackward + '\'' +
+                ", ticketId='" + ticketId + '\'' +
+                ", bookingId='" + bookingId + '\'' +
+                ", ticketStatus='" + ticketStatus + '\'' +
+                ", datePayment='" + datePayment + '\'' +
+                ", clientDataItem=" + clientDataItem.toString() +
+                '}';
+    }
 }

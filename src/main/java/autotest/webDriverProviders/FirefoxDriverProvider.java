@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 public class FirefoxDriverProvider implements WebDriverProvider {
 
-    private ConfigurationVariables configVariables = ConfigurationVariables.getInstance();
+    private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
@@ -36,7 +36,7 @@ public class FirefoxDriverProvider implements WebDriverProvider {
         firefoxProfile.setPreference("javascript.enabled", true);
         firefoxProfile.setPreference("geo.enabled", false);
 
-        switch (configVariables.locale) {
+        switch (CV.locale) {
             case "UA" : firefoxProfile.setPreference("intl.accept_languages", "uk,ru,en-us,en");
                 break;
             case "RU" : firefoxProfile.setPreference("intl.accept_languages", "ru,uk,en-us,en");
@@ -54,7 +54,7 @@ public class FirefoxDriverProvider implements WebDriverProvider {
         firefoxProfile.setPreference("browser.helperApps.alwaysAsk.force", false);
         firefoxProfile.setPreference("browser.download.folderList",2);
         firefoxProfile.setPreference("browser.download.useDownloadDir",true);
-        firefoxProfile.setPreference("browser.download.dir","downloads");
+        firefoxProfile.setPreference("browser.download.dir",CV.downloadsDir);
         firefoxProfile.setPreference("browser.download.manager.showWhenStarting",false);
         firefoxProfile.setPreference("browser.download.panel.shown",false);
         firefoxProfile.setPreference("browser.download.manager.alertOnEXEOpen", false);

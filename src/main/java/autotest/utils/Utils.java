@@ -204,7 +204,7 @@ public class Utils {
         }
     }
 
-    public static TicketData getTicketDataByLastName(String lastName){
+    public static TicketData getTicketDataByLastName(String lastName, String bookingCode){
         ClientDataItem clientDataItem = CV.clientData.get(0);
         boolean find = false;
         int counter = 1;
@@ -219,6 +219,7 @@ public class Utils {
         return new TicketData(t -> {
             t.setOwnerFIO(cdi.getLastName().toUpperCase() + " " + cdi.getFirstName().toUpperCase());
             t.setClientDataItem(cdi);
+            t.setBookingId(bookingCode);
         });
     }
 }

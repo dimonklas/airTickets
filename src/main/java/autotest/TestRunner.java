@@ -387,7 +387,7 @@ public class TestRunner extends SetUpAndTearDown {
         log.info(">>>> Запуск тестового теста...");
 
 //        System.setProperty("isDebug", "true");
-//        log.info(Utils.getTicketDataByLastName("KOSHOVYJ").getClientDataItem().toString());
+//        TicketData ticketData = Utils.getTicketDataByLastName("KOSHOVYJ", "KJHJFD");
         log.info("downloads Dir = " + CV.downloadsDir);
 
         log.info("FilePath = " + CV.downloadsDir + "fare_conditions.pdf");

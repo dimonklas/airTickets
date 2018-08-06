@@ -379,6 +379,31 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
 
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19452:Багаж (фильтр)",
+            groups = {"Поиск билетов (фильтр)"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19452")
+    public void c1_front_19452(){
+        log.info(">>>> c1_front_19452() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19452();
+    }
+
     @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},

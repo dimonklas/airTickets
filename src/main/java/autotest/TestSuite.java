@@ -485,6 +485,16 @@ class TestSuite {
     }
 
 
+    // Фильтр багажа
+    void front_19452(){
+        TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.checkPresenceOfFiltersButtons();
+        ticketFilterPage.filterBaggageByAvailability();
+        ticketFilterPage.filterBaggageByAbsence();
+        ticketFilterPage.filterBaggageByPartialAvailability();
+    }
+
+
     void stornBookings() {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();

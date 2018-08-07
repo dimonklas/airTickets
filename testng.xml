@@ -25,5 +25,16 @@
 		</classes>
 	</test>
 
+	<test name="Архив билетов" >
+		<groups>
+			<run>
+				<include name="Поиск билетов (фильтр)"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunner" />
+		</classes>
+	</test>
+
 
 </suite>

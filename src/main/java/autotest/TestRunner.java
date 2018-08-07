@@ -382,7 +382,7 @@ public class TestRunner extends SetUpAndTearDown {
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19452:Багаж (фильтр)",
-            groups = {"Поиск билетов (фильтр)"},
+            groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19452")
     public void c1_front_19452(){

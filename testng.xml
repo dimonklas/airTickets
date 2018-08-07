@@ -28,7 +28,7 @@
 	<test name="Поиск билетов (фильтр)" >
 		<groups>
 			<run>
-				<include name="Поиск билетов (фильтр)"/>
+				<include name="Поиск билетов"/>
 			</run>
 		</groups>
 		<classes>

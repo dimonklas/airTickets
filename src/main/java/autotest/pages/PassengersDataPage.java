@@ -87,9 +87,12 @@ public class PassengersDataPage {
         backBtn.shouldBe(visible, enabled).scrollIntoView(true);;
         bookingBtn.shouldBe(visible).scrollIntoView(true);;
         buyBtn.shouldBe(visible, enabled);
-        Assert.assertTrue(
-                $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)
-                        .getText().contains("Действует до"));
+        if (bookingBtn.isEnabled()) {
+            Assert.assertTrue(
+                    $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)
+                            .getText().contains("Действует до"), "Текст с временем бронирования содержит 'Действует до'");
+        }
+
         $(By.xpath(".//*[text()='Общая стоимость:']")).shouldBe(visible);
         $(By.xpath(".//*[@data-ng-bind='vm.product.formatTotal']")).shouldBe(visible).shouldNotHave(exactText(""));
     }

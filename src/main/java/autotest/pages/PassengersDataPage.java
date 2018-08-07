@@ -85,7 +85,7 @@ public class PassengersDataPage {
     @Step("Проверим наличие кнопок 'Назад', 'Забронировать (бесплатно)', 'Купить' и текста со сроком бронирования")
     public void checkPresenceAndAvaliabilityOfButtons(){
         backBtn.shouldBe(visible, enabled).scrollIntoView(true);;
-        bookingBtn.shouldBe(visible, enabled).scrollIntoView(true);;
+        bookingBtn.shouldBe(visible).scrollIntoView(true);;
         buyBtn.shouldBe(visible, enabled);
         Assert.assertTrue(
                 $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)

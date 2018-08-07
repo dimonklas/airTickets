@@ -25,7 +25,7 @@
 		</classes>
 	</test>
 
-	<test name="Архив билетов" >
+	<test name="Поиск билетов (фильтр)" >
 		<groups>
 			<run>
 				<include name="Поиск билетов (фильтр)"/>

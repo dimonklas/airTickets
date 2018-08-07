@@ -29,7 +29,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Есть багаж'")
     public void filterBaggageByAvailability(){
-        $x(".//*[text()='Багаж']/..").click();
+        $x(".//*[text()='Багаж']/..").shouldBe(visible).click();
         $x(".//*[text()='Есть багаж']").shouldBe(visible, enabled).click();
         $$x(".//span[text()='Есть багаж']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(10));
         $$x(".//span[text()='Нет багажа']").shouldHaveSize(0);

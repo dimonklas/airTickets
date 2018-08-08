@@ -441,12 +441,12 @@ public class TestRunner extends SetUpAndTearDown {
     @Test(  enabled = true,
             dataProvider = "dataForDepartureAndArrivalFields",
             retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "front-14699:Неправильный ввод города в поле 'Откуда'(город вылета) (внешний сайт)",
+            description = "front-14700:Неправильный ввод города в поле 'Куда'(город прилета) (внешний сайт)",
             groups = {"Негативные"},
             priority = 410)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14699")
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14700")
     public void d2_front_14700(String searchValue){
-        log.info(">>>> d1_front_14699() is running...");
+        log.info(">>>> d2_front_14700() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");

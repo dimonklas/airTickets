@@ -21,12 +21,6 @@ public class TicketFilterPage {
         $x(".//*[@for='filters-one-transfer']").shouldBe(visible, enabled.because("Чек-бокс '1 пересадка'"));
     }
 
-
-    @Step("Проверим результаты фильтра багажа по умолчанию ('Все')")
-    public void checkDefaultBaggageFilter(){
-
-    }
-
     @Step("Применим фильтр 'Есть багаж'")
     public void filterBaggageByAvailability(){
         $x(".//*[text()='Багаж']/..").shouldBe(visible).click();

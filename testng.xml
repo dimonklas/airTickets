@@ -36,5 +36,16 @@
 		</classes>
 	</test>
 
+	<test name="Негативные тесты" >
+		<groups>
+			<run>
+				<include name="Негативные"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunner" />
+		</classes>
+	</test>
+
 
 </suite>

@@ -1,16 +1,19 @@
 package autotest;
 
+import autotest.dataproviders.Dataproviders;
 import autotest.dto.custData.ClientDataItem;
 import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
+import autotest.utils.exception.CityAutocompleteException;
 import autotest.utils.listeners.AllureOnFailListener;
 import autotest.utils.listeners.RunTestAgainIfFailed;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Link;
 import lombok.extern.log4j.Log4j;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -402,6 +405,63 @@ public class TestRunner extends SetUpAndTearDown {
 
         testSuite.performSearch(searchData);
         testSuite.front_19452();
+    }
+
+    @DataProvider
+    public static Object[][] dataForDepartureAndArrivalFields() {
+        return Dataproviders.dataForDepartureAndArrivalFields();
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForDepartureAndArrivalFields",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14699:Неправильный ввод города в поле 'Откуда'(город вылета) (внешний сайт)",
+            groups = {"Негативные"},
+            priority = 400)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14699")
+    public void d1_front_14699(String searchValue){
+        log.info(">>>> d1_front_14699() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity(searchValue);
+            s.setArrivalCity("Варшава");
+            s.setPassengersCount(1);
+        });
+
+        try {
+            testSuite.performSearch(searchData);
+        } catch (CityAutocompleteException e) {
+            log.info("Check error message for " + "'" + searchValue + "'");
+        }
+        testSuite.negativeSearchDeparture(searchValue);
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForDepartureAndArrivalFields",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14699:Неправильный ввод города в поле 'Откуда'(город вылета) (внешний сайт)",
+            groups = {"Негативные"},
+            priority = 410)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14699")
+    public void d2_front_14700(String searchValue){
+        log.info(">>>> d1_front_14699() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity(searchValue);
+            s.setPassengersCount(1);
+        });
+
+        try {
+            testSuite.performSearch(searchData);
+        } catch (CityAutocompleteException e) {
+            log.info("Check error message for " + "'" + searchValue + "'");
+        }
+        testSuite.negativeSearchArrival(searchValue);
     }
 
     @Test(  enabled = false,

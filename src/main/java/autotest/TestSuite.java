@@ -8,6 +8,7 @@ import autotest.entity.TicketData;
 import autotest.pages.*;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
+import com.codeborne.selenide.SelenideElement;
 import lombok.extern.log4j.Log4j;
 import org.testng.Assert;
 
@@ -33,27 +34,19 @@ class TestSuite {
 
         Utils.switchFrame();
 
-        fillSearchTicketsForm(search);
-        searchPage.submitSearch();
-        searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
-    }
-
-    private void fillSearchTicketsForm(SearchData search){
-        SearchPage searchPage = new SearchPage();
-
         searchPage.selectWaysForTicket(search.getWaysType());
         searchPage.selectClass(search.getClassType());
         searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
 
         if("Сложный маршрут".equalsIgnoreCase(search.getWaysType())) {
             searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
-                                               search.getDepartureCity_2(), search.getArrivalCity_2(),
-                                               search.getDepartureCity_3(), search.getArrivalCity_4(),
-                                               search.getDepartureCity_3(), search.getArrivalCity_4());
+                    search.getDepartureCity_2(), search.getArrivalCity_2(),
+                    search.getDepartureCity_3(), search.getArrivalCity_4(),
+                    search.getDepartureCity_3(), search.getArrivalCity_4());
             searchPage.setDatesForDifficultRoute(search.getDaysForDifficult_1(),
-                                                 search.getDaysForDifficult_2(),
-                                                 search.getDaysForDifficult_3(),
-                                                 search.getDaysForDifficult_4());
+                    search.getDaysForDifficult_2(),
+                    search.getDaysForDifficult_3(),
+                    search.getDaysForDifficult_4());
             if(search.isNeedRemoveLastRoute()) searchPage.removeLastDifficultRoute();
             searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
         } else {
@@ -63,7 +56,11 @@ class TestSuite {
             searchPage.setSecondDate(search.getDaysBckwd());
             searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
         }
+
+        searchPage.submitSearch();
+        searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
     }
+
 
     void bookTickets(SearchData search, ClientDataItem client, TicketData ticket){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
@@ -494,6 +491,24 @@ class TestSuite {
         ticketFilterPage.filterBaggageByPartialAvailability();
     }
 
+
+    void negativeSearchDeparture(String searchValue){
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);
+        if ("".equalsIgnoreCase(searchValue)) {
+            Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
+        } else {
+            Assert.assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
+        }
+    }
+
+    void negativeSearchArrival(String searchValue){
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").shouldBe(visible);
+        if ("".equalsIgnoreCase(searchValue)) {
+            Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
+        } else {
+            Assert.assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
+        }
+    }
 
     void stornBookings() {
         MainPage mainPage = new MainPage();

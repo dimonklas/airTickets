@@ -407,6 +407,7 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.front_19452();
     }
 
+
     @DataProvider
     public static Object[][] dataForDepartureAndArrivalFields() {
         return Dataproviders.dataForDepartureAndArrivalFields();
@@ -463,6 +464,34 @@ public class TestRunner extends SetUpAndTearDown {
         }
         testSuite.negativeSearchArrival(searchValue);
     }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14864:Неправильный ввод количества пасажиров (детей, младенцев)",
+            groups = {"Негативные"},
+            priority = 420)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14864")
+    public void d3_front_14864(){
+        log.info(">>>> d3_front_14864() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setAdultsCount(1);
+            s.setInfantCount(2);
+        });
+
+        testSuite.negativeAddMorePassengersThanItAllowed(searchData);
+
+        searchData.setAdultsCount(1);
+        searchData.setInfantCount(0);
+        searchData.setChildCount(9);
+        testSuite.negativeAddMorePassengersThanItAllowed(searchData);
+    }
+
 
     @Test(  enabled = false,
             description = "тестовый тест",

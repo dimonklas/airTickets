@@ -510,6 +510,28 @@ class TestSuite {
         }
     }
 
+    boolean negativeAddMorePassengersThanItAllowed(SearchData search){
+        MainPage mainPage = new MainPage();
+        SearchPage searchPage = new SearchPage();
+
+        mainPage.openMainPage()
+                .openSearchPageViaChannel(search.getChannel())
+                .submitOpenFrame();
+
+        Utils.switchFrame();
+
+        try{
+            searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
+        } catch (AssertionError e) {
+            log.info("Сработала проверка на неправильно установленное кол-во пассажиров");
+            Assert.assertEquals(e.getMessage(), "Неправильно установили количество пассажиров expected [true] but found [false]");
+            return true;
+        }
+
+        Assert.fail("Установилось количество пассажиров больше, чем положено");
+        return false;
+    }
+
     void stornBookings() {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();

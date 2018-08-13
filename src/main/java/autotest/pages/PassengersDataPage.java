@@ -200,4 +200,18 @@ public class PassengersDataPage {
         ArchivePage.waitForArchivePageLoad();
     }
 
+    @Step("Введем некорректное значение даты в поле 'Дата рождения' и проверим отображение текста валидации")
+    public void checkErrorForBirthdayField(String dateValue, String textExpected){
+        $x(".//*[@name='birthday']").shouldBe(visible).setValue(dateValue).pressTab();
+        if (textExpected != null) {
+            String textActual = $$x(".//*[@ng-messages='linePassengerForm.birthday.$error'] //span")
+                    .get(0)
+                    .shouldBe(visible.because("Валидация поля - текст ошибки вводимых данных"))
+                    .innerText()
+                    .trim();
+            Assert.assertEquals(textActual, textExpected, "Некорректно отобразился текст валидации поля 'Дата рождения'");
+        } else {
+            $x(".//*[@ng-messages='linePassengerForm.birthday.$error'] //span").shouldNotBe(visible);
+        }
+    }
 }

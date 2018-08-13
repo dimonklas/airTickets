@@ -243,7 +243,7 @@ public class SearchPage {
         if (isInputDataErrorPresent()) throw new CityAutocompleteException("Не подтянулся город из выпадающего списка");
     }
 
-    public Boolean isInputDataErrorPresent() {
+    private Boolean isInputDataErrorPresent() {
         return $$x(".//*[@data-ng-message='required' or @data-ng-message='is_object']").size() > 0;
     }
 

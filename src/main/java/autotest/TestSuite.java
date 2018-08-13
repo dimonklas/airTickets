@@ -5,6 +5,7 @@ import autotest.dto.custData.ClientDataItem;
 import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
+import autotest.entity.forDataproviders.DateTests;
 import autotest.pages.*;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
@@ -112,6 +113,7 @@ class TestSuite {
         customerContactDataPage.checkPresenceOfContactDataBlock();
         customerContactDataPage.enterUserData();
 
+        //Индексы полей для xPath
         int indexChild = 2;
         int indexInfant = 2;
         if(search.getInfantCount() == 1 && search.getChildCount() == 1) indexInfant = 3;
@@ -530,6 +532,22 @@ class TestSuite {
 
         Assert.fail("Установилось количество пассажиров больше, чем положено");
         return false;
+    }
+
+
+    void negativeIncorrectBirthDate(DateTests dateTests){
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+        searchResultsPage.pressSelectButton(id);
+        ticketInfoPage.waitForTicketRulesBtn();
+        customerContactDataPage.checkPresenceOfContactDataBlock();
+        customerContactDataPage.enterUserData();
+
+        passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
     }
 
     void stornBookings() {

@@ -5,6 +5,7 @@ import autotest.dto.custData.ClientDataItem;
 import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
+import autotest.entity.forDataproviders.DateTests;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
 import autotest.utils.exception.CityAutocompleteException;
@@ -492,6 +493,37 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.negativeAddMorePassengersThanItAllowed(searchData);
     }
 
+
+    @DataProvider
+    public static Object[][] dataForBirthdayField() {
+        return Dataproviders.dataForBirthdayField();
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForBirthdayField",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14293:Неправильный ввод даты рождения для покупки билета (внешний сайт)",
+            groups = {"Негативные"},
+            priority = 430)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14293")
+    public void d4_front_14293(DateTests dateTests){
+        log.info(">>>> d4_front_14293() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDaysFwd(182);
+            s.setDaysBckwd(186);
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(182));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(186));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.negativeIncorrectBirthDate(dateTests);
+    }
 
     @Test(  enabled = false,
             description = "тестовый тест",

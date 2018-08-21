@@ -269,7 +269,7 @@ class TestSuite {
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);
-        paymentPage.doPaymentByCard(null, null, null);
+        paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
     }
 
 
@@ -324,7 +324,7 @@ class TestSuite {
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);
-        paymentPage.doPaymentByCard(null, null, null);
+        paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
     }
 
 
@@ -548,6 +548,58 @@ class TestSuite {
         customerContactDataPage.enterUserData();
 
         passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
+    }
+
+    void negativeIncorrectCardData(SearchData search, ClientDataItem client, TicketData ticket){
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+
+        customerContactDataPage.checkPresenceOfContactDataBlock();
+        customerContactDataPage.enterUserData();
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
+        passengersDataPage.fillEmail(CV.email);
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        paymentPage.checkEmptyPanFieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "111"}, "08/2020", "000");
+        paymentPage.checkPartialFilledPanFieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "111d"}, "08/2020", "000");
+        paymentPage.checkWrongFilledPanFieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "1111"}, "08/2020", "");
+        paymentPage.checkEmptyCVV2FieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "1111"}, "08/2020", "00");
+        paymentPage.checkPartialFilledCVV2FieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "1111"}, "08/2020", "sss");
+        paymentPage.checkWrongFilledCVV2FieldMessage();
+
+        paymentPage.doPaymentByCard(new String[]{"1111", "1111", "1111", "1111"}, "08/2020", "000");
+        paymentPage.chechNotAgreedOfertaMessage();
+
+        paymentPage.acceptOfertaRules();
+        paymentPage.checkNoErrorMessagesPresent();
     }
 
     void stornBookings() {

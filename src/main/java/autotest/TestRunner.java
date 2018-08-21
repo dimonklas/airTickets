@@ -525,6 +525,39 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.negativeIncorrectBirthDate(dateTests);
     }
 
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15504:Неправильный ввод номера карты при покупке билета для не клиента ПБ (внешний сайт)",
+            groups = {"Негативные"},
+            priority = 440)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15504")
+    public void d5_front_15504(){
+        log.info(">>>> d5_front_15504() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Краков");
+            s.setArrivalCity("Варшава");
+            s.setDaysFwd(183);
+            s.setDaysBckwd(187);
+            s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
+            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(187));
+            s.setPassengersCount(1);
+        });
+
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.negativeIncorrectCardData(searchData, cl, ticketData);
+    }
+
     @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},

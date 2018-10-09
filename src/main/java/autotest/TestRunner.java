@@ -41,8 +41,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
@@ -74,8 +74,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
@@ -175,8 +175,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setWaysType("Туда и обратно");
             s.setPlusMinus3days(true);
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
             s.setDepartureDateBackward(Utils.dateForFlightSearchResults(180));
             s.setDaysFwd(180);
@@ -208,8 +208,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
@@ -241,8 +241,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(183);
             s.setDaysBckwd(188);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
@@ -395,8 +395,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(190);
             s.setDaysBckwd(194);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(190));
@@ -428,7 +428,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
             s.setDepartureCity(searchValue);
-            s.setArrivalCity("Варшава");
+            s.setArrivalCity("Харьков");
             s.setPassengersCount(1);
         });
 
@@ -453,7 +453,7 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
+            s.setDepartureCity("Киев");
             s.setArrivalCity(searchValue);
             s.setPassengersCount(1);
         });
@@ -479,8 +479,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setAdultsCount(1);
             s.setInfantCount(2);
         });
@@ -512,8 +512,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(182);
             s.setDaysBckwd(186);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(182));
@@ -538,8 +538,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Краков");
-            s.setArrivalCity("Варшава");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
             s.setDaysFwd(183);
             s.setDaysBckwd(187);
             s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
@@ -549,13 +549,26 @@ public class TestRunner extends SetUpAndTearDown {
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
 
-        TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
-            t.setClientDataItem(cl);
-        });
-
         testSuite.performSearch(searchData);
-        testSuite.negativeIncorrectCardData(searchData, cl, ticketData);
+        testSuite.negativeIncorrectCardData(searchData, cl);
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-17718:Неправильный ввод телефона при передаче оплаты в архиве (внешний сайт)",
+            groups = {"Негативные"},
+            priority = 450)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17718")
+    public void d6_front_17718(){
+        log.info(">>>> d6_front_17718() is running...");
+        if(BookedTickets.getTicketsList().size() < 1) {
+            a1_front_14514();
+        }
+
+        TicketData ticketData = BookedTickets.getTicketsList().get(0);
+        BookedTickets.getTicketsList().remove(0);
+        testSuite.negativeIncorrectPhoneNumber(ticketData);
     }
 
     @Test(  enabled = false,

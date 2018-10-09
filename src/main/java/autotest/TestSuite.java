@@ -97,7 +97,7 @@ class TestSuite {
         searchResultsPage.checkPresenceOfDepartureTimeBackward(id, regex);
         searchResultsPage.checkPresenceOfArrivalTimeBackward(id, regex);
 
-        regex = "[0-9ч]{2,3}[0-9м\\s]{3,4}";
+        regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
         searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
         searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
 
@@ -194,7 +194,7 @@ class TestSuite {
         searchResultsPage.checkPresenceOfDepartureTimeBackward(id, regex);
         searchResultsPage.checkPresenceOfArrivalTimeBackward(id, regex);
 
-        regex = "[0-9ч]{2,3}[0-9м\\s]{3,4}";
+        regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
         searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
         searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
 
@@ -550,7 +550,7 @@ class TestSuite {
         passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
     }
 
-    void negativeIncorrectCardData(SearchData search, ClientDataItem client, TicketData ticket){
+    void negativeIncorrectCardData(SearchData search, ClientDataItem client){
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -600,6 +600,22 @@ class TestSuite {
 
         paymentPage.acceptOfertaRules();
         paymentPage.checkNoErrorMessagesPresent();
+    }
+
+
+    void negativeIncorrectPhoneNumber(TicketData ticket){
+        MainPage mainPage = new MainPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        mainPage.openArchivePage(CV.phone.substring(1));
+
+        archivePage.pressMoreInfoButton(ticket.getBookingId());
+        archivePage.checkTicketMainInfoButtons();
+        archivePage.checkTicketMainInfoServices();
+        archivePage.checkCloseButton();
+
+        archivePage.clickTransferBookingButton();
+        archivePage.transferBooking(ticket.getBookingId(), CV.phone2);
     }
 
     void stornBookings() {

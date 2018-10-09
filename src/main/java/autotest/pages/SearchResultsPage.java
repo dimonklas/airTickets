@@ -235,7 +235,7 @@ public class SearchResultsPage {
                     checkPresenceOfDepartureTimeBackward(id, regex);
                     checkPresenceOfArrivalTimeBackward(id, regex);
 
-                    regex = "[0-9ч]{2,3}[0-9м\\s]{3,4}";
+                    regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
                     checkPresenceOfFlyingTimeForward(id, regex);
                     checkPresenceOfFlyingTimeBackward(id, regex);
 

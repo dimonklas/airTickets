@@ -364,17 +364,17 @@ class TestSuite {
         String rules = Utils.pdfToString("fare_conditions.pdf");
 
         Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
-        Assert.assertTrue(rules.contains("Краков - Варшава"), "Файл не содержит текст ''");
-        Assert.assertTrue(rules.contains("PENALTIES"), "Файл не содержит текст ''");
-        Assert.assertTrue(rules.contains("CANCELLATIONS"), "Файл не содержит текст ''");
+        Assert.assertTrue(rules.contains("Киев - Харьков"), "Файл не содержит текст 'Киев - Харьков'");
+//        Assert.assertTrue(rules.contains("PENALTIES"), "Файл не содержит текст ''");
+//        Assert.assertTrue(rules.contains("CANCELLATIONS"), "Файл не содержит текст ''");
 
         archivePage.downloadBookingDocument();
         Utils.waitUntilFileDownload("booking.doc");
         String bookingDoc = Utils.docToString("booking.doc");
         Assert.assertTrue(bookingDoc.contains("PASSENGER ITINERARY RECEIPT"), "Файл не содержит текст 'PASSENGER ITINERARY RECEIPT'");
         Assert.assertTrue(bookingDoc.contains("NAME: " + ticket.getOwnerFIO()), "Файл не содержит ФИО " + ticket.getOwnerFIO());
-        Assert.assertTrue(bookingDoc.contains("Krakow, PL (Balice)"), "Файл не содержит текст 'Krakow, PL (Balice)'");
-        Assert.assertTrue(bookingDoc.contains("Warsaw, PL (F. Chopin)"), "Файл не содержит текст 'Warsaw, PL (F. Chopin)'");
+        Assert.assertTrue(bookingDoc.contains("Kiev, UA (Borispol)"), "Файл не содержит текст 'Kiev, UA (Borispol)'");
+        Assert.assertTrue(bookingDoc.contains("Kharkov, UA (Kharkov)"), "Файл не содержит текст 'Kharkov, UA (Kharkov)'");
     }
 
     //Заказ доп. багажа

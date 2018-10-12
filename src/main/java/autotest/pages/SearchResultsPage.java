@@ -207,7 +207,8 @@ public class SearchResultsPage {
             String xPath_column = String.format(xpathBase, day, date);
             daysCounter = 0;
             //Перебираем все заполненные клетки матрицы и проверяем отображаемые данные
-            $$x(xPath_column).shouldHaveSize(7-i).forEach(element -> {
+//            $$x(xPath_column).shouldHaveSize(7-i).forEach(element -> {
+                $$x(xPath_column).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1)).forEach(element -> {
                     //Кликаем по клетке матрицы
                     element.shouldBe(visible).click();
                     element.click();

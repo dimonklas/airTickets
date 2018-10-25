@@ -1,6 +1,7 @@
 package autotest;
 
 import autotest.utils.ConfigurationVariables;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Properties;
 
+import static com.codeborne.selenide.Configuration.baseUrl;
 import static java.lang.System.getProperty;
 import static java.util.Optional.ofNullable;
 
@@ -48,14 +50,17 @@ public class SetUpAndTearDown {
 
         switch (browser){
             case "firefox" :
-                System.setProperty("selenide.browser", "autotest.webDriverProviders.FirefoxDriverProvider");
+                Configuration.browser = "autotest.webDriverProviders.FirefoxDriverProvider";
                 break;
             case "chrome" :
-                System.setProperty("selenide.browser", "autotest.webDriverProviders.ChromeDriverProvider");
+                Configuration.browser = "autotest.webDriverProviders.ChromeDriverProvider";
                 break;
-            default: System.setProperty("selenide.browser", "autotest.webDriverProviders.FirefoxDriverProvider");
+            default:
+                Configuration.browser = "autotest.webDriverProviders.FirefoxDriverProvider";
                 break;
         }
+
+        Configuration.startMaximized = true;
     }
 
 
@@ -104,6 +109,7 @@ public class SetUpAndTearDown {
             Properties props = new Properties();
             fos = new FileOutputStream("target/allure-results/environment.properties");
 
+            ofNullable(baseUrl).ifPresent(s -> props.setProperty("project.URL", "https://" + CV.urlBase + "/frame_noauth/?sid="));
             ofNullable(getProperty("browser")).ifPresent(s -> props.setProperty("browser", s));
             ofNullable(getProperty("driver.version")).ifPresent(s -> props.setProperty("driver.version", s));
             ofNullable(getProperty("os.name")).ifPresent(s -> props.setProperty("os.name", s));

@@ -2,7 +2,7 @@ package autotest.webDriverProviders;
 
 import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.WebDriverProvider;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,7 +28,7 @@ public class ChromeDriverProvider implements WebDriverProvider {
 
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
-        ChromeDriverManager.getInstance().setup();
+        WebDriverManager.chromedriver().setup();
 
         HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
@@ -54,7 +54,7 @@ public class ChromeDriverProvider implements WebDriverProvider {
 
         ChromeDriver driver = new ChromeDriver(options);
         System.setProperty("browser", options.getBrowserName() + " " + driver.getCapabilities().getVersion());
-        System.setProperty("driver.version", ChromeDriverManager.getInstance().getDownloadedVersion());
+        System.setProperty("driver.version", WebDriverManager.chromedriver().getDownloadedVersion());
 
         return driver;
     }

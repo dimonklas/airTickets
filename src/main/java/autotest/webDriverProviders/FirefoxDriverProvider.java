@@ -2,7 +2,7 @@ package autotest.webDriverProviders;
 
 import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.WebDriverProvider;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -25,7 +25,7 @@ public class FirefoxDriverProvider implements WebDriverProvider {
 
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
-        FirefoxDriverManager.getInstance().setup();
+        WebDriverManager.firefoxdriver().setup();
 
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "target/geckodriverlog.txt");
 
@@ -96,7 +96,7 @@ public class FirefoxDriverProvider implements WebDriverProvider {
         FirefoxDriver driver = new FirefoxDriver(options);
 
         System.setProperty("browser", options.getBrowserName() + " " + driver.getCapabilities().getCapability("browserVersion").toString());
-        System.setProperty("driver.version", FirefoxDriverManager.getInstance().getDownloadedVersion());
+        System.setProperty("driver.version", WebDriverManager.firefoxdriver().getDownloadedVersion());
 
         return driver;
     }

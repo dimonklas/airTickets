@@ -45,6 +45,6 @@ public class TicketFilterPage {
         $x(".//*[text()='Багаж']/..").click();
         $x(".//*[text()='Все']").shouldBe(visible, enabled).click();
         $x(".//*[text()='Частичный']").shouldBe(visible, enabled).click();
-        $$x(".//span[text()='Частичный']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+        $$x(".//span[text()='Частичный' or text()='Есть багаж' or text()='Нет багажа']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
     }
 }

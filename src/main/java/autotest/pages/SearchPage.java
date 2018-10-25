@@ -35,6 +35,7 @@ public class SearchPage {
 
     @Step("Выберем направление '{waysType}'")
     public void selectWaysForTicket(String waysType){
+        $(".search-block").shouldBe(visible).scrollIntoView(true);
         String xPath = String.format(".//label[contains(text(),'%s')]", waysType);
         $(By.xpath(xPath)).shouldBe(visible, enabled).click();
     }

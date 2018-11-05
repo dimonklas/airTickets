@@ -26,10 +26,10 @@ public class SearchResultsPage {
     private SelenideElement
         loadMoreResultsBtn = $x(".//button[text()='Загрузить больше результатов']");
 
-    private static int daysCounter;
+    private static int step;
 
     public List<String> getIdOfSearchResults(){
-        searchResults.shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+        searchResults.shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1).because("Не найден ни один варианта перелета"));
         List<String> ids = new ArrayList<>();
         searchResults.forEach(s -> {
             ids.add(s.getAttribute("id"));
@@ -93,31 +93,40 @@ public class SearchResultsPage {
 
 
     @Step("Проверим дату вылета для маршрута 'туда' в результатах поиска")
-    public void checkDepartureDateForward(String id, String date){
+    public void checkDepartureDateForward(String id, int daysFromToday){
         String xPathDate = String.format("(.//*[@id='%s'] //span[@data-ng-bind='departure.flightDate'])[1]", id);
-        $(By.xpath(xPathDate)).shouldBe(visible).shouldHave(text(date));
+        $(By.xpath(xPathDate)).shouldBe(visible).shouldHave(
+                text(Utils.getDateForFlightSearchResults(daysFromToday))
+                        .because("Некорректно отображается дата вылета для маршрута 'туда' в результатах поиска"));
     }
 
     @Step("Проверим дату прилета для маршрута 'туда' в результатах поиска")
-    public void checkArrivalDateForward(String id, String date1, String date2){
+    public void checkArrivalDateForward(String id, int daysFromToday){
         String xPathDate = String.format("(.//*[@id='%s'] //span[@data-ng-bind='arrival.flightDate'])[1]", id);
         String actText = $(By.xpath(xPathDate)).getText();
-        Assert.assertTrue(date1.equalsIgnoreCase(actText) || date2.equalsIgnoreCase(actText),
-                "Некорректно отображается дата прилета");
+        Assert.assertTrue( Utils.getDateForFlightSearchResults(daysFromToday).equalsIgnoreCase(actText) ||
+                           Utils.getDateForFlightSearchResults(daysFromToday + 1).equalsIgnoreCase(actText),
+                           "Некорректно отображается дата прилета для маршрута 'туда' в результатах поиска"
+        );
     }
 
     @Step("Проверим дату вылета для маршрута 'обратно' в результатах поиска")
-    public void checkDepartureDateBackward(String id, String date){
+    public void checkDepartureDateBackward(String id, int daysFromToday){
         String xPathDate = String.format("(.//*[@id='%s'] //span[@data-ng-bind='departure.flightDate'])[2]", id);
-        $(By.xpath(xPathDate)).shouldBe(visible).shouldHave(text(date));
+        $(By.xpath(xPathDate)).shouldBe(visible).shouldHave(
+                text(Utils.getDateForFlightSearchResults(daysFromToday))
+                        .because("Некорректно отображается дата вылета для маршрута 'обратно' в результатах поиска"));
     }
 
+    //так как дата прилета может быть на след. день после вылета, проверяются 2 даты: вылета и вылета + 1 день
     @Step("Проверим дату прилета для маршрута 'обратно' в результатах поиска")
-    public void checkArrivalDateBackward(String id, String date1, String date2){
+    public void checkArrivalDateBackward(String id, int daysFromToday){
         String xPathDate = String.format("(.//*[@id='%s'] //span[@data-ng-bind='arrival.flightDate'])[2]", id);
-        String actText = $(By.xpath(xPathDate)).getText();
-        Assert.assertTrue(date1.equalsIgnoreCase(actText) || date2.equalsIgnoreCase(actText),
-                "Некорректно отображается дата прилета");
+        String actText = $(By.xpath(xPathDate)).shouldBe(visible).getText();
+        Assert.assertTrue( Utils.getDateForFlightSearchResults(daysFromToday).equalsIgnoreCase(actText) ||
+                           Utils.getDateForFlightSearchResults(daysFromToday + 1).equalsIgnoreCase(actText),
+                           "Некорректно отображается дата прилета для маршрута 'обратно' в результатах поиска"
+        );
     }
 
     @Step("Проверим отображение времени вылета для маршрута 'туда' в результатах поиска")
@@ -203,11 +212,13 @@ public class SearchResultsPage {
         for(int i = 0; i < 7; ++i){
             String day = days.get(i);
             String date = dates.get(i);
-            int dayFwdFlight = daysFwdSearch - 3 + i;
             String xPath_column = String.format(xpathBase, day, date);
-            daysCounter = 0;
+            int columnSize = $$x(xPath_column).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(0)).size();
+            step = 0;
+            int dayFwdFlight = daysFwdSearch - 3 + i;
+            int dayBcwdFlight = daysFwdSearch - 3 + (7 - columnSize);
             //Перебираем все заполненные клетки матрицы и проверяем отображаемые данные
-                $$x(xPath_column).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(0)).forEach(element -> {
+            $$x(xPath_column).forEach(element -> {
                     //Кликаем по клетке матрицы
                     element.shouldBe(visible).click();
                     element.click();
@@ -224,11 +235,12 @@ public class SearchResultsPage {
                     checkDepartureAitportNameBackward(id);
                     checkArrivalAitportNameBackward(id);
 
-                    checkDepartureDateForward(id, Utils.dateForFlightSearchResults(dayFwdFlight));
-                    checkArrivalDateForward(id, Utils.dateForFlightSearchResults(dayFwdFlight), Utils.dateForFlightSearchResults(dayFwdFlight+1));
-                    checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter));
-                    checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter), Utils.dateForFlightSearchResults(dayFwdFlight + daysCounter + 1));
-                    ++daysCounter;
+                    checkDepartureDateForward(id, dayFwdFlight);
+                    checkArrivalDateForward(id, dayFwdFlight);
+                    checkDepartureDateBackward(id, dayBcwdFlight + step);
+                    checkArrivalDateBackward(id, dayBcwdFlight + step);
+                    ++step;
+
                     String regex = "[0-9]{1,2}:[0-9]{2}";
                     checkPresenceOfDepartureTimeForward(id, regex);
                     checkPresenceOfArrivalTimeForward(id, regex);
@@ -243,10 +255,11 @@ public class SearchResultsPage {
                     String priceMatrix = element.getText().trim();
 
                     Assert.assertEquals(price, priceMatrix, "Цена в результирующей таблице поиска '+/-3 дня' и в билете не совпадает");
-                    //Проверка доступности кнопки 'Загрузить больше результатов' для дней +/-3 дня от точной даты поиска
-                    if(dayFwdFlight == daysFwdSearch && daysCounter == 1 && getIdOfSearchResults().size() > 1) {
-                        loadMoreResultsBtn.shouldNotBe(visible);
-                    } else loadMoreResultsBtn.shouldBe(visible, enabled);
+                    //Проверка доступности кнопки 'Загрузить больше результатов' для +/-3 дня от точной даты поиска
+                    if(getIdOfSearchResults().size() < 10) {
+                        loadMoreResultsBtn.shouldBe(exist.because("Кнопка 'Загрузить больше результатов' отсутствует в результирующей таблице поиска " +
+                                "при количестве рейсов < 10. Выведено рейсов: " + getIdOfSearchResults().size()));
+                    }
             });
         }
 

@@ -73,8 +73,9 @@ public class ArchivePage {
 
     @Step("Нажмем кнопку 'Подробнее' для бронировки {bookingId}")
     public void pressMoreInfoButton(String bookingId){
+        $x(String.format(".//*[text()='%s']", bookingId)).shouldBe(exist);
         $x(String.format(".//*[text()='%s']/following-sibling::*//button[text()='Подробнее']", bookingId)).shouldBe(visible, enabled).click();
-        $x(".//*[text()='Основная информация']").shouldBe(visible);
+        $x(".//*[text()='Основная информация']").waitUntil(appear, 10 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/following-sibling::*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
     }
 

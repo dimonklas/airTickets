@@ -64,19 +64,19 @@ public class Utils {
     }
 
     //Вернет дату в формате "05.05 Пт"
-    public static String dateForFlightSearchResults(int days){
+    public static String getDateForFlightSearchResults(int daysFromToday){
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, days);
+        calendar.add(Calendar.DATE, daysFromToday);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM E");
         return sdf.format(calendar.getTime()).toLowerCase();
     }
 
-    public static String dateFormatted(String formatDate, int days){
+    public static String dateFormatted(String formatDate, int daysFromToday){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, days);
+        calendar.add(Calendar.DATE, daysFromToday);
         SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
         return sdf.format(calendar.getTime()).toLowerCase();
     }

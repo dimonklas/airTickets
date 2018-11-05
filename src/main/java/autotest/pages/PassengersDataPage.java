@@ -42,26 +42,24 @@ public class PassengersDataPage {
             preloaderBaggage.should(disappears);
         }
 
-        $(By.xpath(".//*[@name='lastname']")).shouldBe(visible, enabled);
-        $(By.xpath(".//*[@name='firstname']")).shouldBe(visible, enabled);
-        $(By.xpath(".//label[@title='Мужской']")).shouldBe(visible, enabled);
-        $(By.xpath(".//label[@title='Женский']")).shouldBe(visible, enabled);
-        $(By.xpath(".//*[@name='birthday']")).shouldBe(visible, enabled);
-        $(By.xpath(".//*[@name='citizenship']")).shouldBe(visible, enabled);
-        $(By.xpath(".//label[@for='docs-0']")).shouldBe(visible, enabled);
-        $(By.xpath(".//label[@for='withExpireDateLabel-0']")).shouldBe(visible, enabled);
-//        $(By.xpath(".//label[@for='isBonusCard-0']")).shouldBe(visible, enabled);
-//        buyBaggageChkbox.shouldBe(visible, enabled);
-        $(By.xpath(".//*[@name='docnum']")).shouldBe(visible, enabled);
-        $(By.xpath(".//*[@name='doc_expire_date']")).shouldBe(visible, enabled);
-//        $(By.xpath("(.//*[@name='bonus_card'])[1]")).shouldBe(visible);
-        $(By.xpath(".//*[@name='email']")).shouldBe(visible, enabled);
+        $x(".//*[@name='lastname']").shouldBe(visible, enabled);
+        $x(".//*[@name='firstname']").shouldBe(visible, enabled);
+        $x(".//label[@title='Мужской']").shouldBe(visible, enabled);
+        $x(".//label[@title='Женский']").shouldBe(visible, enabled);
+        $x(".//*[@name='birthday']").shouldBe(visible, enabled);
+        $x(".//*[@name='citizenship']").shouldBe(visible, enabled);
+        $x(".//label[@for='docs-0']").shouldBe(visible, enabled);
+        $x(".//label[@for='withExpireDateLabel-0']").shouldBe(visible, enabled);
+        $x(".//*[@name='docnum']").shouldBe(visible);
+        $x(".//*[@name='doc_expire_date']").shouldBe(visible);
+        $x(".//*[@name='email']").shouldBe(visible, enabled);
     }
 
 
 
     @Step("Проверим основные надписи для полей ввода данных")
     public void checkPresenceOfTextElements(int index, String passType){
+        passengersDataText.scrollIntoView(true);
         $(By.xpath(String.format("(.//*[@data-ng-bind='passenger.title'])[%s]", index))).shouldBe(visible).should(matchesText(passType));
 
         $(By.xpath(String.format("(.//label[text()='Фамилия'])[%s]", index))).shouldBe(visible);
@@ -71,11 +69,13 @@ public class PassengersDataPage {
         $(By.xpath(String.format("(.//label[text()='Гражданство'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//label[text()='Серия, № документа'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", index))).shouldBe(visible);
-//        $(By.xpath(String.format("(.//label[text()='Мильная карта'])[%s]", index))).shouldBe(visible);
-//        $(By.xpath(String.format("(.//label[text()='Докупить багаж'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", index))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Отключите поле, если нет при себе паспорта'])[%s]", index))).shouldBe(visible);
-        $(By.xpath(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index))).shouldBe(visible);
+
+        $(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='Отключите поле, если нет при себе паспорта' or text()='Данные паспорта не обязательны, но вы можете их заполнить включив поле']", passType))).shouldBe(visible);
+
+        if ($x(".//*[@name='doc_expire_date']").isEnabled()) {
+            $x(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index)).shouldBe(visible);
+        }
 
         $(By.xpath(".//*[text()='Укажите e-mail']")).shouldBe(visible);
         $(By.xpath(".//*[text()='На него будет выслан электронный билет']")).shouldBe(visible);
@@ -84,8 +84,8 @@ public class PassengersDataPage {
 
     @Step("Проверим наличие кнопок 'Назад', 'Забронировать (бесплатно)', 'Купить' и текста со сроком бронирования")
     public void checkPresenceAndAvaliabilityOfButtons(){
-        backBtn.shouldBe(visible, enabled).scrollIntoView(true);;
-        bookingBtn.shouldBe(visible).scrollIntoView(true);;
+        backBtn.shouldBe(visible, enabled).scrollIntoView(true);
+        bookingBtn.shouldBe(visible).scrollIntoView(true);
         buyBtn.shouldBe(visible, enabled);
         if (bookingBtn.isEnabled()) {
             Assert.assertTrue(
@@ -107,6 +107,7 @@ public class PassengersDataPage {
 
     @Step("Укажем гражданство")
     public void fillCitizenship(int index, String citizenship){
+        $(By.xpath(String.format("(.//*[@name='citizenship'])[%s]", index))).click();
         $(By.xpath(String.format("(.//*[@name='citizenship'])[%s]", index))).setValue(citizenship);
         $(By.xpath(String.format(".//strong[text()='%s']/ancestor::li", citizenship))).shouldBe(visible).click();
         $(By.xpath(".//*[contains(@ng-messages,'citizenship')] //*[contains(text(),'Заполните поле')]")).shouldNotBe(visible);
@@ -128,12 +129,16 @@ public class PassengersDataPage {
         if(isFakeDoc) {
             if (serNumField.isEnabled()) serNumChBox.click();
             serNumField.shouldBe(disabled);
-            if(expDateField.isEnabled()) expDateChBox.click();
             expDateField.shouldBe(disabled);
-        }
+        } else {
+            if (!serNumField.isEnabled() && serNum != null) serNumChBox.click();
+            serNumField.shouldBe(enabled.because("Поле 'Серия, № документа' разлочили радиобаттоном"));
+            serNumField.setValue(serNum);
 
-        if(serNum != null && !isFakeDoc) serNumField.shouldBe(enabled).setValue(serNum);
-        if(expDate != null && !isFakeDoc) expDateField.shouldBe(enabled).setValue(expDate);
+            if(!expDateField.isEnabled() && expDate != null) expDateChBox.click();
+            expDateField.shouldBe(enabled.because("Поле 'Срок действия' разлочили радиобаттоном"));
+            expDateField.setValue(expDate);
+        }
     }
 
     @Step("Укажем мильную карту")

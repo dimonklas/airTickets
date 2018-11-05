@@ -16,8 +16,7 @@ import org.testng.Assert;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.switchTo;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j
 class TestSuite {
@@ -60,6 +59,12 @@ class TestSuite {
 
         searchPage.submitSearch();
         searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
+
+        if ($x(".//*[contains(text(),'Не найдены варианты перелёта')]").isDisplayed()) {
+            sleep(45 * 1000);
+            searchPage.submitSearch();
+            searchPage.preloader.should(appear.because("Прелоадер-самолетик при успешном запуске поиска")).waitUntil(disappears, 180 * 1000);
+        }
     }
 
 
@@ -86,10 +91,10 @@ class TestSuite {
         searchResultsPage.checkDepartureAitportNameBackward(id);
         searchResultsPage.checkArrivalAitportNameBackward(id);
 
-        searchResultsPage.checkDepartureDateForward(id, Utils.dateForFlightSearchResults(search.getDaysFwd()));
-        searchResultsPage.checkArrivalDateForward(id, Utils.dateForFlightSearchResults(search.getDaysFwd()), Utils.dateForFlightSearchResults(search.getDaysFwd()+1));
-        searchResultsPage.checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(search.getDaysBckwd()));
-        searchResultsPage.checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(search.getDaysBckwd()), Utils.dateForFlightSearchResults(search.getDaysBckwd()+1));
+        searchResultsPage.checkDepartureDateForward(id, search.getDaysFwd());
+        searchResultsPage.checkArrivalDateForward(id, search.getDaysFwd());
+        searchResultsPage.checkDepartureDateBackward(id, search.getDaysBckwd());
+        searchResultsPage.checkArrivalDateBackward(id, search.getDaysBckwd());
 
         String regex = "[0-9]{1,2}:[0-9]{2}";
         searchResultsPage.checkPresenceOfDepartureTimeForward(id, regex);
@@ -183,10 +188,10 @@ class TestSuite {
         searchResultsPage.checkDepartureAitportNameBackward(id);
         searchResultsPage.checkArrivalAitportNameBackward(id);
 
-        searchResultsPage.checkDepartureDateForward(id, Utils.dateForFlightSearchResults(180));
-        searchResultsPage.checkArrivalDateForward(id, Utils.dateForFlightSearchResults(180), Utils.dateForFlightSearchResults(180+1));
-        searchResultsPage.checkDepartureDateBackward(id, Utils.dateForFlightSearchResults(185));
-        searchResultsPage.checkArrivalDateBackward(id, Utils.dateForFlightSearchResults(185), Utils.dateForFlightSearchResults(185+1));
+        searchResultsPage.checkDepartureDateForward(id, 180);
+        searchResultsPage.checkArrivalDateForward(id, 180);
+        searchResultsPage.checkDepartureDateBackward(id, 185);
+        searchResultsPage.checkArrivalDateBackward(id, 185);
 
         String regex = "[0-9]{1,2}:[0-9]{2}";
         searchResultsPage.checkPresenceOfDepartureTimeForward(id, regex);
@@ -364,17 +369,14 @@ class TestSuite {
         String rules = Utils.pdfToString("fare_conditions.pdf");
 
         Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
-        Assert.assertTrue(rules.contains("Киев - Харьков"), "Файл не содержит текст 'Киев - Харьков'");
-//        Assert.assertTrue(rules.contains("PENALTIES"), "Файл не содержит текст ''");
-//        Assert.assertTrue(rules.contains("CANCELLATIONS"), "Файл не содержит текст ''");
+        String fromCityToCity = String.format("%s - %s", CV.defaultDepartureCity, CV.defaultArrivalCity);
+        Assert.assertTrue(rules.contains(fromCityToCity), "Файл 'Условия возврата' не содержит текст '" + fromCityToCity  + "'");
 
         archivePage.downloadBookingDocument();
         Utils.waitUntilFileDownload("booking.doc");
         String bookingDoc = Utils.docToString("booking.doc");
         Assert.assertTrue(bookingDoc.contains("PASSENGER ITINERARY RECEIPT"), "Файл не содержит текст 'PASSENGER ITINERARY RECEIPT'");
         Assert.assertTrue(bookingDoc.contains("NAME: " + ticket.getOwnerFIO()), "Файл не содержит ФИО " + ticket.getOwnerFIO());
-        Assert.assertTrue(bookingDoc.contains("Kiev, UA (Borispol)"), "Файл не содержит текст 'Kiev, UA (Borispol)'");
-        Assert.assertTrue(bookingDoc.contains("Kharkov, UA (Kharkov)"), "Файл не содержит текст 'Kharkov, UA (Kharkov)'");
     }
 
     //Заказ доп. багажа

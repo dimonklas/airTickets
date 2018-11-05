@@ -21,7 +21,6 @@ public class CustomerContactDataPage {
     private SelenideElement
         contDataText = $(By.xpath(".//h2[text()='Контактные данные покупателя']")),
         selectUserText = $(By.xpath(".//*[text()='Выберите пользователя']")),
-        filledCustomerBtn = $(By.xpath(String.format(".//*[contains(text(),'%s') and contains(text(),'***')]", CV.firstName))),
         otherCustomerBtn = $(By.xpath(".//*[text()='Другой пользователь']")),
         phoneFieldText1 = $(By.xpath(".//*[text()='Укажите Ваш номер телефона']")),
         phoneFieldText2 = $(By.xpath(".//*[text()='на него будет выслан SMS с кодом']")),
@@ -70,7 +69,7 @@ public class CustomerContactDataPage {
         if(inputPhoneField.isDisplayed()) {
             fillDataForNewCustomer();
         } else {
-            selectCustomerDataFilledBefore();
+            selectCustomerDataFilledBefore(""); //Не используется
         }
     }
 
@@ -90,8 +89,8 @@ public class CustomerContactDataPage {
     }
 
     @Step("Клиентские данные уже были введены ранее - заполним их по кнопке")
-    private void selectCustomerDataFilledBefore(){
-        filledCustomerBtn.click();
+    private void selectCustomerDataFilledBefore(String firstName){
+        $(By.xpath(String.format(".//*[contains(text(),'%s') and contains(text(),'***')]", firstName))).click();
     }
 
 

@@ -39,7 +39,7 @@ public class ConfigurationVariables {
 
     public List<ClientDataItem> clientData;
 
-    public String urlBase = System.getProperty("urlBase");;
+    public String urlBase = System.getProperty("urlBase");
 
     public String urlStornBooking;
     public String urlPromin;
@@ -57,33 +57,12 @@ public class ConfigurationVariables {
 
     public String phone;
     public String phone2;
-
     public String otp;
 
+    public String defaultDepartureCity;
+    public String defaultArrivalCity;
+
     public String citizenship;
-
-    public String lastName;
-    public String firstName;
-    public String sex;
-    public String birthDate;
-
-    public String docSN;
-    public String docExpDate;
-
-    public String lastNameChd;
-    public String firstNameChd;
-    public String sexChd;
-    public String birthDateChd;
-    public String docSNChd;
-    public String docExpDateChd;
-
-    public String lastNameInf;
-    public String firstNameInf;
-    public String sexInf;
-    public String birthDateInf;
-    public String docSNInf;
-    public String docExpDateInf;
-
     public String email;
 
 
@@ -126,11 +105,6 @@ public class ConfigurationVariables {
         if (urlBase == null || urlBase.equalsIgnoreCase(""))
             urlBase = getProperty(configurationData, "urlBase");
 
-//        if (System.getProperty("os.name").toLowerCase().contains("linux")) {
-//            downloadsDir = System.getProperty("user.dir") + "/downloads/";
-//        }
-
-
         urlStornBooking = getProperty(configurationData, "urlStornBooking");
         urlPromin = getProperty(configurationData, "urlPromin");
         urlTest = getProperty(configurationData, "urlTest");
@@ -146,30 +120,13 @@ public class ConfigurationVariables {
         phone2 = getProperty(testData, "phone2");
         otp = getProperty(testData, "otp");
 
-        lastName = getProperty(testData, "lastName");
-        firstName = getProperty(testData, "firstName");
-        sex = getProperty(testData, "sex");
-        birthDate = getProperty(testData, "birthDate");
+        if (System.getProperty("defaultDepartureCity") == null || System.getProperty("defaultDepartureCity").equalsIgnoreCase(""))
+            defaultDepartureCity = getProperty(testData, "defaultDepartureCity");
+        if (System.getProperty("defaultArrivalCity") == null || System.getProperty("defaultArrivalCity").equalsIgnoreCase(""))
+            defaultArrivalCity = getProperty(testData, "defaultArrivalCity");
+
         citizenship = getProperty(testData, "citizenship");
-        docSN = getProperty(testData, "docSN");
-        docExpDate = getProperty(testData, "docExpDate");
-
-        lastNameChd = getProperty(testData, "lastNameChd");
-        firstNameChd = getProperty(testData, "firstNameChd");
-        sexChd = getProperty(testData, "sexChd");
-        birthDateChd = getProperty(testData, "birthDateChd");
-        docSNChd = getProperty(testData, "docSNChd");
-        docExpDateChd = getProperty(testData, "docExpDateChd");
-
-        lastNameInf = getProperty(testData, "lastNameInf");
-        firstNameInf = getProperty(testData, "firstNameInf");
-        sexInf = getProperty(testData, "sexInf");
-        birthDateInf = getProperty(testData, "birthDateInf");
-        docSNInf = getProperty(testData, "docSNInf");
-        docExpDateInf = getProperty(testData, "docExpDateInf");
-
         email = getProperty(testData, "email");
-
     }
 
 

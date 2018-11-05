@@ -45,8 +45,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(185));
             s.setPassengersCount(1);
         });
 
@@ -78,8 +78,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(185));
             s.setPassengersCount(2);
             s.setChildCount(1);
         });
@@ -113,8 +113,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity_2("Мюнхен");
             s.setDaysForDifficult_1(180);
             s.setDaysForDifficult_2(210);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(210));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(210));
             s.setPassengersCount(1);
         });
 
@@ -177,8 +177,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setClassType("Эконом");
             s.setDepartureCity("Киев");
             s.setArrivalCity("Харьков");
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(180));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(180));
             s.setDaysFwd(180);
             s.setDaysBckwd(180);
             s.setPassengersCount(1);
@@ -212,8 +212,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(185));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(185));
             s.setPassengersCount(2);
             s.setInfantCount(1);
         });
@@ -245,8 +245,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(183);
             s.setDaysBckwd(188);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(188));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(183));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(188));
             s.setFakeDoc(true);
         });
 
@@ -399,8 +399,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(190);
             s.setDaysBckwd(194);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(190));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(194));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
             s.setPassengersCount(1);
         });
 
@@ -516,8 +516,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(182);
             s.setDaysBckwd(186);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(182));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(186));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(182));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(186));
             s.setPassengersCount(1);
         });
 
@@ -542,8 +542,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setArrivalCity("Харьков");
             s.setDaysFwd(183);
             s.setDaysBckwd(187);
-            s.setDepartureDateForward(Utils.dateForFlightSearchResults(183));
-            s.setDepartureDateBackward(Utils.dateForFlightSearchResults(187));
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(183));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(187));
             s.setPassengersCount(1);
         });
 

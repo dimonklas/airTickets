@@ -109,8 +109,8 @@ public class TestRunner extends SetUpAndTearDown {
             s.setClassType("Эконом");
             s.setDepartureCity("Москва");
             s.setArrivalCity("Минск");
-            s.setDepartureCity_2("Киев");
-            s.setArrivalCity_2("Мюнхен");
+            s.setDepartureCity_2("Минск");
+            s.setArrivalCity_2("Киев");
             s.setDaysForDifficult_1(180);
             s.setDaysForDifficult_2(210);
             s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
@@ -144,12 +144,12 @@ public class TestRunner extends SetUpAndTearDown {
             s.setClassType("Эконом");
             s.setDepartureCity("Москва");
             s.setArrivalCity("Минск");
-            s.setDepartureCity_2("Киев");
-            s.setArrivalCity_2("Мюнхен");
-            s.setDepartureCity_3("Стамбул");
-            s.setArrivalCity_3("Киев");
-            s.setDepartureCity_4("Киев");
-            s.setArrivalCity_4("Мадрид");
+            s.setDepartureCity_2("Минск");
+            s.setArrivalCity_2("Киев");
+            s.setDepartureCity_3("Киев");
+            s.setArrivalCity_3("Рига");
+            s.setDepartureCity_4("Рига");
+            s.setArrivalCity_4("Хельсинки");
             s.setNeedRemoveLastRoute(true);
             s.setDaysForDifficult_1(180);
             s.setDaysForDifficult_2(190);
@@ -571,14 +571,22 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.negativeIncorrectPhoneNumber(ticketData);
     }
 
+    @Test(  enabled = true,
+            description = "Ручное сторнирование бронировок",
+            groups = {"Manual Running"},
+            priority = 10000)
+    public void stornBookedTicketsManually() {
+        log.info(">>>> Запуск сборки по стронированию бронировок для " + CV.phone + " ...");
+        new TestSuite().stornBookings();
+        CV.stornBookedTickets = "false";
+    }
+
     @Test(  enabled = false,
             description = "тестовый тест",
             groups = {"тест билетов"},
             priority = 7000)
     public void testEmail() throws IOException {
         log.info(">>>> Запуск тестового теста...");
-
-//        System.setProperty("isDebug", "true");
 //        TicketData ticketData = Utils.getTicketDataByLastName("KOSHOVYJ", "KJHJFD");
     }
 

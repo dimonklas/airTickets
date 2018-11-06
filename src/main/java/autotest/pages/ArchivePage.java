@@ -75,7 +75,7 @@ public class ArchivePage {
     public void pressMoreInfoButton(String bookingId){
         $x(String.format(".//*[text()='%s']", bookingId)).shouldBe(exist);
         $x(String.format(".//*[text()='%s']/following-sibling::*//button[text()='Подробнее']", bookingId)).shouldBe(visible, enabled).click();
-        $x(".//*[text()='Основная информация']").waitUntil(appear, 10 * 1000);
+        $x(".//*[text()='Основная информация']").waitUntil(appear, 12 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/following-sibling::*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
     }
 
@@ -206,7 +206,7 @@ public class ArchivePage {
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
         $x(".//*[@data-ng-message='required']").shouldNotBe(visible.because("Размер клетки или вес или рейс не указан на форме"));
 
-        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[text()='Успешно']").waitUntil(exist, 60 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
@@ -265,13 +265,13 @@ public class ArchivePage {
         $(By.name("phone")).shouldBe(visible).setValue(phoneNumber);
         $x(".//*[text()='Передать']").shouldBe(visible, enabled).click();
 
-        $x(".//*[text()='Ссылка на Ваш билет в архивe:']").waitUntil(visible, 30*1000);
+        $x(".//*[text()='Ссылка на Ваш билет в архивe:']").waitUntil(visible, 60 * 1000);
         $x(".//*[text()='Бронь для нового телефона доступна по ссылке и в архиве билетов']").shouldBe(visible);
         $x(".//*[text()='готово']").shouldBe(visible, enabled).click();
 
-        $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
+        $x(".//*[text()='Основная информация']").waitUntil(visible, 60 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
-        $x(String.format(".//*[text()='Передана на']/following-sibling::*[text()='%s']", phoneNumber)).shouldBe(visible);
+        $x(String.format(".//*[text()='Передана на']/following-sibling::*[text()='%s']", phoneNumber)).waitUntil(visible, 30 * 1000);
 
         $x(".//*[@data-uib-popover='Скопировать ссылку для оплаты в буфер']").shouldBe(visible, enabled.because("Кнопка 'Скопировать ссылку для оплаты в буфер'"));
         $x(".//*[@data-uib-popover='Удалить привязанный номер']").shouldBe(visible, enabled.because("Кнопка 'Удалить привязанный номер'"));

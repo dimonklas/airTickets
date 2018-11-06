@@ -30,6 +30,7 @@ public class ConfigurationVariables {
 
     public String currentBrowser = System.getProperty("currentBrowser");
     public String locale = System.getProperty("locale");
+
     public String userLogin = System.getProperty("userLogin");
     public String userPassword = System.getProperty("userPassword");
     public String techLogin = System.getProperty("techLogin");
@@ -41,6 +42,8 @@ public class ConfigurationVariables {
 
     public String urlBase = System.getProperty("urlBase");
 
+    public String stornBookedTickets;
+
     public String urlStornBooking;
     public String urlPromin;
     public String urlTest;
@@ -48,12 +51,6 @@ public class ConfigurationVariables {
     public String urlPrerelease;
 
     public String prominSession;
-
-    public String dbClass;
-    public String URLBaseConnection;
-    public String loginDataBase;
-    public String passwordDataBase;
-
 
     public String phone;
     public String phone2;
@@ -111,14 +108,12 @@ public class ConfigurationVariables {
         urlTestArch = getProperty(configurationData, "urlTestArch");
         urlPrerelease = getProperty(configurationData, "urlPrerelease");
 
-        dbClass = getProperty(configurationData, "dbClass");
-        URLBaseConnection = getProperty(configurationData, "URLBaseConnection");
-        loginDataBase = getProperty(configurationData, "loginDataBase");
-        passwordDataBase = getProperty(configurationData, "passwordDataBase");
-
         phone = getProperty(testData, "phone");
         phone2 = getProperty(testData, "phone2");
         otp = getProperty(testData, "otp");
+
+        if (System.getProperty("stornBookedTickets") == null || System.getProperty("stornBookedTickets").equalsIgnoreCase(""))
+            stornBookedTickets = getProperty(configurationData, "stornBookedTickets");
 
         if (System.getProperty("defaultDepartureCity") == null || System.getProperty("defaultDepartureCity").equalsIgnoreCase(""))
             defaultDepartureCity = getProperty(testData, "defaultDepartureCity");

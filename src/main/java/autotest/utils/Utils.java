@@ -106,8 +106,8 @@ public class Utils {
         return new Random().nextInt((max - min) + 1) + min;
     }
 
-
     public static String getArchiveUrl(String phoneNum) {
+        if (phoneNum.startsWith("+")) phoneNum = phoneNum.substring(1);
         RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
         String url = "https://" + CV.urlBase + "/archive/frame/exsite/";
         String postBody ="data=%7B%22phone%22%3A%22%2B" + phoneNum + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";

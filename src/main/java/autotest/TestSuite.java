@@ -258,7 +258,7 @@ class TestSuite {
         searchResultsPage.pressSelectButton(id);
 
         ticketInfoPage.waitForTicketRulesBtn();
-        ticketInfoPage.checkTicketDifficultDetails(2);
+        ticketInfoPage.checkTicketDetailsForDifficultRoute(2);
 
         customerContactDataPage.checkPresenceOfContactDataBlock();
         customerContactDataPage.enterUserData();
@@ -289,7 +289,7 @@ class TestSuite {
         searchResultsPage.pressSelectButton(id);
 
         ticketInfoPage.waitForTicketRulesBtn();
-        ticketInfoPage.checkTicketDifficultDetails(3);
+        ticketInfoPage.checkTicketDetailsForDifficultRoute(3);
     }
 
 
@@ -339,7 +339,7 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -358,7 +358,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -384,7 +384,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -400,7 +400,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -418,7 +418,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -437,7 +437,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -450,12 +450,16 @@ class TestSuite {
     }
 
 
-    //Передача брони в архиве
+    /* Передача брони в архиве.
+    *  После первой передачи - проверка удвления подвязанного номера.
+    *  После второй передачи - идем в архив под новым номером и сторнируем бронировку.
+    * */
+
     void front_19457(TicketData ticket){
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -481,7 +485,7 @@ class TestSuite {
 
         Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
         Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
     }
 
@@ -609,7 +613,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -624,7 +628,7 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone.substring(1));
+        mainPage.openArchivePage(CV.phone);
         switchTo().defaultContent();
         $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 30 * 1000);
         Utils.setCookieData();

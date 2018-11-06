@@ -36,7 +36,7 @@ public class TicketInfoPage {
 
 
     @Step("Проверим наличие данных билетов для сложного маршрута")
-    public void checkTicketDifficultDetails(int size){
+    public void checkTicketDetailsForDifficultRoute(int size){
         $$x(".//*[@id='details'] //div[@data-segments='difficultFlight.segments']")
                 .shouldHave(CollectionCondition.sizeGreaterThanOrEqual(size));
     }

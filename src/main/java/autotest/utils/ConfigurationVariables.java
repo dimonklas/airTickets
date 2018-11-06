@@ -30,6 +30,7 @@ public class ConfigurationVariables {
 
     public String currentBrowser = System.getProperty("currentBrowser");
     public String locale = System.getProperty("locale");
+    public String timeout = System.getProperty("selenide.timeout");
 
     public String userLogin = System.getProperty("userLogin");
     public String userPassword = System.getProperty("userPassword");
@@ -122,6 +123,8 @@ public class ConfigurationVariables {
 
         citizenship = getProperty(testData, "citizenship");
         email = getProperty(testData, "email");
+
+        if (timeout == null || timeout.trim().isEmpty()) timeout = getProperty(configurationData, "timeout");
     }
 
 

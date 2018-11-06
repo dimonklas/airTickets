@@ -61,6 +61,7 @@ public class SetUpAndTearDown {
         }
 
         Configuration.startMaximized = true;
+        Configuration.timeout = Long.parseLong(CV.timeout);
     }
 
 

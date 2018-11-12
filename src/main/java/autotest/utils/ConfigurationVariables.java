@@ -72,9 +72,7 @@ public class ConfigurationVariables {
             try{
                 instance.prominSession = new ProminSessionBL().getProminSession();
             } catch (Exception e) {
-                LOGGER.error(e.getMessage());
-                LOGGER.error("Прогон тестов отстановлен, отчет сформирован не будет");
-                System.exit(0);
+                System.setProperty("FAIL_REASON", "Ошибка получения сессии проминя" + e.toString());
             }
         }
 

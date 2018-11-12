@@ -7,9 +7,11 @@ import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,6 +66,11 @@ public class SetUpAndTearDown {
         Configuration.timeout = Long.parseLong(CV.timeout);
     }
 
+    @BeforeTest(alwaysRun = true)
+    void prominSessionCheck(){
+        if(CV.prominSession == null)
+            throw new SkipException("Пропуск выполнения теста из-за ошибки получения сессии проминя");
+    }
 
     @BeforeSuite(alwaysRun = true)
     void deleteOldDirs() throws IOException {

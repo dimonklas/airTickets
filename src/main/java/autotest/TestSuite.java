@@ -637,7 +637,6 @@ class TestSuite {
         if(tickets_ids.size() > 0) {
             tickets_ids.forEach(Utils::stornBookedTicket);
         } else log.info("Забронированных билетов не найдено");
-
     }
 
 }

@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.apache.log4j.Logger;
 
-import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -51,7 +50,7 @@ public class ConfigurationVariables {
     public String urlTestArch;
     public String urlPrerelease;
 
-    public String prominSession;
+    public String prominSession = null;
 
     public String phone;
     public String phone2;
@@ -72,8 +71,10 @@ public class ConfigurationVariables {
         if(instance.prominSession == null) {
             try{
                 instance.prominSession = new ProminSessionBL().getProminSession();
-            } catch (JAXBException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+                LOGGER.error("Прогон тестов отстановлен, отчет сформирован не будет");
+                System.exit(0);
             }
         }
 

@@ -27,14 +27,15 @@ public class ProminSessionBL {
     /*
     * Получает активированную сессию сотрудника с помощью админской сессии
     * */
-    public String getProminSession() throws JAXBException {
+    public String getProminSession() throws JAXBException, AuthentificationException {
         Session session = filler.fillSessionRequest(CV.userLogin, getAdminSession());
         String body = jaxbGsonUtils.objectToXml(session, Session.class);
         Id result = null;
         try{
             result =  (Id) restTemplateSetRequest.requestMethodPost(URL_PROMIN, body, prominHeaders(), Id.class);
         } catch (Exception e) {
-            throw new AuthentificationException("Ошибка получения LDAP сессии проминя\n" + e.getMessage());
+            throw new AuthentificationException("Ошибка получения LDAP сессии проминя\n" + e.toString() +
+                    "\nСервер авторизации: " + URL_PROMIN + "\n Логин: " + CV.userLogin);
         }
 
         Assert.assertNotNull(result, "Ошибка получения LDAP сессии проминя");
@@ -44,14 +45,15 @@ public class ProminSessionBL {
     /*
     * Метод для получения админской сессии проминя
     * */
-    private String getAdminSession() throws JAXBException {
+    private String getAdminSession() throws JAXBException, AuthentificationException {
         autotest.dto.promin.request.excl.Session session = filler.fillAdminSessionRequest(CV.techLogin, CV.techPassword);
         String body = jaxbGsonUtils.objectToXml(session, autotest.dto.promin.request.excl.Session.class);
         Id result = null;
         try{
             result =  (Id) restTemplateSetRequest.requestMethodPost(URL_PROMIN, body, prominHeaders(), Id.class);
         } catch (Exception e) {
-            throw new AuthentificationException("Ошибка получения EXCL сессии проминя\n" + e.getMessage());
+            throw new AuthentificationException("Ошибка получения EXCL сессии проминя\n" + e.toString() +
+                    "\nСервер авторизации: " + URL_PROMIN + "\n Логин: " + CV.techLogin);
         }
 
         Assert.assertNotNull(result, "Ошибка получения EXCL сессии проминя");

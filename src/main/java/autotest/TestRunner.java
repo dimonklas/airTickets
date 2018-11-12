@@ -29,6 +29,7 @@ public class TestRunner extends SetUpAndTearDown {
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
     private TestSuite testSuite = new TestSuite();
 
+
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14514: Бронировка авиабилета для одного взрослого (Внешний Сайт)",
@@ -587,6 +588,7 @@ public class TestRunner extends SetUpAndTearDown {
             priority = 7000)
     public void testEmail() throws IOException {
         log.info(">>>> Запуск тестового теста...");
+
 //        TicketData ticketData = Utils.getTicketDataByLastName("KOSHOVYJ", "KJHJFD");
     }
 

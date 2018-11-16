@@ -297,10 +297,10 @@ public class ArchivePage {
         String docSN = $x(".//*[@class='passengers-tb'] //*[@data-ng-bind='passenger.docnum']").innerText();
         if (!docSN.isEmpty() || !docSN.equals("")) {
             Assert.assertEquals(ticket.getClientDataItem().getDocSN(), docSN, "Серия/номер паспорта не совпадают");
-        }
 
-        String docExp = $x(".//*[@class='passengers-tb'] //*[contains(@data-ng-bind,'docExpireDateFormat')]").innerText();
-        Assert.assertEquals(ticket.getClientDataItem().getDocExpDate(), docExp.substring(1, docExp.length()-1), "Срок действия паспорта не совпадает");
+            String docExp = $x(".//*[@class='passengers-tb'] //*[contains(@data-ng-bind,'docExpireDateFormat')]").innerText();
+            Assert.assertEquals(ticket.getClientDataItem().getDocExpDate(), docExp.substring(1, docExp.length()-1), "Срок действия паспорта не совпадает");
+        }
     }
 
     @Step("Скачаем файл 'Правила билета'")

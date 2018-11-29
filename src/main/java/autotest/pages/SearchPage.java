@@ -88,6 +88,8 @@ public class SearchPage {
 
         if(departure3 != null) {
             addRouteBtn.shouldBe(visible, enabled).click();
+            sleep(200);
+            if (departureField.size() < 3) addRouteBtn.click();
             departureField.shouldHaveSize(3).get(2).shouldBe(visible, enabled).setValue(departure3);
             citiesListBoxDeparture.shouldHaveSize(3).get(2).waitUntil(disappear, 5*1000);
             arrivalField.shouldHaveSize(3).get(2).shouldBe(visible, enabled).setValue(arrival3);
@@ -96,6 +98,8 @@ public class SearchPage {
 
         if(departure4 != null) {
             addRouteBtn.click();
+            sleep(200);
+            if (departureField.size() < 4) addRouteBtn.click();
             departureField.shouldHaveSize(4).get(3).shouldBe(visible, enabled).setValue(departure4);
             citiesListBoxDeparture.shouldHaveSize(4).get(3).waitUntil(disappear, 5*1000);
             arrivalField.shouldHaveSize(4).get(3).shouldBe(visible, enabled).setValue(arrival4);

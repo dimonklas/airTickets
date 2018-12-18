@@ -302,7 +302,7 @@ class TestSuite {
         PaymentPage paymentPage = new PaymentPage();
 
         searchResultsPage.checkMatrixFlightsPresence();
-        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
+//        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
 
         String id = searchResultsPage.getIdOfSearchResults().get(0);
         String price = searchResultsPage.checkPresenceOfTicketsCost(id);

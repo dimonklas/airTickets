@@ -32,7 +32,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Нет багажа'")
     public void filterBaggageByAbsence(){
-        $x(".//*[text()='Багаж']/..").click();
+        if(!$x(".//*[text()='Есть багаж']").isDisplayed()) $x(".//*[text()='Багаж']/..").click(); //костыль#2
         $x(".//*[text()='Все']").shouldBe(visible, enabled).click();
         $x(".//*[text()='Нет багажа']").shouldBe(visible, enabled).click();
         $$x(".//span[text()='Нет багажа']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(10));
@@ -42,7 +42,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Частичный'")
     public void filterBaggageByPartialAvailability(){
-        $x(".//*[text()='Багаж']/..").click();
+        if(!$x(".//*[text()='Есть багаж']").isDisplayed()) $x(".//*[text()='Багаж']/..").click(); //костыль#3
         $x(".//*[text()='Все']").shouldBe(visible, enabled).click();
         $x(".//*[text()='Частичный']").shouldBe(visible, enabled).click();
         $$x(".//span[text()='Частичный' or text()='Есть багаж' or text()='Нет багажа']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));

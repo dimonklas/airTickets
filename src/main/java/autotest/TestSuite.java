@@ -499,6 +499,42 @@ class TestSuite {
         ticketFilterPage.filterBaggageByPartialAvailability();
     }
 
+    // Фильтр времени вылета/прилета
+    void front_19453() {
+        TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.checkPresenceOfFiltersButtons();
+        ticketFilterPage.filterTimeDeparture0006();
+        ticketFilterPage.filterTimeDeparture0612();
+        ticketFilterPage.filterTimeDeparture1218();
+        ticketFilterPage.filterTimeDeparture1800();
+
+        ticketFilterPage.filterTimeArrival0006();
+        ticketFilterPage.filterTimeArrival0612();
+        ticketFilterPage.filterTimeArrival1218();
+        ticketFilterPage.filterTimeArrival1800();
+    }
+
+    // Фильтр по аєропортам
+    void front_19454() {
+        TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.checkPresenceOfFiltersButtons();
+        ticketFilterPage.filterLondonAirportDeparture();
+        ticketFilterPage.filterLondonAirportArrival();
+        ticketFilterPage.filterNewYorkAirportDeparture();
+        ticketFilterPage.filterNewYorkAirportArrival();
+    }
+
+    //  Фильтр по авиакомпаниям
+    void front_19455() {
+        TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.filterAirline();
+    }
+
+    void front_19579() {
+        TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.filterFlight();
+    }
+
 
     void negativeSearchDeparture(String searchValue){
         SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);

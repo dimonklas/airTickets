@@ -58,8 +58,14 @@ public class SearchPage {
 
     @Step("Выберем место вылета {city}")
     public void setDepartureCity(String city){
-        fromField.shouldBe(enabled).setValue(city);
-        $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").waitUntil(disappear, 5*1000);
+        if (city.equals("Лондон")) {
+            $x("(//*[@class='grid-col-10']//*[text()='Лондон'])[1]").click();
+            $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").waitUntil(disappear, 5*1000);
+
+        } else {
+            fromField.shouldBe(enabled).setValue(city);
+            $x(".//*[@name='departure']/following-sibling::*[contains(@id,'typeahead')]").waitUntil(disappear, 5*1000);
+        }
     }
 
     @Step("Выберем место вылета обратно {city}")

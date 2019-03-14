@@ -409,6 +409,107 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.front_19452();
     }
 
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19453:Время вылета/прилета",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    public void c1_front_19453(){
+        log.info(">>>> c1_front_19453() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19453();
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19454:Аэропорт",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    public void c1_front_19454(){
+        log.info(">>>> c1_front_19454() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Лондон");
+            s.setArrivalCity("Нью-Йорк");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19454();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19453:Время вылета/прилета",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    public void c1_front_19455(){
+        log.info(">>>> c1_front_19455() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19455();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19453:Время вылета/прилета",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    public void c1_front_19579(){
+        log.info(">>>> c1_front_19579() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Лондон");
+            s.setArrivalCity("Нью-Йорк");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19579();
+    }
+
 
     @DataProvider
     public static Object[][] dataForDepartureAndArrivalFields() {

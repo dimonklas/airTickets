@@ -28,7 +28,7 @@ public class ChromeDriverProvider implements WebDriverProvider {
 
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().version("73.0.3683.68").setup();
 
         HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
@@ -54,7 +54,7 @@ public class ChromeDriverProvider implements WebDriverProvider {
 
         ChromeDriver driver = new ChromeDriver(options);
         System.setProperty("browser", options.getBrowserName() + " " + driver.getCapabilities().getVersion());
-//        System.setProperty("driver.version", WebDriverManager.chromedriver().getDownloadedVersion());
+        System.setProperty("driver.version", WebDriverManager.chromedriver().getDownloadedVersion());
 
         return driver;
     }

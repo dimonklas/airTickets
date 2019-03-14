@@ -24,7 +24,7 @@ class TestSuite {
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
 
-    void performSearch(SearchData search){
+    void performSearch(SearchData search) {
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
 
@@ -38,7 +38,7 @@ class TestSuite {
         searchPage.selectClass(search.getClassType());
         searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
 
-        if("Сложный маршрут".equalsIgnoreCase(search.getWaysType())) {
+        if ("Сложный маршрут".equalsIgnoreCase(search.getWaysType())) {
             searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
                     search.getDepartureCity_2(), search.getArrivalCity_2(),
                     search.getDepartureCity_3(), search.getArrivalCity_4(),
@@ -47,7 +47,7 @@ class TestSuite {
                     search.getDaysForDifficult_2(),
                     search.getDaysForDifficult_3(),
                     search.getDaysForDifficult_4());
-            if(search.isNeedRemoveLastRoute()) searchPage.removeLastDifficultRoute();
+            if (search.isNeedRemoveLastRoute()) searchPage.removeLastDifficultRoute();
             searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
         } else {
             searchPage.setDepartureCity(search.getDepartureCity());
@@ -68,7 +68,7 @@ class TestSuite {
     }
 
 
-    void bookTickets(SearchData search, ClientDataItem client, TicketData ticket){
+    void bookTickets(SearchData search, ClientDataItem client, TicketData ticket) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -121,12 +121,12 @@ class TestSuite {
         //Индексы полей для xPath
         int indexChild = 2;
         int indexInfant = 2;
-        if(search.getInfantCount() == 1 && search.getChildCount() == 1) indexInfant = 3;
+        if (search.getInfantCount() == 1 && search.getChildCount() == 1) indexInfant = 3;
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
-        if(search.getChildCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexChild, "Ребенок");
-        if(search.getInfantCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexInfant, "Младенец");
+        if (search.getChildCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexChild, "Ребенок");
+        if (search.getInfantCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexInfant, "Младенец");
 
         passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
 
@@ -165,7 +165,7 @@ class TestSuite {
 
 
     //Покупка авиабилета для взрослого и ребенка (внешний сайт)
-    void front_12552(SearchData search, ClientDataItem client, TicketData ticket){
+    void front_12552(SearchData search, ClientDataItem client, TicketData ticket) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -243,7 +243,7 @@ class TestSuite {
     }
 
 
-    void front_15024(SearchData search, ClientDataItem client, TicketData ticket){
+    void front_15024(SearchData search, ClientDataItem client, TicketData ticket) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -279,7 +279,7 @@ class TestSuite {
 
 
     //Добавление перелета при сложном маршруте (внешний сайт)
-    void front_15091(){
+    void front_15091() {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
 
@@ -294,7 +294,7 @@ class TestSuite {
 
 
     //Покупка билета для одного взрослого +- 3 дня (внешний сайт)
-    void front_15848(SearchData search, ClientDataItem client, TicketData ticket){
+    void front_15848(SearchData search, ClientDataItem client, TicketData ticket) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -334,7 +334,7 @@ class TestSuite {
 
 
     //Оплата бронировки авиабилета в архиве
-    void front_14506(TicketData ticket){
+    void front_14506(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
@@ -354,7 +354,7 @@ class TestSuite {
 
 
     //Скачивание правил билета после покупки билета в архиве
-    void front_14928(TicketData ticket){
+    void front_14928(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -370,7 +370,7 @@ class TestSuite {
 
         Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
         String fromCityToCity = String.format("%s - %s", CV.defaultDepartureCity, CV.defaultArrivalCity);
-        Assert.assertTrue(rules.contains(fromCityToCity), "Файл 'Условия возврата' не содержит текст '" + fromCityToCity  + "'");
+        Assert.assertTrue(rules.contains(fromCityToCity), "Файл 'Условия возврата' не содержит текст '" + fromCityToCity + "'");
 
         archivePage.downloadBookingDocument();
         Utils.waitUntilFileDownload("booking.doc");
@@ -380,7 +380,7 @@ class TestSuite {
     }
 
     //Заказ доп. багажа
-    void front_17753(TicketData ticket){
+    void front_17753(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -396,7 +396,7 @@ class TestSuite {
     }
 
     //Заказ перевозки животных
-    void front_17763(TicketData ticket){
+    void front_17763(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -414,7 +414,7 @@ class TestSuite {
     }
 
     //Заказ специального питания
-    void front_17767(TicketData ticket){
+    void front_17767(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -433,7 +433,7 @@ class TestSuite {
 
 
     //Аннулиррование бронировки в архиве
-    void front_17714(TicketData ticket){
+    void front_17714(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -451,11 +451,11 @@ class TestSuite {
 
 
     /* Передача брони в архиве.
-    *  После первой передачи - проверка удвления подвязанного номера.
-    *  После второй передачи - идем в архив под новым номером и сторнируем бронировку.
-    * */
+     *  После первой передачи - проверка удвления подвязанного номера.
+     *  После второй передачи - идем в архив под новым номером и сторнируем бронировку.
+     * */
 
-    void front_19457(TicketData ticket){
+    void front_19457(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -491,7 +491,7 @@ class TestSuite {
 
 
     // Фильтр багажа
-    void front_19452(){
+    void front_19452() {
         TicketFilterPage ticketFilterPage = new TicketFilterPage();
         ticketFilterPage.checkPresenceOfFiltersButtons();
         ticketFilterPage.filterBaggageByAvailability();
@@ -536,7 +536,7 @@ class TestSuite {
     }
 
 
-    void negativeSearchDeparture(String searchValue){
+    void negativeSearchDeparture(String searchValue) {
         SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);
         if ("".equalsIgnoreCase(searchValue)) {
             Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
@@ -545,7 +545,7 @@ class TestSuite {
         }
     }
 
-    void negativeSearchArrival(String searchValue){
+    void negativeSearchArrival(String searchValue) {
         SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").shouldBe(visible);
         if ("".equalsIgnoreCase(searchValue)) {
             Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
@@ -554,7 +554,7 @@ class TestSuite {
         }
     }
 
-    boolean negativeAddMorePassengersThanItAllowed(SearchData search){
+    boolean negativeAddMorePassengersThanItAllowed(SearchData search) {
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
 
@@ -564,7 +564,7 @@ class TestSuite {
 
         Utils.switchFrame();
 
-        try{
+        try {
             searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
         } catch (AssertionError e) {
             log.info("Сработала проверка на неправильно установленное кол-во пассажиров");
@@ -577,7 +577,7 @@ class TestSuite {
     }
 
 
-    void negativeIncorrectBirthDate(DateTests dateTests){
+    void negativeIncorrectBirthDate(DateTests dateTests) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -592,7 +592,7 @@ class TestSuite {
         passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
     }
 
-    void negativeIncorrectCardData(SearchData search, ClientDataItem client){
+    void negativeIncorrectCardData(SearchData search, ClientDataItem client) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -645,7 +645,7 @@ class TestSuite {
     }
 
 
-    void negativeIncorrectPhoneNumber(TicketData ticket){
+    void negativeIncorrectPhoneNumber(TicketData ticket) {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
@@ -670,7 +670,7 @@ class TestSuite {
         Utils.setCookieData();
 
         List<String> tickets_ids = archivePage.getTickets_id();
-        if(tickets_ids.size() > 0) {
+        if (tickets_ids.size() > 0) {
             tickets_ids.forEach(Utils::stornBookedTicket);
         } else log.info("Забронированных билетов не найдено");
     }

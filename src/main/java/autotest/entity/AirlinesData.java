@@ -1,4 +1,4 @@
-package autotest.entity.forDataproviders;
+package autotest.entity;
 
 import java.util.HashMap;
 
@@ -14,6 +14,7 @@ public class AirlinesData {
         airlines.put("FlyWoosh", "W2");
         airlines.put("Turkish Airlines", "TK");
         airlines.put("Ellinair", "EL");
+        airlines.put("CSA Czech Airlines", "OK");
         airlines.put("Deutsche Lufthansa", "");
         airlines.put("Azerbaijan Airlines", "");
         return airlines;

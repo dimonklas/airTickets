@@ -1,14 +1,12 @@
 package autotest.pages;
 
 import autotest.entity.AirportsData;
-import autotest.entity.forDataproviders.AirlinesData;
+import autotest.entity.AirlinesData;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-
-import java.util.Iterator;
-import java.util.stream.IntStream;
+import lombok.extern.log4j.Log4j;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
@@ -16,8 +14,8 @@ import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
+@Log4j
 public class TicketFilterPage {
 
 
@@ -195,12 +193,14 @@ public class TicketFilterPage {
         $x(".//*[text()='Аэропорт']/..").click();
         if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").click(); //костыль
         for (String value : data.getLondonAirports()) {
-            $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
-
-            if (value.equals("Станстед (Лондон)")) $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
-            else $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(10));
-
-            $x("(//div[text()='Аэропорт прилета']//..//*[text()='Любой'])[2]").click();
+            try {
+                $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
+                if (value.equals("Станстед (Лондон)")) $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+                else $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(10));
+                $x("(//div[text()='Аэропорт прилета']//..//*[text()='Любой'])[2]").click();
+            } catch (Throwable e) {
+                log.info("Аэропорта " + value + " нет в списке");
+            }
         }
     }
 

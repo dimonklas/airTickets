@@ -440,7 +440,7 @@ public class TestRunner extends SetUpAndTearDown {
             description = "front-19454:Аэропорт",
             groups = {"Поиск билетов"},
             priority = 300)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19454")
     public void c1_front_19454(){
         log.info(">>>> c1_front_19454() is running...");
         SearchData searchData = new SearchData(s -> {
@@ -462,10 +462,10 @@ public class TestRunner extends SetUpAndTearDown {
 
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "front-19453:Время вылета/прилета",
+            description = "front-19455:Авиакомпании",
             groups = {"Поиск билетов"},
             priority = 300)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19455")
     public void c1_front_19455(){
         log.info(">>>> c1_front_19455() is running...");
         SearchData searchData = new SearchData(s -> {
@@ -487,10 +487,10 @@ public class TestRunner extends SetUpAndTearDown {
 
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "front-19453:Время вылета/прилета",
+            description = "front-19579:Прямые перелеты, пересадки",
             groups = {"Поиск билетов"},
             priority = 300)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19579")
     public void c1_front_19579(){
         log.info(">>>> c1_front_19579() is running...");
         SearchData searchData = new SearchData(s -> {

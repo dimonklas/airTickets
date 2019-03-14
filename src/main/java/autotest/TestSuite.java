@@ -527,11 +527,13 @@ class TestSuite {
     //  Фильтр по авиакомпаниям
     void front_19455() {
         TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.checkPresenceOfFiltersButtons();
         ticketFilterPage.filterAirline();
     }
 
     void front_19579() {
         TicketFilterPage ticketFilterPage = new TicketFilterPage();
+        ticketFilterPage.checkPresenceOfFiltersButtons();
         ticketFilterPage.filterFlight();
     }
 

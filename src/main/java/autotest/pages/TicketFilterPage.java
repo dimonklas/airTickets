@@ -242,7 +242,7 @@ public class TicketFilterPage {
 //            $$x("//div[text()='Киев']//..//div[text()='вылет']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
             for (int j = 0; j < $$x("//div[text()='Киев']//..//div[text()='вылет']").size(); j++) {
                 String alt = $$x("//div[text()='Киев']//..//div[text()='вылет']//..//..//..//..//img[@title='Supplier ']").get(j).attr("alt");
-                assertEquals(alt, airlinesData.getAirlines().get(company.innerText().trim()), "Неверная авиакомпания");
+                assertEquals(alt, airlinesData.getAirlines().get(company.innerText().trim()), "Лишняя Авиакомпания в выборке или Авиакомпания отсутствует в списке");
             }
         }
     }

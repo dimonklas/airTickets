@@ -17,6 +17,7 @@ public class AirlinesData {
         airlines.put("CSA Czech Airlines", "OK");
         airlines.put("Deutsche Lufthansa", "");
         airlines.put("Azerbaijan Airlines", "");
+        airlines.put("Hahn Air Systems", "H1");
         return airlines;
     }
 }

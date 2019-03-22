@@ -186,8 +186,8 @@ public class TicketFilterPage {
     @Step("Применим фильтр по аэропорту (вылет с Лондона)")
     public void filterLondonAirportDeparture() {
         AirportsData data = new AirportsData();
-        $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click();
-        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
+        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible, enabled).click(); //костыль
         for (String value : data.getLondonAirports()) {
             $x("//div[text()='Аэропорт вылета']//..//*[text()='" + value + "']").click();
             $$x("//div[text()='Лондон']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
@@ -198,8 +198,8 @@ public class TicketFilterPage {
     @Step("Применим фильтр по аэропорту (прилет в Лондон)")
     public void filterLondonAirportArrival() {
         AirportsData data = new AirportsData();
-        $x(".//*[text()='Аэропорт']/..").shouldBe(visible).shouldBe(visible).click();
-        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
+        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible, enabled).click(); //костыль
         for (String value : data.getLondonAirports()) {
             try {
                 $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
@@ -215,8 +215,8 @@ public class TicketFilterPage {
     @Step("Применим фильтр по аэропорту (вылет с Нью-Йорка)")
     public void filterNewYorkAirportDeparture() {
         AirportsData data = new AirportsData();
-        $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click();
-        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
+        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible, enabled).click(); //костыль
         for (String value : data.getNewYorkAirports()) {
             $x("//div[text()='Аэропорт вылета']//..//*[text()='" + value + "']").click();
             $$x("//div[text()='Нью-Йорк']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
@@ -227,8 +227,8 @@ public class TicketFilterPage {
     @Step("Применим фильтр по аэропорту (прилет в Нью-Йорк)")
     public void filterNewYorkAirportArrival() {
         AirportsData data = new AirportsData();
-        $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click();
-        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
+        if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible, enabled).click(); //костыль
         for (String value : data.getNewYorkAirports()) {
             $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
             $$x("//div[text()='Нью-Йорк']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
@@ -261,7 +261,7 @@ public class TicketFilterPage {
         }
     }
 
-    @Step("Прямой/Пересадка")
+    @Step("Применим фильтр по критерию 'Прямой/Пересадка'")
     public void filterFlight() {
         $x(".//*[text()='Прямой']").shouldBe(visible, enabled).click();
         $$x(".//*[text()='Пересадки']").shouldBe(CollectionCondition.empty);

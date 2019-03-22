@@ -239,13 +239,18 @@ public class TicketFilterPage {
     @Step("Применить фильтр по авиакомпаниям")
     public void filterAirline() {
         AirlinesData airlinesData = new AirlinesData();
-        $x(".//*[text()='Авиакомпания']/..").shouldBe(visible).click();
-        if(!$x(".//*[text()='Любая авиакомпания']").isDisplayed()) $x(".//*[text()='Авиакомпания']/..").shouldBe(visible).click();
+        $x(".//*[text()='Авиакомпания']/..").shouldBe(visible, enabled).click();
+        if(!$x(".//*[text()='Любая авиакомпания']").isDisplayed()) $x(".//*[text()='Авиакомпания']/..").shouldBe(visible, enabled).click();
 
         ElementsCollection companies = $$x(".//*[text()='Выберите авиакомпанию']//..//div[@data-ng-repeat='checkbox in checkboxes track by $index']//label");
 
         for (SelenideElement company : companies) {
-            $x("//*[text()='Любая авиакомпания']").click();
+            try {
+                $x("//*[text()='Любая авиакомпания']").shouldBe(visible, enabled).click();
+            } catch (Throwable e) {
+                $x(".//*[text()='Авиакомпания']/..").shouldBe(visible, enabled).click();
+                $x("//*[text()='Любая авиакомпания']").shouldBe(visible, enabled).click();
+            }
             company.click();
             // разкомментировать после фикса отображения авиакомпаний
 //            $$x("//div[text()='Киев']//..//div[text()='вылет']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));

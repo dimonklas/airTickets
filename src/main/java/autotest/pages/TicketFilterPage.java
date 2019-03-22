@@ -182,7 +182,7 @@ public class TicketFilterPage {
         if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
         for (String value : data.getLondonAirports()) {
             $x("//div[text()='Аэропорт вылета']//..//*[text()='" + value + "']").click();
-            $$x("//div[text()='Лондон']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(8));
+            $$x("//div[text()='Лондон']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
             $x("(//div[text()='Аэропорт вылета']//..//*[text()='Любой'])[1]").click();
         }
     }
@@ -196,7 +196,7 @@ public class TicketFilterPage {
             try {
                 $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
                 if (value.equals("Станстед (Лондон)")) $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
-                else $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(8));
+                else $$x("//div[text()='Лондон']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Лондон)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
                 $x("(//div[text()='Аэропорт прилета']//..//*[text()='Любой'])[2]").click();
             } catch (Throwable e) {
                 log.info("Аэропорта " + value + " нет в списке");
@@ -211,7 +211,7 @@ public class TicketFilterPage {
         if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
         for (String value : data.getNewYorkAirports()) {
             $x("//div[text()='Аэропорт вылета']//..//*[text()='" + value + "']").click();
-            $$x("//div[text()='Нью-Йорк']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(8));
+            $$x("//div[text()='Нью-Йорк']//..//div[text()='вылет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
             $x("(//div[text()='Аэропорт вылета']//..//*[text()='Любой'])[2]").click();
         }
     }
@@ -223,7 +223,7 @@ public class TicketFilterPage {
         if (!$x("(.//*[text()='Туда'])[2]").isDisplayed()) $x(".//*[text()='Аэропорт']/..").shouldBe(visible).click(); //костыль
         for (String value : data.getNewYorkAirports()) {
             $x("//div[text()='Аэропорт прилета']//..//*[text()='" + value + "']").click();
-            $$x("//div[text()='Нью-Йорк']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(8));
+            $$x("//div[text()='Нью-Йорк']//..//div[text()='прилет']//..//div[text()='" + value.replace(" (Нью-Йорк)", "") + "']").shouldHave(CollectionCondition.sizeGreaterThanOrEqual(5));
             $x("(//div[text()='Аэропорт прилета']//..//*[text()='Любой'])[1]").click();
         }
     }

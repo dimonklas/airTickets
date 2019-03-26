@@ -70,7 +70,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время вылета' 'Ночь (00 - 06)'")
     public void filterTimeDeparture0006() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время вылета']//..//*[text()='Ночь (00 - 06)'])[1]").shouldBe(visible, enabled).click();
@@ -84,7 +84,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время вылета' 'День (06 - 12)'")
     public void filterTimeDeparture0612() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время вылета']//..//*[text()='Утро (06 - 12)'])[1]").shouldBe(visible, enabled).click();
@@ -98,7 +98,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время вылета' 'День (12 - 18)'")
     public void filterTimeDeparture1218() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время вылета']//..//*[text()='День (12 - 18)'])[1]").shouldBe(visible, enabled).click();
@@ -112,7 +112,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время вылета' 'Ночь (18 - 00)'")
     public void filterTimeDeparture1800() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время вылета']//..//*[text()='Вечер (18 - 00)'])[1]").shouldBe(visible, enabled).click();
@@ -128,7 +128,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время прилета' 'Ночь (00 - 06)'")
     public void filterTimeArrival0006() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время прилета']//..//*[text()='Ночь (00 - 06)'])[1]").shouldBe(visible, enabled).click();
@@ -142,7 +142,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время прилета' 'День (06 - 12)'")
     public void filterTimeArrival0612() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible).click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время прилета']//..//*[text()='Утро (06 - 12)'])[1]").shouldBe(visible, enabled).click();
@@ -156,7 +156,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время прилета' 'День (12 - 18)'")
     public void filterTimeArrival1218() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время прилета']//..//*[text()='День (12 - 18)'])[1]").shouldBe(visible, enabled).click();
@@ -170,7 +170,7 @@ public class TicketFilterPage {
 
     @Step("Применим фильтр 'Время прилета' 'Ночь (18 - 00)'")
     public void filterTimeArrival1800() {
-        $x(".//*[text()='Время вылета/прилета']/..").shouldBe(visible, enabled).click();
+        $x("//*[@title='Очистить фильтры']").shouldBe(visible);
         if (!$x("(.//*[text()='Туда'])[1]").isDisplayed()) $x(".//*[text()='Время вылета/прилета']/..").click(); //костыль
         setDepartureArrivalDefaultValue();
         $x("(//div[text()='Время прилета']//..//*[text()='Вечер (18 - 00)'])[1]").shouldBe(visible, enabled).click();

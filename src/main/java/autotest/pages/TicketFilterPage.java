@@ -264,6 +264,7 @@ public class TicketFilterPage {
     @Step("Применим фильтр по критерию 'Прямой/Пересадка'")
     public void filterFlight() {
         $x("//*[@title='Очистить фильтры']").waitUntil(visible, 10000);
+        $x(".//*[text()='Показать больше результатов']").waitUntil(enabled, 10000);  //для теста
         $x(".//*[text()='Прямой']").shouldBe(visible, enabled).click();
         $$x(".//*[text()='Пересадки']").shouldBe(CollectionCondition.empty);
         $x(".//*[text()='1 пересадка']").shouldBe(visible, enabled).click();

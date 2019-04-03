@@ -11,7 +11,7 @@ public class AirportsData {
         HashSet<String> arrayList = new HashSet<>();
         arrayList.add("Гатвик (Лондон)");
         arrayList.add("Хитроу (Лондон)");
-        arrayList.add("Станстед (Лондон)");
+//        arrayList.add("Станстед (Лондон)");
         arrayList.add("Лондон Сити (Лондон)");
         return arrayList;
     }

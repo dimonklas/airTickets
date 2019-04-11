@@ -212,6 +212,8 @@ public class ArchivePage {
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+        $x("//*[contains(text(),'Услуги')]//..//*[text()='История заявок']").shouldBe(visible).click();
+        $x(String.format("//*[text()='%s']/ancestor::*[@class='order-history__row']//*[text()='Cоздана']", pet)).shouldBe(visible);
     }
 
     @Step("Закажем специальное питание для выбранного рейса")
@@ -219,7 +221,8 @@ public class ArchivePage {
         $x(".//*[text()='Шаг 1. Выберите тип питания']").shouldBe(visible);
         $x(String.format(".//*[text()='%s']", foodType)).shouldBe(visible, enabled.because("Radiobtn Кошерное/Вегетарианское/Детское/Диабетическое")).click();
         $x(".//*[text()='Шаг 2. Введите комментарий (при необходимости)']").shouldBe(visible);
-        $(By.name("comment")).shouldBe(visible, enabled).setValue("Кофе без сахара, овощи с говядиной");
+        String comment = "Кофе без сахара, овощи с говядиной";
+        $(By.name("comment")).shouldBe(visible, enabled).setValue(comment);
 
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
         $x(".//*[@class='text-error']").shouldNotBe(visible.because("Не выбрали тип питания"));
@@ -230,6 +233,8 @@ public class ArchivePage {
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
+        $x("//*[contains(text(),'Услуги')]//..//*[text()='История заявок']").shouldBe(visible).click();
+        $x(String.format("//*[text()='%s']/ancestor::*[@class='order-history__row']//*[text()='Cоздана']", comment)).shouldBe(visible);
     }
 
     @Step("Проверим отображение данных о пассажирах на форме покупки билета в архиве")

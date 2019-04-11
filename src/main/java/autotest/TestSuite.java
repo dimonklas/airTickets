@@ -408,9 +408,7 @@ class TestSuite {
         archivePage.checkCloseButton();
 
         archivePage.clickPetsTransferButton();
-        archivePage.orderPetsTransfer("Собака", ticket.getBookingId());
-        archivePage.clickPetsTransferButton();
-        archivePage.orderPetsTransfer("Кошка", ticket.getBookingId());
+        archivePage.orderPetsTransfer("Кошка", ticket.getBookingId());   //Собака или Кошка
     }
 
     //Заказ специального питания
@@ -426,9 +424,7 @@ class TestSuite {
         archivePage.checkCloseButton();
 
         archivePage.clickFoodOrderButton();
-        archivePage.orderFood("Диабетическое", ticket.getBookingId());
-        archivePage.clickFoodOrderButton();
-        archivePage.orderFood("Вегетарианское", ticket.getBookingId());
+        archivePage.orderFood("Диабетическое", ticket.getBookingId());  // Диабетическое или Вегетарианское
     }
 
 

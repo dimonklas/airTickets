@@ -243,11 +243,11 @@ public class ArchivePage {
 
         Assert.assertTrue($(By.name("lastname")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getLastName()),
                  "Фамилия клиента в архиве не соответствует введенной при бронировании");
-        Assert.assertTrue($(By.name("firstname")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getFirstName()),
+        Assert.assertTrue($(By.name("myfnm")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getFirstName()),
                 "Имя клиента в архиве не соответствует введенному при бронировании");
         Assert.assertTrue($(By.name("birthday")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getBirthDate()),
                 "Дата рождения клиента в архиве не соответствует введенной при бронировании");
-        Assert.assertTrue($(By.name("citizenship")).shouldBe(visible, disabled).getValue().equalsIgnoreCase("Ukraine"),
+        Assert.assertTrue($(By.name("fctz")).shouldBe(visible, disabled).getValue().equalsIgnoreCase("Ukraine"),
                 "Гражданство клиента в архиве не соответствует введенному при бронировании");
         Assert.assertTrue($(By.name("docnum")).shouldBe(visible, disabled).getValue().equalsIgnoreCase(ticket.getClientDataItem().getDocSN()),
                 "Серия, № документа в архиве не соответствует введенному при бронировании");

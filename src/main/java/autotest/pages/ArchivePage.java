@@ -213,7 +213,7 @@ public class ArchivePage {
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
         $x("//*[contains(text(),'Услуги')]//..//*[text()='История заявок']").shouldBe(visible).click();
-        $x(String.format("//*[text()='%s']/ancestor::*[@class='order-history__row']//*[text()='Cоздана']", pet)).shouldBe(visible);
+        $x(String.format("//*[text()='%s']", pet)).shouldBe(visible);
     }
 
     @Step("Закажем специальное питание для выбранного рейса")
@@ -234,7 +234,7 @@ public class ArchivePage {
         $x(".//*[text()='Основная информация']").waitUntil(visible, 30 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
         $x("//*[contains(text(),'Услуги')]//..//*[text()='История заявок']").shouldBe(visible).click();
-        $x(String.format("//*[text()='%s']/ancestor::*[@class='order-history__row']//*[text()='Cоздана']", comment)).shouldBe(visible);
+        $x(String.format("//*[text()='%s']", comment)).shouldBe(visible);
     }
 
     @Step("Проверим отображение данных о пассажирах на форме покупки билета в архиве")

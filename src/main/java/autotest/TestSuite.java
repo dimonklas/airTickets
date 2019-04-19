@@ -15,8 +15,10 @@ import org.testng.Assert;
 
 import java.util.List;
 
+import static autotest.utils.Utils.closeTabAfterOpenArchivePage;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static org.testng.Assert.assertEquals;
 
 @Log4j
 class TestSuite {
@@ -115,8 +117,10 @@ class TestSuite {
         ticketInfoPage.checkTicketForwardDetails();
         ticketInfoPage.checkTicketBackwardDetails();
 
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
 
         //Индексы полей для xPath
         int indexChild = 2;
@@ -160,7 +164,7 @@ class TestSuite {
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
-        switchTo().window(1).close();
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) closeTabAfterOpenArchivePage();
     }
 
 
@@ -212,8 +216,10 @@ class TestSuite {
         ticketInfoPage.checkTicketForwardDetails();
         ticketInfoPage.checkTicketBackwardDetails();
 
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
@@ -239,7 +245,7 @@ class TestSuite {
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
-        switchTo().window(1).close();
+        closeTabAfterOpenArchivePage();
     }
 
 
@@ -249,6 +255,7 @@ class TestSuite {
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
         PaymentPage paymentPage = new PaymentPage();
+        ArchivePage archivePage = new ArchivePage();
 
         String id = searchResultsPage.getIdOfSearchResults().get(0);
 
@@ -260,8 +267,10 @@ class TestSuite {
         ticketInfoPage.waitForTicketRulesBtn();
         ticketInfoPage.checkTicketDetailsForDifficultRoute(2);
 
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
@@ -274,7 +283,15 @@ class TestSuite {
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);
-        paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        } else {
+            paymentPage.doPaymentByCard();
+            String idTicket = paymentPage.getIdTicketAfterPayment();
+            paymentPage.openArchive();
+            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
+        }
     }
 
 
@@ -300,6 +317,7 @@ class TestSuite {
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
         PaymentPage paymentPage = new PaymentPage();
+        ArchivePage archivePage = new ArchivePage();
 
         searchResultsPage.checkMatrixFlightsPresence();
 //        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
@@ -314,8 +332,10 @@ class TestSuite {
         ticketInfoPage.checkTicketForwardDetails();
         ticketInfoPage.checkTicketBackwardDetails();
 
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
 
         passengersDataPage.checkAvaliabilityOfCustomersDataFields();
         passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
@@ -329,7 +349,14 @@ class TestSuite {
         passengersDataPage.buyTicket();
 
         paymentPage.title.shouldBe(visible);
-        paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        } else {
+            paymentPage.doPaymentByCard();
+            String idTicket = paymentPage.getIdTicketAfterPayment();
+            paymentPage.openArchive();
+            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
+        }
     }
 
 
@@ -339,7 +366,10 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -349,7 +379,13 @@ class TestSuite {
         archivePage.clickPayButton();
         archivePage.checkPassengersDataOnPaymentForm(ticket);
         archivePage.checkPresenceOfTotalTicketsCost();
-        paymentPage.doPaymentByCardFromArchive(null, null, null);
+
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCardFromArchive(null, null, null);
+        } else {
+            paymentPage.doPaymentByCard();
+            assertEquals(ticket.getBookingId(), paymentPage.getIdTicketAfterPayment(), "Номера билетов не совпадают!");
+        }
     }
 
 
@@ -358,7 +394,10 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -384,7 +423,10 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -400,7 +442,10 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -416,7 +461,10 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -433,7 +481,10 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        mainPage.openArchivePage(CV.phone);
+        String currentChannel = mainPage.getCurrentChannel();
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            mainPage.openArchivePage(CV.phone);
+        }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
@@ -442,7 +493,12 @@ class TestSuite {
 
         archivePage.clickStornBookingButton(ticket.getBookingId());
         archivePage.closeMainInfoBlock();
-        Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
+
+        if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
+            Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
+        } else {
+            archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+        }
     }
 
 
@@ -537,18 +593,18 @@ class TestSuite {
     void negativeSearchDeparture(String searchValue) {
         SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);
         if ("".equalsIgnoreCase(searchValue)) {
-            Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
+            assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {
-            Assert.assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
+            assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
         }
     }
 
     void negativeSearchArrival(String searchValue) {
         SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").shouldBe(visible);
         if ("".equalsIgnoreCase(searchValue)) {
-            Assert.assertEquals(errorMsg.innerText().trim(), "Заполните поле");
+            assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {
-            Assert.assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
+            assertEquals(errorMsg.innerText().trim(), "Выберите город из выпадающего списка");
         }
     }
 
@@ -566,7 +622,7 @@ class TestSuite {
             searchPage.setPassengersCount(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
         } catch (AssertionError e) {
             log.info("Сработала проверка на неправильно установленное кол-во пассажиров");
-            Assert.assertEquals(e.getMessage(), "Неправильно установили количество пассажиров expected [true] but found [false]");
+            assertEquals(e.getMessage(), "Неправильно установили количество пассажиров expected [true] but found [false]");
             return true;
         }
 

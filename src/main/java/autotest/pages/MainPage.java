@@ -2,13 +2,13 @@ package autotest.pages;
 
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -38,6 +38,11 @@ public class MainPage {
         String xPath = String.format(".//optgroup[@label='Поиск']/option[contains(text(),'%s')]", channel);
         channelList.shouldBe(visible, enabled).click();
         $(By.xpath(xPath)).shouldBe(visible).click();
+
+        if (!channel.equalsIgnoreCase("Внешний Сайт")) {
+            fillEkbIdField(CV.ekbId);
+            fillPhoneField(CV.phone.substring(1));
+        }
         return this;
     }
 
@@ -62,12 +67,24 @@ public class MainPage {
         return this;
     }
 
+    @Step("Заполним поле екб id")
+    public MainPage fillEkbIdField(String id) {
+        $(By.id("field-id")).shouldBe(visible, enabled).setValue(id);
+        return this;
+    }
+
     @Step("Нажмем кнопку 'Сгенерировать фрейм'")
     public MainPage submitOpenFrame(){
         generateFrameBtn.shouldBe(enabled).click();
         return this;
     }
 
-
-
+    @Step("Вернуть текущий канал")
+    public String getCurrentChannel() {
+        switchTo().defaultContent();
+        String channel = $(By.id("field-channel")).shouldBe(visible).getText();
+        $("[name=avia-widget-frame]").shouldBe(Condition.enabled);
+        switchTo().frame("avia-widget-frame");
+        return channel;
+    }
 }

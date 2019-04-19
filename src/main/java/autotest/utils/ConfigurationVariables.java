@@ -55,6 +55,8 @@ public class ConfigurationVariables {
     public String phone;
     public String phone2;
     public String otp;
+    public String ekbId;
+    public String cardNumber;
 
     public String defaultDepartureCity;
     public String defaultArrivalCity;
@@ -111,6 +113,8 @@ public class ConfigurationVariables {
         phone = getProperty(testData, "phone");
         phone2 = getProperty(testData, "phone2");
         otp = getProperty(testData, "otp");
+        ekbId = getProperty(testData, "ekbId");
+        cardNumber = getProperty(testData, "cardNumber");
 
         if (System.getProperty("stornBookedTickets") == null || System.getProperty("stornBookedTickets").equalsIgnoreCase(""))
             stornBookedTickets = getProperty(configurationData, "stornBookedTickets");

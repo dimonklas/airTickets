@@ -4,6 +4,7 @@ import autotest.dto.custData.ClientDataItem;
 import autotest.entity.AuthData;
 import autotest.entity.TicketData;
 import autotest.pages.ArchivePage;
+import autotest.pages.MainPage;
 import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -149,7 +150,7 @@ public class Utils {
         sleep(5 * 1000);
     }
 
-    @Step("Дождемся смены статуса в архиве и проверим его значение")
+    @Step("Дождемся смены статуса в архиве и проверим его значение для канала 'Внешний сайт'")
     public static void waitAndCheckForBookingStatusChanged(String bookingCode, String expStatus){
         String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
         String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
@@ -157,6 +158,29 @@ public class Utils {
         while (!expStatus.equalsIgnoreCase(actStatus) && counter < 5) {
             sleep(10 * 1000);
             refresh();
+            ArchivePage.waitForArchivePageLoad();
+            actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+            counter++;
+        }
+
+        Assert.assertEquals(actStatus, expStatus, "Не дождались смены статуса в архиве");
+    }
+
+    @Step("Дождемся смены статуса в архиве и проверим его значение для канала 'П24'")
+    public static void waitAndCheckForBookingStatusChangedP24 (String bookingCode, String expStatus, String channel) {
+        MainPage mainPage = new MainPage();
+
+        String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
+        String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+        int counter = 0;
+        while (!expStatus.equalsIgnoreCase(actStatus) && counter < 2) {
+            sleep(10 * 1000);
+            refresh();
+            mainPage.openSearchPageViaChannel(channel)
+                    .submitOpenFrame();
+
+            Utils.switchFrame();
+            $(By.linkText("Архив билетов")).shouldBe(visible).click();
             ArchivePage.waitForArchivePageLoad();
             actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
             counter++;

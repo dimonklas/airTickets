@@ -497,7 +497,7 @@ class TestSuite {
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
         } else {
-            archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+            Utils.waitAndCheckForBookingStatusChangedP24(ticket.getBookingId(), "Отменён", currentChannel);
         }
     }
 
@@ -632,17 +632,21 @@ class TestSuite {
 
 
     void negativeIncorrectBirthDate(DateTests dateTests) {
+        MainPage mainPage = new MainPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        String currentChannel = mainPage.getCurrentChannel();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
 
         String id = searchResultsPage.getIdOfSearchResults().get(0);
         searchResultsPage.pressSelectButton(id);
         ticketInfoPage.waitForTicketRulesBtn();
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
 
+        if (currentChannel.equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
         passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
     }
 

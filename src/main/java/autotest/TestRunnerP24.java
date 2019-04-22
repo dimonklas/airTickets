@@ -1,16 +1,20 @@
 package autotest;
 
+import autotest.dataproviders.Dataproviders;
 import autotest.dto.custData.ClientDataItem;
 import autotest.entity.BookedTickets;
 import autotest.entity.SearchData;
 import autotest.entity.TicketData;
+import autotest.entity.forDataproviders.DateTests;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.Utils;
+import autotest.utils.exception.CityAutocompleteException;
 import autotest.utils.listeners.AllureOnFailListener;
 import autotest.utils.listeners.RunTestAgainIfFailed;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Link;
 import lombok.extern.log4j.Log4j;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -344,6 +348,254 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         TicketData ticketData = BookedTickets.getTicketsList().get(0);
         BookedTickets.getTicketsList().remove(0);
         testSuite.front_17714(ticketData);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19452:Багаж (фильтр) П24",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19452")
+    public void c1_front_19452(){
+        log.info(">>>> c1_front_19452() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19452();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19453:Время вылета/прилета П24",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
+    public void c1_front_19453(){
+        log.info(">>>> c1_front_19453() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19453();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19454:Аэропорт П24",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19454")
+    public void c1_front_19454(){
+        log.info(">>>> c1_front_19454() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Лондон");
+            s.setArrivalCity("Нью-Йорк");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19454();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19455:Авиакомпании П24",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19455")
+    public void c1_front_19455(){
+        log.info(">>>> c1_front_19455() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19455();
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19579:Прямые перелеты, пересадки П24",
+            groups = {"Поиск билетов"},
+            priority = 300)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19579")
+    public void c1_front_19579(){
+        log.info(">>>> c1_front_19579() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Лондон");
+            s.setArrivalCity("Нью-Йорк");
+            s.setDaysFwd(190);
+            s.setDaysBckwd(194);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(190));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(194));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19579();
+    }
+
+    @DataProvider
+    public static Object[][] dataForDepartureAndArrivalFields() {
+        return Dataproviders.dataForDepartureAndArrivalFields();
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForDepartureAndArrivalFields",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14699:Неправильный ввод города в поле 'Откуда'(город вылета) (П24)",
+            groups = {"Негативные"},
+            priority = 400)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14699")
+    public void d1_front_14699(String searchValue){
+        log.info(">>>> d1_front_14699() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity(searchValue);
+            s.setArrivalCity("Харьков");
+            s.setPassengersCount(1);
+        });
+
+        try {
+            testSuite.performSearch(searchData);
+        } catch (CityAutocompleteException e) {
+            log.info("Check error message for " + "'" + searchValue + "'");
+        }
+        testSuite.negativeSearchDeparture(searchValue);
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForDepartureAndArrivalFields",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14700:Неправильный ввод города в поле 'Куда'(город прилета) (П24)",
+            groups = {"Негативные"},
+            priority = 410)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14700")
+    public void d2_front_14700(String searchValue){
+        log.info(">>>> d2_front_14700() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity(searchValue);
+            s.setPassengersCount(1);
+        });
+
+        try {
+            testSuite.performSearch(searchData);
+        } catch (CityAutocompleteException e) {
+            log.info("Check error message for " + "'" + searchValue + "'");
+        }
+        testSuite.negativeSearchArrival(searchValue);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14864:Неправильный ввод количества пасажиров (детей, младенцев) П24",
+            groups = {"Негативные"},
+            priority = 420)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14864")
+    public void d3_front_14864(){
+        log.info(">>>> d3_front_14864() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setAdultsCount(1);
+            s.setInfantCount(2);
+        });
+
+        testSuite.negativeAddMorePassengersThanItAllowed(searchData);
+
+        searchData.setAdultsCount(1);
+        searchData.setInfantCount(0);
+        searchData.setChildCount(9);
+        testSuite.negativeAddMorePassengersThanItAllowed(searchData);
+    }
+
+    @DataProvider
+    public static Object[][] dataForBirthdayField() {
+        return Dataproviders.dataForBirthdayField();
+    }
+
+    @Test(  enabled = true,
+            dataProvider = "dataForBirthdayField",
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-14293:Неправильный ввод даты рождения для покупки билета (П24)",
+            groups = {"Негативные"},
+            priority = 430)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14293")
+    public void d4_front_14293(DateTests dateTests){
+        log.info(">>>> d4_front_14293() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("П24");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(182);
+            s.setDaysBckwd(186);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(182));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(186));
+            s.setPassengersCount(1);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.negativeIncorrectBirthDate(dateTests);
+    }
+    @Test(  enabled = true,
+            description = "Ручное сторнирование бронировок",
+            groups = {"Manual Running"},
+            priority = 10000)
+    public void stornBookedTicketsManually() {
+        log.info(">>>> Запуск сборки по стронированию бронировок для " + CV.phone + " ...");
+        new TestSuite().stornBookings();
+        CV.stornBookedTickets = "false";
     }
 
 }

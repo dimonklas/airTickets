@@ -87,4 +87,10 @@ public class MainPage {
         switchTo().frame("avia-widget-frame");
         return channel;
     }
+
+    @Step("Перейти в архив со страницы поиска")
+    public ArchivePage openArchivePage() {
+        $(By.linkText("Архив билетов")).shouldBe(visible).click();
+        return new ArchivePage();
+    }
 }

@@ -142,7 +142,7 @@ public class ArchivePage {
         $x(".//*[@data-ng-click='modal.close()']").shouldBe(visible, enabled.because("Кнопка (крестик) отмены Аннуляции бронирования"));
         $x(".//*[text()='Подтвердить']").shouldBe(visible.because("Кнопка подтверждения отмены бронирования")).click();
 
-        $x(String.format(".//*[text()='%s']", alertText)).waitUntil(appear, 30*1000);
+        $x(String.format(".//*[text()='%s']", alertText)).waitUntil(appear, 60*1000);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
 
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);

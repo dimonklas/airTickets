@@ -1,17 +1,19 @@
 package autotest.pages;
 
+import autotest.utils.ConfigurationVariables;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 public class PaymentPage {
+
+    private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     public SelenideElement
             title = $(By.xpath(".//*[text()='Выберите способ оплаты']"));
@@ -29,7 +31,10 @@ public class PaymentPage {
             selectMonth = $(By.name("exp_date_month")),
             cvvField = $(By.name("card_cvv")),
             payBtn = $(By.xpath(".//button[text()='Оплатить']")),
-            backBtn = $(By.xpath(".//button[text()='Назад']"));
+            backBtn = $(By.xpath(".//button[text()='Назад']")),
+            confirmPaymentCheckBox = $x("//*[@id='insurance-confirm']//../label"),
+            confirmOtpButton = $x("//*[text()='Подтвердить']"),
+            otpCode = $(By.name("otpcode"));
 
 
     @Step("Проведем оплату картой")
@@ -51,6 +56,45 @@ public class PaymentPage {
 
         backBtn.shouldBe(visible,enabled);
         payBtn.shouldBe(visible,enabled).click();
+    }
+
+    @Step("Проведем оплату картой")
+    public void doPaymentByCard() {
+        sleep(3 * 1000);
+        payByCardBtn.shouldBe(visible,enabled).click();
+        linkRules.shouldBe(visible,enabled);
+        linkServices.shouldBe(visible,enabled);
+
+        $(By.name("cardsSelect")).shouldBe(visible).click();
+        $x(".//*[contains(text(),'**51')]").shouldBe(visible).click();
+        confirmPaymentCheckBox.shouldBe(visible, enabled).click();
+
+//        backBtn.shouldBe(visible,enabled);
+        payBtn.shouldBe(visible,enabled).click();
+
+        otpCode.waitUntil(visible, 30 *1000);
+        otpCode.shouldBe(visible).setValue(CV.otp);
+
+        confirmOtpButton.waitUntil(enabled, 5 * 1000);
+        confirmOtpButton.shouldBe(visible, enabled).click();
+
+        if (confirmOtpButton.isDisplayed()) confirmOtpButton.click();
+        $x("//*[contains(text(),'Создана бронировка')]").waitUntil(visible, 120 * 1000);
+    }
+
+    @Step("ID билета, после оплаты")
+    public String getIdTicketAfterPayment() {
+        return $x("//*[contains(text(),'Создана бронировка')]//../b[1]").getText();
+    }
+
+    @Step("Перейдем в архив билетов")
+    public void openArchive() {
+        $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
+        if (WebDriverRunner.getWebDriver().getWindowHandles().size() > 1) {
+            switchTo().window(1);
+            switchTo().defaultContent();
+        }
+        ArchivePage.waitForArchivePageLoad();
     }
 
     @Step("Проведем оплату картой в архиве")

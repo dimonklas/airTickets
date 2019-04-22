@@ -4,7 +4,9 @@ package autotest.pages;
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.exception.NotClickedException;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -213,8 +215,10 @@ public class PassengersDataPage {
     @Step("Перейдем в архив билетов")
     public void openArchive() {
         $(By.linkText("Архив билетов")).shouldBe(visible, enabled).click();
-        switchTo().window(1);
-        switchTo().defaultContent();
+        if (WebDriverRunner.getWebDriver().getWindowHandles().size() > 1) {
+            switchTo().window(1);
+            switchTo().defaultContent();
+        }
         ArchivePage.waitForArchivePageLoad();
     }
 

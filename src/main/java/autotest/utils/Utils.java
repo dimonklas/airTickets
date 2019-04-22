@@ -226,8 +226,6 @@ public class Utils {
     public static void closeTabAfterOpenArchivePage() {
         if (WebDriverRunner.getWebDriver().getWindowHandles().size() > 1) {
             switchTo().window(1).close();
-        } else {
-            switchTo().window(0).close();
         }
     }
 }

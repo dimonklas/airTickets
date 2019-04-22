@@ -164,7 +164,7 @@ class TestSuite {
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
-        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) closeTabAfterOpenArchivePage();
+//        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) closeTabAfterOpenArchivePage();
     }
 
 

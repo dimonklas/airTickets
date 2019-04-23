@@ -24,11 +24,13 @@ import static org.testng.Assert.assertEquals;
 class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
+    public static String currentChannel;
 
 
     void performSearch(SearchData search) {
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
+        currentChannel = search.getChannel();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel(search.getChannel())
@@ -366,7 +368,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -394,7 +395,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -427,7 +427,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -450,7 +449,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -473,7 +471,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -497,7 +494,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -655,7 +651,6 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
-        String currentChannel = mainPage.getCurrentChannel();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
         PassengersDataPage passengersDataPage = new PassengersDataPage();
 

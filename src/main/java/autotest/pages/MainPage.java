@@ -92,15 +92,6 @@ public class MainPage {
         return this;
     }
 
-    @Step("Вернуть текущий канал")
-    public String getCurrentChannel() {
-        switchTo().defaultContent();
-        String channel = $(By.id("field-channel")).shouldBe(visible).getText();
-        $("[name=avia-widget-frame]").shouldBe(Condition.enabled);
-        switchTo().frame("avia-widget-frame");
-        return channel;
-    }
-
     @Step("Перейти в архив со страницы поиска")
     public ArchivePage openArchivePage() {
         $(By.linkText("Архив билетов")).shouldBe(visible).click();

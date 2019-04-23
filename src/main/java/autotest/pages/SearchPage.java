@@ -171,6 +171,7 @@ public class SearchPage {
         setAdultsCount(adult);
         setChildrenCount(child);
         setInfantCount(infant);
+        $x("//*[@id='search-point-arrival']//..//..//*[contains(text(),'выпадающего списка')]").waitUntil(disappear, 15 * 1000);
         Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
                 "Неправильно установили количество пассажиров");
     }

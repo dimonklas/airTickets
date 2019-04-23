@@ -399,6 +399,10 @@ class TestSuite {
             mainPage.openArchivePage(CV.phone);
         }
 
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
+        }
+
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkCloseButton();
@@ -428,6 +432,10 @@ class TestSuite {
             mainPage.openArchivePage(CV.phone);
         }
 
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
+        }
+
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkTicketMainInfoServices();
@@ -445,6 +453,10 @@ class TestSuite {
         String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -466,6 +478,10 @@ class TestSuite {
             mainPage.openArchivePage(CV.phone);
         }
 
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
+        }
+
         archivePage.pressMoreInfoButton(ticket.getBookingId());
         archivePage.checkTicketMainInfoButtons();
         archivePage.checkTicketMainInfoServices();
@@ -484,6 +500,10 @@ class TestSuite {
         String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());

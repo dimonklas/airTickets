@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <suiteFile>testngP24.xml</suiteFile>
+        <suiteFile>testng.xml</suiteFile>
         <suiteName>TestSuite</suiteName>
         <selenideVersion>5.0.0</selenideVersion>
         <allure.version>2.7.0</allure.version>

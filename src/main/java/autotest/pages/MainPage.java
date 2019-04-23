@@ -18,7 +18,7 @@ public class MainPage {
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     public MainPage() {
-        baseUrl =  String.format("https://%s/frame_noauth/?sid=%s", CV.urlBase, CV.prominSession);
+        baseUrl = String.format("https://%s/frame_noauth/?sid=%s", CV.urlBase, CV.prominSession);
     }
 
     private SelenideElement
@@ -27,14 +27,14 @@ public class MainPage {
 
 
     @Step("Откроем главную страницу")
-    public MainPage openMainPage(){
+    public MainPage openMainPage() {
         open(baseUrl);
         return this;
     }
 
 
     @Step("Перейдем на страницу поиска билетов через канал {channel}")
-    public MainPage openSearchPageViaChannel(String channel){
+    public MainPage openSearchPageViaChannel(String channel) {
         String xPath = String.format(".//optgroup[@label='Поиск']/option[contains(text(),'%s')]", channel);
         channelList.shouldBe(visible, enabled).click();
         $(By.xpath(xPath)).shouldBe(visible).click();
@@ -47,14 +47,27 @@ public class MainPage {
     }
 
     @Step("Откроем архив билетов для {phoneNum}")
-    public void openArchivePage(String phoneNum){
+    public void openArchivePage(String phoneNum) {
         open(Utils.getArchiveUrl(phoneNum));
         switchTo().defaultContent();
         ArchivePage.waitForArchivePageLoad();
     }
 
+    @Step("Откроем канал и перейдём в архив (п24)")
+    public void openChannelAndArchive(String channel) {
+        openMainPage();
+        openSearchPageViaChannel(channel);
+        submitOpenFrame();
+
+        Utils.switchFrame();
+        $(By.linkText("Архив билетов")).waitUntil(visible, 60 * 1000);
+        $(By.linkText("Архив билетов")).shouldBe(visible).click();
+
+        ArchivePage.waitForArchivePageLoad();
+    }
+
     @Step("Перейдем в архив билетов через канал {channel}")
-    public MainPage openArchivePageViaChannel(String channel){
+    public MainPage openArchivePageViaChannel(String channel) {
         String xPath = String.format(".//optgroup[@label='Архив']/option[contains(text(),'%s')]", channel);
         channelList.shouldBe(visible, enabled).click();
         $(By.xpath(xPath)).shouldBe(visible).click();
@@ -62,7 +75,7 @@ public class MainPage {
     }
 
     @Step("Заполним поле моб. телефона")
-    public MainPage fillPhoneField(String number){
+    public MainPage fillPhoneField(String number) {
         $(By.id("field-phone")).shouldBe(visible, enabled).setValue(number);
         return this;
     }
@@ -74,7 +87,7 @@ public class MainPage {
     }
 
     @Step("Нажмем кнопку 'Сгенерировать фрейм'")
-    public MainPage submitOpenFrame(){
+    public MainPage submitOpenFrame() {
         generateFrameBtn.shouldBe(enabled).click();
         return this;
     }

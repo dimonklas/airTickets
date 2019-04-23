@@ -1,6 +1,5 @@
 package autotest.utils.listeners;
 
-import autotest.utils.DriverUtils;
 import com.codeborne.selenide.Screenshots;
 import com.google.common.io.Files;
 import io.qameta.allure.Attachment;
@@ -35,7 +34,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestFailure(final ITestResult result) {
         try {
-           DriverUtils.screenshot();
+           screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +43,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestSkipped(final ITestResult result) {
         try {
-            DriverUtils.screenshot();
+            screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }    }
@@ -52,7 +51,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestFailedButWithinSuccessPercentage(final ITestResult result) {
         try {
-            DriverUtils.screenshot();
+            screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }    }

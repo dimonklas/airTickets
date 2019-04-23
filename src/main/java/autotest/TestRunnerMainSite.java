@@ -24,7 +24,7 @@ import java.io.IOException;
 @Log4j
 @Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
-public class TestRunner extends SetUpAndTearDown {
+public class TestRunnerMainSite extends SetUpAndTearDown {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
     private TestSuite testSuite = new TestSuite();

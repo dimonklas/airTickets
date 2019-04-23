@@ -10,7 +10,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="autotest.TestRunner" />
+			<class name="autotest.TestRunnerMainSite" />
 		</classes>
 	</test>
 
@@ -21,7 +21,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="autotest.TestRunner" />
+			<class name="autotest.TestRunnerMainSite" />
 		</classes>
 	</test>
 
@@ -32,7 +32,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="autotest.TestRunner" />
+			<class name="autotest.TestRunnerMainSite" />
 		</classes>
 	</test>
 
@@ -43,7 +43,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="autotest.TestRunner" />
+			<class name="autotest.TestRunnerMainSite" />
 		</classes>
 	</test>
 

@@ -179,9 +179,9 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
             s.setDepartureCity("Киев");
             s.setArrivalCity("Харьков");
             s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(182));
             s.setDaysFwd(180);
-            s.setDaysBckwd(180);
+            s.setDaysBckwd(182);
             s.setPassengersCount(1);
         });
 

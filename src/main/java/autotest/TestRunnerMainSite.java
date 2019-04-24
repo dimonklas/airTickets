@@ -22,7 +22,7 @@ import java.io.IOException;
 
 
 @Log4j
-@Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
+@Epic("Внешний Сайт - Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
 public class TestRunnerMainSite extends SetUpAndTearDown {
 

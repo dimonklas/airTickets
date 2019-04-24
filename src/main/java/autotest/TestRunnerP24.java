@@ -19,7 +19,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Log4j
-@Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала) 24")
+@Epic("П24 Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
 public class TestRunnerP24 extends SetUpAndTearDown {
 

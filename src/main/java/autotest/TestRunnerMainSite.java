@@ -684,7 +684,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
     }
 
     @Test(  enabled = false,
-            description = "тестовый тест",
+            description = "тестовый тест для тестов",
             groups = {"тест билетов"},
             priority = 7000)
     public void testEmail() throws IOException {

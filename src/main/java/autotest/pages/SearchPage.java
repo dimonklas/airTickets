@@ -171,7 +171,12 @@ public class SearchPage {
         setAdultsCount(adult);
         setChildrenCount(child);
         setInfantCount(infant);
-        $x("//*[@id='search-point-arrival']//..//..//*[contains(text(),'выпадающего списка')]").waitUntil(disappear, 15 * 1000);
+        // костыль для ожидания исчезновения надиси под полем (чтобы работал для позитивного и негативного сценариев)
+        try {
+            $x("//*[@id='search-point-arrival']//..//..//*[contains(text(),'выпадающего списка')]").waitUntil(disappear, 6 * 1000);
+        } catch (Throwable e) {
+            log.info("Выберите город из выпадающего списка");
+        }
         Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
                 "Неправильно установили количество пассажиров");
     }

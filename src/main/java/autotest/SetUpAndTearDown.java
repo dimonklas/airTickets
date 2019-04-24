@@ -109,7 +109,7 @@ public class SetUpAndTearDown {
         }
     }
 
-    @AfterTest(alwaysRun = true)
+    @AfterTest(alwaysRun = false)
     public void closeDriver() {
         WebDriverRunner.closeWebDriver();
     }

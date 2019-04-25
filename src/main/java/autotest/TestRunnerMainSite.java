@@ -233,40 +233,6 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
-    @Test(  enabled = true,
-            retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(внешний сайт)",
-            groups = {"Покупка билетов"},
-            priority = 70)
-    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
-    public void a7_front_15720(){
-        log.info(">>>> a7_front_15720() is running...");
-        SearchData searchData = new SearchData(s -> {
-            s.setChannel("Внешний Сайт");
-            s.setWaysType("Туда и обратно");
-            s.setClassType("Эконом");
-            s.setDepartureCity("Киев");
-            s.setArrivalCity("Харьков");
-            s.setDaysFwd(183);
-            s.setDaysBckwd(188);
-            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(183));
-            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(188));
-            s.setFakeDoc(true);
-        });
-
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-
-        TicketData ticketData = new TicketData(t -> {
-            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
-            t.setClientDataItem(cl);
-        });
-
-        testSuite.performSearch(searchData);
-        testSuite.bookTickets(searchData, cl, ticketData);
-    }
-
-
-
 
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
@@ -430,12 +396,12 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
 
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
-            description = "front-19724:FF/Р24/Сложный маршрут/1взр+3реб/док-off (Внешний сайт)",
+            description = "front-19726:FF/Фронт/Сложный/+2маршрута/1взр1реб",
             groups = {"Покупка билетов"},
             priority = 102)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19724")
     public void a12_front_19726() {
-        log.info(">>>> a8_front_19724 is running...");
+        log.info(">>>> a8_front_19726 is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Сложный маршрут");
@@ -464,6 +430,38 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
 
         testSuite.performSearch(searchData);
         testSuite.front_19724(searchData, clientList, ticketData);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 70)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
+    public void a7_front_15720(){
+        log.info(">>>> a7_front_15720() is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDaysFwd(183);
+            s.setDaysBckwd(188);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(183));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(188));
+            s.setFakeDoc(true);
+        });
+
+        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
+            t.setClientDataItem(cl);
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.bookTickets(searchData, cl, ticketData);
     }
 
 

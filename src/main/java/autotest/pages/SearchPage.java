@@ -246,7 +246,8 @@ public class SearchPage {
                     sleep(600);
                 }
             } else {
-                for (int i = actCount; i >= (actCount - childCount); i--) {
+                int j = actCount - childCount;
+                for (int i = 0; i <= j; i++) {
                     removeCount.click();
                     sleep(600);
                 }

@@ -234,7 +234,7 @@ public class ArchivePage {
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
-        if ($x(String.format(".//*[text()='%s']", alertText)).isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
+        if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
         $x(".//*[text()='Основная информация']").waitUntil(visible, 45 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
         $x("//*[contains(text(),'Услуги')]//..//*[text()='История заявок']").shouldBe(visible).click();

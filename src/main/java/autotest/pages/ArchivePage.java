@@ -144,7 +144,7 @@ public class ArchivePage {
 
         $x(String.format(".//*[text()='%s']", alertText)).waitUntil(appear, 60*1000);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
-        if ($x(String.format(".//*[text()='%s']", alertText)).isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
 
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
         $x(".//a[text()='Аннулировать']").shouldNotBe(visible.because("После аннуляции кнопка должна пропасть"));

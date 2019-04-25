@@ -183,13 +183,14 @@ public class SearchPage {
 
 
     @Step("Установим количество пассажиров")
-    public void setPassengersCountForDifficultRoute(int adult, int child){
-        int totalCount = adult + child;
+    public void setPassengersCountForDifficultRoute(int adult, int child, int infant){
+        int totalCount = adult + child + infant;
 
         $x("(.//*[@data-pc-models='vm.models.passengers'])[2]").shouldBe(visible).click();
 
         setAdultsCount(adult);
         setChildrenCount(child);
+        setInfantCount(infant);
         Assert.assertTrue(
                 $x("(.//*[@data-pc-models='vm.models.passengers']//input)[2]")
                         .getValue()

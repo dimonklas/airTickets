@@ -3,10 +3,7 @@ package autotest.pages;
 
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.exception.NotClickedException;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.*;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -86,7 +83,11 @@ public class PassengersDataPage {
         $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", index))).shouldBe(visible);
 
-        $(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='Отключите поле, если нет при себе паспорта' or text()='Данные паспорта не обязательны, но вы можете их заполнить включив поле']", passType))).shouldBe(visible);
+        String textForPassportField1 = "Отключите поле, если нет при себе паспорта";
+        String textForPassportField2 = "Данные паспорта не обязательны, но вы можете их заполнить включив поле";
+        String textForPassportField3 = "Для выбранного рейса необходимы данные паспорта";
+
+        $$(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='%s' or text()='%s' or text()='%s']", passType , textForPassportField1, textForPassportField2, textForPassportField3))).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
 
         if (expireDateText.get(0).isEnabled()) {
             $x(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index)).shouldBe(visible);

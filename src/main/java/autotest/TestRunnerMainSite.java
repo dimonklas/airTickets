@@ -436,7 +436,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(внешний сайт)",
             groups = {"Покупка билетов"},
-            priority = 70)
+            priority = 103)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
     public void a7_front_15720(){
         log.info(">>>> a7_front_15720() is running...");

@@ -172,6 +172,11 @@ public class ArchivePage {
         $x(".//*[@ng-message='required']").shouldNotBe(visible.because("Рейс или пассажир не выбран на форме"));
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
 
+        if ($x("//*[text()='Необходимо выбрать рейс']").isDisplayed()) {
+            $x(".//*[@for='checkbox-baggage-0']").shouldBe(visible, enabled).click();  //костыль
+            $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
+        }
+
         $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);

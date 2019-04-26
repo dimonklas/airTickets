@@ -80,7 +80,7 @@ public class PaymentPage {
         confirmOtpButton.shouldBe(visible, enabled).click();
 
         if (confirmOtpButton.isDisplayed()) confirmOtpButton.click();
-        $x("//*[contains(text(),'Создана бронировка')]").waitUntil(visible, 120 * 1000);
+        $x(".//*[contains(text(),'Создана бронировка') or contains(text(),'К сожалению, нас опередили и билеты по цене')]").waitUntil(visible, 120 * 1000);
     }
 
     @Step("Покупка билета в рассрочку")

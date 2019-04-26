@@ -19,7 +19,7 @@ public class PassengersDataPage {
             passengersDataText = $(By.xpath(".//h2[text()='Данные о пассажирах']")),
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
             preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
-            bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью']")),
+            bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью' or contains(text(),'К сожалению, нас опередили и билеты по цене')]")),
             errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']")),
             errorText2 = $x(".//*[contains(@class,'alert-danger')]");
 

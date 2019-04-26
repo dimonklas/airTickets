@@ -604,7 +604,7 @@ class TestSuite {
             mainPage.openArchivePage(CV.phone);
         }
 
-        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 0) {
             mainPage.openChannelAndArchive(currentChannel);
         }
 

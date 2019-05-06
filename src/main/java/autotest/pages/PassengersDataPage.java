@@ -20,6 +20,7 @@ public class PassengersDataPage {
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
             preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
             bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью' or contains(text(),'К сожалению, нас опередили и билеты по цене')]")),
+            bookingMessageTextIncreasedPrice = $(By.xpath(".//div[contains(text(),'К сожалению, нас опередили и билеты по цене')]")),
             errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']")),
             errorText2 = $x(".//*[contains(@class,'alert-danger')]");
 
@@ -183,7 +184,11 @@ public class PassengersDataPage {
                 errorText2.isDisplayed()) {
             throw new NotClickedException("Ошибка при бронировании билета");
         }
-        bookingMessageText.waitUntil(appear, 120 * 1000).shouldBe(visible).scrollTo();
+        try {
+            bookingMessageText.waitUntil(appear, 120 * 1000).shouldBe(visible).scrollTo();
+        } catch (Throwable e) {
+            bookingMessageTextIncreasedPrice.waitUntil(appear, 20 * 1000).shouldBe(visible).scrollTo();
+        }
     }
 
     @Step("Нажмем кнопку 'Купить'")

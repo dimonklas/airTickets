@@ -8,19 +8,19 @@ import java.util.HashSet;
 public class AirportsData {
 
     public HashSet<String> getLondonAirports() {
-        HashSet<String> arrayList = new HashSet<>();
-        arrayList.add("Гатвик (Лондон)");
-        arrayList.add("Хитроу (Лондон)");
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("Гатвик (Лондон)");
+        hashSet.add("Хитроу (Лондон)");
 //        arrayList.add("Станстед (Лондон)");
-        arrayList.add("Лондон Сити (Лондон)");
-        return arrayList;
+        hashSet.add("Лондон Сити (Лондон)");
+        return hashSet;
     }
 
     public HashSet<String> getNewYorkAirports() {
-        HashSet<String> arrayList = new HashSet<>();
-        arrayList.add("Джон Ф. Кеннеди (Нью-Йорк)");
-        arrayList.add("Ньюарк Либерти Интернешнл (Нью-Йорк)");
-        arrayList.add("Ла-Гардия (Нью-Йорк)");
-        return arrayList;
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("Джон Ф. Кеннеди (Нью-Йорк)");
+        hashSet.add("Ньюарк Либерти Интернешнл (Нью-Йорк)");
+        hashSet.add("Ла-Гардия (Нью-Йорк)");
+        return hashSet;
     }
 }

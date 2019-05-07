@@ -144,6 +144,7 @@ public class ArchivePage {
 
         $x(String.format(".//*[text()='%s']", alertText)).waitUntil(appear, 60*1000);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        sleep(1000);
         if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
 
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -172,6 +173,7 @@ public class ArchivePage {
         $x(".//*[@ng-message='required']").shouldNotBe(visible.because("Рейс или пассажир не выбран на форме"));
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
 
+        sleep(1000);
         if ($x("//*[text()='Необходимо выбрать рейс']").isDisplayed()) {
             $x(".//*[@for='checkbox-baggage-0']").shouldBe(visible, enabled).click();  //костыль
             $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
@@ -181,6 +183,7 @@ public class ArchivePage {
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        sleep(1000);
         if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
         $x(".//*[text()='Основная информация']").waitUntil(visible, 45 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -217,6 +220,7 @@ public class ArchivePage {
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        sleep(1000);
         if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
         $x(".//*[text()='Основная информация']").waitUntil(visible, 45 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);
@@ -239,6 +243,7 @@ public class ArchivePage {
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
+        sleep(1000);
         if (!$x(".//*[text()='Основная информация']").isDisplayed()) $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();  //костыль
         $x(".//*[text()='Основная информация']").waitUntil(visible, 45 * 1000);
         $x(String.format(".//*[text()='Ваше бронирование']/..//*[contains(text(),'%s')]", bookingId)).shouldBe(visible);

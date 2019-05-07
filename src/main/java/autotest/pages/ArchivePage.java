@@ -179,7 +179,7 @@ public class ArchivePage {
             $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled).click();
         }
 
-        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[text()='Успешно']").waitUntil(exist, 60 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();
@@ -239,7 +239,7 @@ public class ArchivePage {
         $x(".//*[text()='Отправить заявку']").shouldBe(visible, enabled.because("Кнопка 'Отправить заявку'")).click();
         $x(".//*[@class='text-error']").shouldNotBe(visible.because("Не выбрали тип питания"));
 
-        $x(".//*[text()='Успешно']").waitUntil(exist, 45 * 1000);
+        $x(".//*[text()='Успешно']").waitUntil(exist, 60 * 1000);
         $x(".//*[@data-ng-click='modal.close()']").should(exist.because("Кнопка закрытия модального окна"));
         $x(String.format(".//*[text()='%s']", alertText)).shouldBe(visible);
         $x(".//*[text()='OK']").shouldBe(visible, enabled.because("Кнопка ОК")).click();

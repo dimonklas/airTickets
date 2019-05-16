@@ -20,6 +20,7 @@ public class PaymentPage {
 
     private SelenideElement
             payByCardBtn = $x(".//*[text()='С карты/счета']/parent::div"),
+            payInstalmentBtn = $x(".//*[text()='В рассрочку']/parent::div"),
             linkRules = $(By.linkText("правилами билета")),
             linkServices = $(By.linkText("предоставления услуг")),
             agreeChkBox = $x(".//*[@for='insurance-confirm']"),
@@ -79,7 +80,14 @@ public class PaymentPage {
         confirmOtpButton.shouldBe(visible, enabled).click();
 
         if (confirmOtpButton.isDisplayed()) confirmOtpButton.click();
-        $x("//*[contains(text(),'Создана бронировка')]").waitUntil(visible, 120 * 1000);
+        $x(".//*[contains(text(),'Создана бронировка') or contains(text(),'К сожалению, нас опередили и билеты по цене')]").waitUntil(visible, 120 * 1000);
+    }
+
+    @Step("Покупка билета в рассрочку")
+    public void doInstalments() {
+        sleep(2 * 1000);
+        payInstalmentBtn.shouldBe(visible, enabled).click();
+        $x(".//*[text()='К сожалению, на текущую сумму данная услуга вам недоступна']").waitUntil(visible, 20 * 1000);
     }
 
     @Step("ID билета, после оплаты")

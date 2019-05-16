@@ -24,11 +24,13 @@ import static org.testng.Assert.assertEquals;
 class TestSuite {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
+    public static String currentChannel;
 
 
     void performSearch(SearchData search) {
         MainPage mainPage = new MainPage();
         SearchPage searchPage = new SearchPage();
+        currentChannel = search.getChannel();
 
         mainPage.openMainPage()
                 .openSearchPageViaChannel(search.getChannel())
@@ -41,16 +43,18 @@ class TestSuite {
         searchPage.selectPlusMinus3Days(search.isPlusMinus3days());
 
         if ("Сложный маршрут".equalsIgnoreCase(search.getWaysType())) {
-            searchPage.setDifficultRouteCities(search.getDepartureCity(), search.getArrivalCity(),
+            searchPage.setDifficultRouteCities(
+                    search.getDepartureCity(), search.getArrivalCity(),
                     search.getDepartureCity_2(), search.getArrivalCity_2(),
-                    search.getDepartureCity_3(), search.getArrivalCity_4(),
-                    search.getDepartureCity_3(), search.getArrivalCity_4());
-            searchPage.setDatesForDifficultRoute(search.getDaysForDifficult_1(),
+                    search.getDepartureCity_3(), search.getArrivalCity_3(),
+                    search.getDepartureCity_4(), search.getArrivalCity_4());
+            searchPage.setDatesForDifficultRoute(
+                    search.getDaysForDifficult_1(),
                     search.getDaysForDifficult_2(),
                     search.getDaysForDifficult_3(),
                     search.getDaysForDifficult_4());
             if (search.isNeedRemoveLastRoute()) searchPage.removeLastDifficultRoute();
-            searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount());
+            searchPage.setPassengersCountForDifficultRoute(search.getAdultsCount(), search.getChildCount(), search.getInfantCount());
         } else {
             searchPage.setDepartureCity(search.getDepartureCity());
             searchPage.setArrivalCity(search.getArrivalCity());
@@ -164,7 +168,7 @@ class TestSuite {
 
         passengersDataPage.openArchive();
         archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
-//        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) closeTabAfterOpenArchivePage();
+        closeTabAfterOpenArchivePage();
     }
 
 
@@ -359,6 +363,110 @@ class TestSuite {
         }
     }
 
+    //Покупка билета в рассрочку для одного взрослого +- 3 дня (для front_19722 и front_19725)
+    void front_19722(SearchData search, List<ClientDataItem> clientList, TicketData ticket) {
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+
+        searchResultsPage.checkMatrixFlightsPresence();
+//        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketForwardDetails();
+//        ticketInfoPage.checkTicketBackwardDetails();
+
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
+
+        fillPassengersFields(search, clientList);
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        paymentPage.doInstalments();
+    }
+
+    // Покупка билета для двух взрослых и одного младенца
+    void front_19723(SearchData search, List<ClientDataItem> clientList, TicketData ticket) {
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        searchResultsPage.checkMatrixFlightsPresence();
+//        searchResultsPage.checkResultsForPlusMinus3Days(search.getDaysFwd(), search.getDepartureCity(), search.getArrivalCity());
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketForwardDetails();
+        ticketInfoPage.checkTicketBackwardDetails();
+
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
+
+        fillPassengersFields(search, clientList);
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        } else {
+            paymentPage.doPaymentByCard();
+            String idTicket = paymentPage.getIdTicketAfterPayment();
+            paymentPage.openArchive();
+            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
+        }
+    }
+
+    // покупка в рассрочку билета 1 взрослый и три ребенка (Для front_19724 и front_19726)
+    void front_19724(SearchData search, List<ClientDataItem> clientList, TicketData ticket) {
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketDetailsForDifficultRoute(2);
+
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
+
+        fillPassengersFields(search, clientList);
+        passengersDataPage.buyTicket();
+
+        paymentPage.title.shouldBe(visible);
+        paymentPage.doInstalments();
+    }
+
 
     //Оплата бронировки авиабилета в архиве
     void front_14506(TicketData ticket) {
@@ -366,7 +474,6 @@ class TestSuite {
         ArchivePage archivePage = new ArchivePage();
         PaymentPage paymentPage = new PaymentPage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
         }
@@ -394,9 +501,12 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -423,9 +533,12 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -442,9 +555,12 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -461,9 +577,12 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 1) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -481,9 +600,12 @@ class TestSuite {
         MainPage mainPage = new MainPage();
         ArchivePage archivePage = new ArchivePage();
 
-        String currentChannel = mainPage.getCurrentChannel();
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             mainPage.openArchivePage(CV.phone);
+        }
+
+        if (currentChannel.equalsIgnoreCase("П24") && BookedTickets.getTicketsList().size() > 0) {
+            mainPage.openChannelAndArchive(currentChannel);
         }
 
         archivePage.pressMoreInfoButton(ticket.getBookingId());
@@ -497,7 +619,7 @@ class TestSuite {
         if (currentChannel.equalsIgnoreCase("Внешний сайт")) {
             Utils.waitAndCheckForBookingStatusChanged(ticket.getBookingId(), "Отменён");
         } else {
-            archivePage.checkTicketStatus(ticket.getBookingId(), "Отменён");
+            Utils.waitAndCheckForBookingStatusChangedP24(ticket.getBookingId(), "Отменён", currentChannel);
         }
     }
 
@@ -589,9 +711,58 @@ class TestSuite {
         ticketFilterPage.filterFlight();
     }
 
+    void fillPassengersFields(SearchData search, List<ClientDataItem> clientList) {
+
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        //Индексы полей для xPath
+        int indexChild = search.getAdultsCount() + 1;
+        int indexInfant = search.getAdultsCount() + 1;
+        if (search.getChildCount() > 0) indexInfant = indexInfant + indexChild;
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+
+        int clientNumber = 0;
+        for (int i = 1; i <= search.getAdultsCount(); i++) {
+            passengersDataPage.checkPresenceOfTextElements(i, "Взрослый");
+
+            passengersDataPage.fillCustomersData(i, clientList.get(clientNumber).getLastName(), clientList.get(clientNumber).getFirstName(), clientList.get(clientNumber).getBirthDate());
+            passengersDataPage.fillCitizenship(i, CV.citizenship);
+            passengersDataPage.setSex(i, clientList.get(clientNumber).getSex());
+            passengersDataPage.fillDocData(i, clientList.get(clientNumber).getDocSN(), clientList.get(clientNumber).getDocExpDate(), search.isFakeDoc());
+            clientNumber++;
+        }
+
+        clientNumber = 0;
+        if (search.getChildCount() > 0) {
+            for (int i = 1; i <= search.getChildCount(); i++) {
+                passengersDataPage.fillCustomersData(indexChild, clientList.get(clientNumber).getLastName(), clientList.get(clientNumber).getFirstNameChd(), clientList.get(clientNumber).getBirthDateChd());
+                passengersDataPage.fillCitizenship(indexChild, CV.citizenship);
+                passengersDataPage.setSex(indexChild, clientList.get(clientNumber).getSexChd());
+                passengersDataPage.fillDocData(indexChild, clientList.get(clientNumber).getDocSNChd(), clientList.get(clientNumber).getDocExpDateChd(), search.isFakeDocChld());
+                clientNumber++;
+                indexChild++;
+            }
+        }
+
+
+        clientNumber = 0;
+        if (search.getInfantCount() > 0) {
+            for (int i = 1; i <= search.getInfantCount(); i++) {
+                passengersDataPage.fillCustomersData(indexInfant,  clientList.get(clientNumber).getLastName(),  clientList.get(clientNumber).getFirstNameInf(),  clientList.get(clientNumber).getBirthDateInf());
+                passengersDataPage.fillCitizenship(indexInfant, CV.citizenship);
+                passengersDataPage.setSex(indexInfant,  clientList.get(clientNumber).getSexInf());
+                passengersDataPage.fillDocData(indexInfant,  clientList.get(clientNumber).getDocSNInf(),  clientList.get(clientNumber).getDocExpDateInf(), search.isFakeDocInf());
+                clientNumber++;
+                indexInfant++;
+            }
+        }
+
+        passengersDataPage.fillEmail(CV.email);
+    }
 
     void negativeSearchDeparture(String searchValue) {
-        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").waitUntil(visible, 5 * 1000);
         if ("".equalsIgnoreCase(searchValue)) {
             assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {
@@ -600,7 +771,7 @@ class TestSuite {
     }
 
     void negativeSearchArrival(String searchValue) {
-        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").shouldBe(visible);
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").waitUntil(visible, 5 * 1000);
         if ("".equalsIgnoreCase(searchValue)) {
             assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {
@@ -632,6 +803,7 @@ class TestSuite {
 
 
     void negativeIncorrectBirthDate(DateTests dateTests) {
+        MainPage mainPage = new MainPage();
         SearchResultsPage searchResultsPage = new SearchResultsPage();
         TicketInfoPage ticketInfoPage = new TicketInfoPage();
         CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
@@ -640,9 +812,11 @@ class TestSuite {
         String id = searchResultsPage.getIdOfSearchResults().get(0);
         searchResultsPage.pressSelectButton(id);
         ticketInfoPage.waitForTicketRulesBtn();
-        customerContactDataPage.checkPresenceOfContactDataBlock();
-        customerContactDataPage.enterUserData();
 
+        if (currentChannel.equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
         passengersDataPage.checkErrorForBirthdayField(dateTests.getDateValue(), dateTests.getErrorText());
     }
 

@@ -3,6 +3,11 @@ package autotest.dto.custData;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
 @Generated("com.robohorse.robopojogenerator")
 public class ClientDataItem{
 
@@ -204,4 +209,14 @@ public class ClientDataItem{
 			",sexInf = '" + sexInf + '\'' + 
 			"}";
 		}
+
+		public void updateClientData() {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+			this.setDocExpDate(LocalDate.now().plusMonths(18).format(formatter).toString());
+			this.setDocExpDateInf(LocalDate.now().plusMonths(12).format(formatter).toString());
+			this.setBirthDateInf(LocalDate.now().minusMonths(9).format(formatter).toString());
+			this.setBirthDateChd(LocalDate.now().minusMonths(48).format(formatter).toString());
+		}
+
+
 }

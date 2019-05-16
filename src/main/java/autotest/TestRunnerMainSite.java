@@ -19,12 +19,15 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 @Log4j
-@Epic("Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
+@Epic("Внешний Сайт - Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
-public class TestRunner extends SetUpAndTearDown {
+public class TestRunnerMainSite extends SetUpAndTearDown {
 
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
     private TestSuite testSuite = new TestSuite();
@@ -52,6 +55,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -86,6 +90,8 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
             t.setClientDataItem(cl);
@@ -120,6 +126,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -179,13 +186,14 @@ public class TestRunner extends SetUpAndTearDown {
             s.setDepartureCity("Киев");
             s.setArrivalCity("Харьков");
             s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
-            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(182));
             s.setDaysFwd(180);
-            s.setDaysBckwd(180);
+            s.setDaysBckwd(182);
             s.setPassengersCount(1);
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -220,6 +228,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -230,11 +239,210 @@ public class TestRunner extends SetUpAndTearDown {
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19722:Только туда/+-3 дня/бронь/рассрочка2 (Внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 80)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19722")
+    public void a8_front_19722() {
+        log.info(">>>> a8_front_19722 is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Только туда");
+            s.setPlusMinus3days(true);
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(182));
+            s.setDaysFwd(180);
+            s.setDaysBckwd(182);
+            s.setAdultsCount(2);
+            s.setPassengersCount(2);
+        });
+
+        List<ClientDataItem> clientList = Arrays.asList(
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl())
+        );
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(clientList.get(0).getLastName().toUpperCase() + " " + clientList.get(0).getFirstName().toUpperCase());
+            t.setClientDataItem(clientList.get(0));
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19722(searchData, clientList, ticketData);
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19723:Туда-обратно/+-3 дня/2 взр/покупка (Внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 90)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19723")
+    public void a9_front_19723() {
+        log.info(">>>> a8_front_19723 is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Туда и обратно");
+            s.setPlusMinus3days(true);
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(182));
+            s.setDaysFwd(180);
+            s.setDaysBckwd(182);
+            s.setAdultsCount(2);
+            s.setInfantCount(1);
+            s.setPassengersCount(3);
+        });
+
+        List<ClientDataItem> clientList = Arrays.asList(
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl())
+        );
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(clientList.get(0).getLastName().toUpperCase() + " " + clientList.get(0).getFirstName().toUpperCase());
+            t.setClientDataItem(clientList.get(0));
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19723(searchData, clientList, ticketData);
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19724:FF/Р24/Сложный маршрут/1взр+3реб/док-off (Внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 100)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19724")
+    public void a10_front_19724() {
+        log.info(">>>> a8_front_19724 is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Сложный маршрут");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Москва");
+            s.setArrivalCity("Минск");
+            s.setDepartureCity_2("Минск");
+            s.setArrivalCity_2("Киев");
+            s.setDepartureCity_3("Киев");
+            s.setArrivalCity_3("Стамбул");
+            s.setNeedRemoveLastRoute(true);
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(210));
+            s.setDaysForDifficult_1(180);
+            s.setDaysForDifficult_2(210);
+            s.setAdultsCount(1);
+            s.setChildCount(3);
+            s.setPassengersCount(4);
+        });
+
+        List<ClientDataItem> clientList = Arrays.asList(
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl())
+        );
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(clientList.get(0).getLastName().toUpperCase() + " " + clientList.get(0).getFirstName().toUpperCase());
+            t.setClientDataItem(clientList.get(0));
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19724(searchData, clientList, ticketData);
+    }
+
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19725:GC/Фронт/Только туда/1взр+1млад/FakeDoc (Внешний сайт)",
+            groups = {"Покупка билетов"},
+            priority = 101)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19725")
+    public void a11_front_19725() {
+        log.info(">>>> a8_front_19725 is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Только туда");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Киев");
+            s.setArrivalCity("Харьков");
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(182));
+            s.setDaysFwd(180);
+            s.setDaysBckwd(210);
+            s.setFakeDoc(true);
+            s.setAdultsCount(1);
+            s.setInfantCount(1);
+            s.setPassengersCount(2);
+        });
+
+        List<ClientDataItem> clientList = Arrays.asList(
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl()),
+                CV.clientData.get(Utils.randomCl())
+        );
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(clientList.get(0).getLastName().toUpperCase() + " " + clientList.get(0).getFirstName().toUpperCase());
+            t.setClientDataItem(clientList.get(0));
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19722(searchData, clientList, ticketData);
+    }
+
+    @Test(  enabled = true,
+            retryAnalyzer = RunTestAgainIfFailed.class,
+            description = "front-19726:FF/Фронт/Сложный/+2маршрута/1взр1реб",
+            groups = {"Покупка билетов"},
+            priority = 102)
+    @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19724")
+    public void a12_front_19726() {
+        log.info(">>>> a8_front_19726 is running...");
+        SearchData searchData = new SearchData(s -> {
+            s.setChannel("Внешний Сайт");
+            s.setWaysType("Сложный маршрут");
+            s.setClassType("Эконом");
+            s.setDepartureCity("Москва");
+            s.setArrivalCity("Минск");
+            s.setDepartureCity_2("Минск");
+            s.setArrivalCity_2("Киев");
+            s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
+            s.setDepartureDateBackward(Utils.getDateForFlightSearchResults(210));
+            s.setDaysForDifficult_1(180);
+            s.setDaysForDifficult_2(210);
+            s.setAdultsCount(1);
+            s.setInfantCount(1);
+            s.setPassengersCount(2);
+        });
+
+        List<ClientDataItem> clientList = Collections.singletonList(
+                CV.clientData.get(Utils.randomCl())
+        );
+
+        TicketData ticketData = new TicketData(t -> {
+            t.setOwnerFIO(clientList.get(0).getLastName().toUpperCase() + " " + clientList.get(0).getFirstName().toUpperCase());
+            t.setClientDataItem(clientList.get(0));
+        });
+
+        testSuite.performSearch(searchData);
+        testSuite.front_19724(searchData, clientList, ticketData);
+    }
+
     @Test(  enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(внешний сайт)",
             groups = {"Покупка билетов"},
-            priority = 70)
+            priority = 103)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
     public void a7_front_15720(){
         log.info(">>>> a7_front_15720() is running...");
@@ -252,6 +460,7 @@ public class TestRunner extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -684,7 +893,7 @@ public class TestRunner extends SetUpAndTearDown {
     }
 
     @Test(  enabled = false,
-            description = "тестовый тест",
+            description = "тестовый тест для тестов",
             groups = {"тест билетов"},
             priority = 7000)
     public void testEmail() throws IOException {

@@ -4,6 +4,7 @@ import autotest.dto.custData.ClientDataItem;
 import autotest.entity.AuthData;
 import autotest.entity.TicketData;
 import autotest.pages.ArchivePage;
+import autotest.pages.MainPage;
 import autotest.utils.http.RestTemplateSetRequest;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -46,25 +47,25 @@ public class Utils {
     private final static ConfigurationVariables CV = ConfigurationVariables.getInstance();
 
     //Поиск элемента XML по xPath-выражению
-    public static String xPath(String xpathQuery, String xml) {
-        try {
+    public static String xPath (String xpathQuery, String xml)  {
+        try{
             return XPathFactory
                     .newInstance()
                     .newXPath()
-                    .evaluate(xpathQuery, (new InputSource(new StringReader(xml))));
+                    .evaluate(xpathQuery, (new InputSource(new StringReader(xml))) );
         } catch (XPathExpressionException e) {
-            throw new RuntimeException("Ошибка парсинга xPath.\n" + e.getMessage());
+            throw  new RuntimeException("Ошибка парсинга xPath.\n" + e.getMessage());
         }
     }
 
 
-    public static String date(String formatDate) {
+    public static String date(String formatDate){
         SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
         return sdf.format(Calendar.getInstance().getTime());
     }
 
     //Вернет дату в формате "05.05 Пт"
-    public static String getDateForFlightSearchResults(int daysFromToday) {
+    public static String getDateForFlightSearchResults(int daysFromToday){
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -73,7 +74,7 @@ public class Utils {
         return sdf.format(calendar.getTime()).toLowerCase();
     }
 
-    public static String dateFormatted(String formatDate, int daysFromToday) {
+    public static String dateFormatted(String formatDate, int daysFromToday){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE, daysFromToday);
@@ -94,14 +95,14 @@ public class Utils {
         int pause = 2;
         int iterations = time / pause;
 
-        while (element.isDisplayed()) {
+        while ( element.isDisplayed() ) {
             sleep(pause * 1000);
             counter++;
-            if (counter > iterations) Assert.fail("Произошла ошибка (не пропал прелоадер), см. скриншот");
+            if(counter > iterations) Assert.fail("Произошла ошибка (не пропал прелоадер), см. скриншот");
         }
     }
 
-    public static int randomCl() {
+    public static int randomCl(){
         int min = 0, max = 199;
         return new Random().nextInt((max - min) + 1) + min;
     }
@@ -110,14 +111,14 @@ public class Utils {
         if (phoneNum.startsWith("+")) phoneNum = phoneNum.substring(1);
         RestTemplateSetRequest restTemplateSetRequest = new RestTemplateSetRequest();
         String url = "https://" + CV.urlBase + "/archive/frame/exsite/";
-        String postBody = "data=%7B%22phone%22%3A%22%2B" + phoneNum + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";
+        String postBody ="data=%7B%22phone%22%3A%22%2B" + phoneNum + "%22%2C%22locale%22%3A%22ru%22%7D&frame=true&stage=0";
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         ResponseEntity<String> responseEntity = null;
-        try {
+        try{
             responseEntity = (ResponseEntity<String>) restTemplateSetRequest.requestMethod(url, HttpMethod.POST, postBody, headers, String.class);
             return responseEntity.getHeaders().getFirst("Location");
         } catch (Exception e) {
@@ -149,8 +150,8 @@ public class Utils {
         sleep(5 * 1000);
     }
 
-    @Step("Дождемся смены статуса в архиве и проверим его значение")
-    public static void waitAndCheckForBookingStatusChanged(String bookingCode, String expStatus) {
+    @Step("Дождемся смены статуса в архиве и проверим его значение для канала 'Внешний сайт'")
+    public static void waitAndCheckForBookingStatusChanged(String bookingCode, String expStatus){
         String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
         String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
         int counter = 0;
@@ -165,7 +166,30 @@ public class Utils {
         Assert.assertEquals(actStatus, expStatus, "Не дождались смены статуса в архиве");
     }
 
-    public static void setCookieData() {
+    @Step("Дождемся смены статуса в архиве и проверим его значение для канала 'П24'")
+    public static void waitAndCheckForBookingStatusChangedP24 (String bookingCode, String expStatus, String channel) {
+        MainPage mainPage = new MainPage();
+
+        String xPathStatus = String.format(".//*[text()='%s']/../*[@data-ng-bind='ticket.status_text']", bookingCode);
+        String actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+        int counter = 0;
+        while (!expStatus.equalsIgnoreCase(actStatus) && counter < 2) {
+            sleep(10 * 1000);
+            refresh();
+            mainPage.openSearchPageViaChannel(channel)
+                    .submitOpenFrame();
+
+            Utils.switchFrame();
+            $(By.linkText("Архив билетов")).shouldBe(visible).click();
+            ArchivePage.waitForArchivePageLoad();
+            actStatus = $(By.xpath(xPathStatus)).shouldBe(visible).getText().trim();
+            counter++;
+        }
+
+        Assert.assertEquals(actStatus, expStatus, "Не дождались смены статуса в архиве");
+    }
+
+    public static void setCookieData(){
         Set<Cookie> cookies = WebDriverRunner.getWebDriver().manage().getCookies();
         AuthData.setCookies(cookies);
         cookies.forEach(cookie -> {
@@ -175,14 +199,14 @@ public class Utils {
         });
     }
 
-    public static void waitUntilFileDownload(String fileName) {
+    public static void waitUntilFileDownload(String fileName){
         File file = new File(CV.downloadsDir + fileName);
         int counter = 0;
         while (!file.exists() && counter <= 10) {
             sleep(2 * 1000);
             counter++;
         }
-        sleep(3 * 1000);
+        sleep(3*1000);
     }
 
     public static String pdfToString(String fileName) {
@@ -193,22 +217,22 @@ public class Utils {
         }
     }
 
-    public static String docToString(String fileName) {
+    public static String docToString(String fileName){
         try {
             FileInputStream fis = new FileInputStream(CV.downloadsDir + fileName);
             XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
             XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
             return extractor.getText();
-        } catch (Exception e) {
+        } catch(Exception e) {
             throw new RuntimeException("Ошибка чтения файла " + fileName + "\n" + e.getMessage());
         }
     }
 
-    public static TicketData getTicketDataByLastName(String lastName, String bookingCode) {
+    public static TicketData getTicketDataByLastName(String lastName, String bookingCode){
         ClientDataItem clientDataItem = CV.clientData.get(0);
         boolean find = false;
         int counter = 1;
-        while (!find && counter < CV.clientData.size() - 2) {
+        while (!find && counter < CV.clientData.size()-2) {
             if (clientDataItem.getLastName().equalsIgnoreCase(lastName)) {
                 find = true;
             } else clientDataItem = CV.clientData.get(counter);
@@ -226,8 +250,6 @@ public class Utils {
     public static void closeTabAfterOpenArchivePage() {
         if (WebDriverRunner.getWebDriver().getWindowHandles().size() > 1) {
             switchTo().window(1).close();
-        } else {
-            switchTo().window(0).close();
         }
     }
 }

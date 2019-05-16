@@ -1,6 +1,8 @@
 package autotest.utils.listeners;
 
-import autotest.utils.DriverUtils;
+import com.codeborne.selenide.Screenshots;
+import com.google.common.io.Files;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.listener.StepLifecycleListener;
 import io.qameta.allure.listener.TestLifecycleListener;
 import io.qameta.allure.model.StepResult;
@@ -9,6 +11,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.io.File;
 import java.io.IOException;
 
 @Log4j
@@ -31,7 +34,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestFailure(final ITestResult result) {
         try {
-           DriverUtils.screenshot();
+           screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +43,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestSkipped(final ITestResult result) {
         try {
-            DriverUtils.screenshot();
+            screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }    }
@@ -48,7 +51,7 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
     @Override
     public void onTestFailedButWithinSuccessPercentage(final ITestResult result) {
         try {
-            DriverUtils.screenshot();
+            screenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }    }
@@ -59,6 +62,18 @@ public final class AllureOnFailListener implements ITestListener, StepLifecycleL
 
     @Override
     public void onFinish(final ITestContext context) {
+    }
+
+    @Attachment(type = "image/png")
+    public byte[] screenshot() throws IOException {
+        File screenshot = Screenshots.takeScreenShotAsFile();
+
+        if (screenshot == null) {
+            screenshot = new File(new File("src/main/resources/supportFiles/screen.png").getAbsolutePath());
+
+        }
+
+        return Files.toByteArray(screenshot);
     }
 
 }

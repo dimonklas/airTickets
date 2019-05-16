@@ -37,24 +37,28 @@ public class SetUpAndTearDown {
     public void SetUpBrowser() throws Exception {
 
         switch (locale) {
-            case "UA" : Locale.setDefault(new Locale("uk", "ua"));
+            case "UA":
+                Locale.setDefault(new Locale("uk", "ua"));
                 LOGGER.info("Set locale to uk-UA");
                 break;
-            case "RU" : Locale.setDefault(new Locale("ru", "ua"));
+            case "RU":
+                Locale.setDefault(new Locale("ru", "ua"));
                 LOGGER.info("Set locale to ru-UA");
                 break;
-            case "EN" : Locale.setDefault(new Locale("en", "ua"));
+            case "EN":
+                Locale.setDefault(new Locale("en", "ua"));
                 LOGGER.info("Set locale to en-UA");
                 break;
-            default: Locale.setDefault(new Locale("uk", "ua"));
+            default:
+                Locale.setDefault(new Locale("uk", "ua"));
                 LOGGER.info("Locale is uk-UA");
         }
 
-        switch (browser){
-            case "firefox" :
+        switch (browser) {
+            case "firefox":
                 Configuration.browser = "autotest.webDriverProviders.FirefoxDriverProvider";
                 break;
-            case "chrome" :
+            case "chrome":
                 Configuration.browser = "autotest.webDriverProviders.ChromeDriverProvider";
                 break;
             default:
@@ -67,8 +71,8 @@ public class SetUpAndTearDown {
     }
 
     @BeforeTest(alwaysRun = true)
-    void prominSessionCheck(){
-        if(CV.prominSession == null)
+    void prominSessionCheck() {
+        if (CV.prominSession == null)
             throw new SkipException("Пропуск выполнения теста из-за ошибки получения сессии проминя");
     }
 
@@ -76,12 +80,12 @@ public class SetUpAndTearDown {
     void deleteOldDirs() throws IOException {
         File buildReportsDir = new File("build/reports");
         if (buildReportsDir.exists())
-        FileUtils.deleteDirectory(buildReportsDir);
+            FileUtils.deleteDirectory(buildReportsDir);
     }
 
 
     @BeforeSuite(alwaysRun = true)
-    void emptyDownloadsDir()  {
+    void emptyDownloadsDir() {
         if (!new File(CV.downloadsDir).mkdir()) {
             File[] files = new File(CV.downloadsDir).listFiles();
             Arrays.stream(files).forEach(FileUtils::deleteQuietly);
@@ -91,7 +95,7 @@ public class SetUpAndTearDown {
 
     @AfterSuite(alwaysRun = true)
     void closeBrowser() {
-        if(WebDriverRunner.hasWebDriverStarted()) {
+        if (WebDriverRunner.hasWebDriverStarted()) {
             WebDriverRunner.closeWebDriver();
         }
     }
@@ -105,8 +109,8 @@ public class SetUpAndTearDown {
         }
     }
 
-    @AfterTest(alwaysRun = true)
-    public void closeDriver(){
+    @AfterTest(alwaysRun = false)
+    public void closeDriver() {
         WebDriverRunner.closeWebDriver();
     }
 

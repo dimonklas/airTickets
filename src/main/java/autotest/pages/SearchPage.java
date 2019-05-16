@@ -171,19 +171,26 @@ public class SearchPage {
         setAdultsCount(adult);
         setChildrenCount(child);
         setInfantCount(infant);
+        // костыль для ожидания исчезновения надиси под полем (чтобы работал для позитивного и негативного сценариев)
+        try {
+            $x("//*[@id='search-point-arrival']//..//..//*[contains(text(),'выпадающего списка')]").waitUntil(disappear, 6 * 1000);
+        } catch (Throwable e) {
+            log.info("Выберите город из выпадающего списка");
+        }
         Assert.assertTrue($x(".//*[@data-pc-models='vm.models.passengers']//input").getValue().contains(String.valueOf(totalCount)),
                 "Неправильно установили количество пассажиров");
     }
 
 
     @Step("Установим количество пассажиров")
-    public void setPassengersCountForDifficultRoute(int adult, int child){
-        int totalCount = adult + child;
+    public void setPassengersCountForDifficultRoute(int adult, int child, int infant){
+        int totalCount = adult + child + infant;
 
         $x("(.//*[@data-pc-models='vm.models.passengers'])[2]").shouldBe(visible).click();
 
         setAdultsCount(adult);
         setChildrenCount(child);
+        setInfantCount(infant);
         Assert.assertTrue(
                 $x("(.//*[@data-pc-models='vm.models.passengers']//input)[2]")
                         .getValue()
@@ -239,7 +246,8 @@ public class SearchPage {
                     sleep(600);
                 }
             } else {
-                for (int i = actCount; i >= (actCount - childCount); i--) {
+                int j = actCount - childCount;
+                for (int i = 0; i <= j; i++) {
                     removeCount.click();
                     sleep(600);
                 }

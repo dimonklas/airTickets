@@ -3,10 +3,7 @@ package autotest.pages;
 
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.exception.NotClickedException;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.*;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -22,7 +19,8 @@ public class PassengersDataPage {
             passengersDataText = $(By.xpath(".//h2[text()='Данные о пассажирах']")),
             preloader = $(By.xpath(".//*[class='circle-spinner']")),
             preloaderBaggage = $(By.xpath(".//*[contains(text(),'Получение дополнительного багажа')]")),
-            bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью']")),
+            bookingMessageText = $(By.xpath(".//*[text()='Вы забронировали авиабилет стоимостью' or contains(text(),'К сожалению, нас опередили и билеты по цене')]")),
+            bookingMessageTextIncreasedPrice = $(By.xpath(".//div[contains(text(),'К сожалению, нас опередили и билеты по цене')]")),
             errorText = $(By.xpath(".//*[@class='text-error'][text()='Проверьте заполнение пассажирских данных']")),
             errorText2 = $x(".//*[contains(@class,'alert-danger')]");
 
@@ -86,7 +84,11 @@ public class PassengersDataPage {
         $(By.xpath(String.format("(.//label[text()='Срок действия'])[%s]", index))).shouldBe(visible);
         $(By.xpath(String.format("(.//*[text()='Фамилия/имя должны совпадать с данными паспорта'])[%s]", index))).shouldBe(visible);
 
-        $(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='Отключите поле, если нет при себе паспорта' or text()='Данные паспорта не обязательны, но вы можете их заполнить включив поле']", passType))).shouldBe(visible);
+        String textForPassportField1 = "Отключите поле, если нет при себе паспорта";
+        String textForPassportField2 = "Данные паспорта не обязательны, но вы можете их заполнить включив поле";
+        String textForPassportField3 = "Для выбранного рейса необходимы данные паспорта";
+
+        $$(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='%s' or text()='%s' or text()='%s']", passType , textForPassportField1, textForPassportField2, textForPassportField3))).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
 
         if (expireDateText.get(0).isEnabled()) {
             $x(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index)).shouldBe(visible);
@@ -105,7 +107,7 @@ public class PassengersDataPage {
         if (bookingBtn.isEnabled()) {
             Assert.assertTrue(
                     $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)
-                            .getText().contains("Действует до"), "Текст с временем бронирования содержит 'Действует до'");
+                            .getText().contains("Оплатить до"), "Текст с временем бронирования содержит 'Действует до'");
         }
 
         $(By.xpath(".//*[text()='Общая стоимость:']")).shouldBe(visible);
@@ -182,7 +184,11 @@ public class PassengersDataPage {
                 errorText2.isDisplayed()) {
             throw new NotClickedException("Ошибка при бронировании билета");
         }
-        bookingMessageText.waitUntil(appear, 120 * 1000).shouldBe(visible).scrollTo();
+        try {
+            bookingMessageText.waitUntil(appear, 120 * 1000).shouldBe(visible).scrollTo();
+        } catch (Throwable e) {
+            bookingMessageTextIncreasedPrice.waitUntil(appear, 20 * 1000).shouldBe(visible).scrollTo();
+        }
     }
 
     @Step("Нажмем кнопку 'Купить'")

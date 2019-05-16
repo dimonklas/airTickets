@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Регрессионное тестирование сайта покупки авиабилетов (Внешний сайт)" thread-count="1" verbose="1">
+
+
+	<test name="Покупка билетов" >
+		<groups>
+			<run>
+				<include name="Покупка билетов"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunnerMainSite" />
+		</classes>
+	</test>
+
+	<test name="Архив билетов" >
+		<groups>
+			<run>
+				<include name="Архив билетов"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunnerMainSite" />
+		</classes>
+	</test>
+
+	<test name="Поиск билетов (фильтр)" >
+		<groups>
+			<run>
+				<include name="Поиск билетов"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunnerMainSite" />
+		</classes>
+	</test>
+
+	<test name="Негативные тесты" >
+		<groups>
+			<run>
+				<include name="Негативные"/>
+			</run>
+		</groups>
+		<classes>
+			<class name="autotest.TestRunnerMainSite" />
+		</classes>
+	</test>
+
+
+</suite>

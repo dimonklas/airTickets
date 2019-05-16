@@ -107,7 +107,7 @@ public class PassengersDataPage {
         if (bookingBtn.isEnabled()) {
             Assert.assertTrue(
                     $(By.xpath(".//*[@data-ng-bind='vm.bookingData.expireTimeBefore']")).shouldBe(visible)
-                            .getText().contains("Действует до"), "Текст с временем бронирования содержит 'Действует до'");
+                            .getText().contains("Оплатить до"), "Текст с временем бронирования содержит 'Действует до'");
         }
 
         $(By.xpath(".//*[text()='Общая стоимость:']")).shouldBe(visible);

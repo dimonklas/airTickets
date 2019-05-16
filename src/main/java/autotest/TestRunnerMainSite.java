@@ -55,6 +55,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -89,6 +90,8 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
+
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
             t.setClientDataItem(cl);
@@ -123,6 +126,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -189,6 +193,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -223,6 +228,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -454,6 +460,7 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());

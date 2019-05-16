@@ -762,7 +762,7 @@ class TestSuite {
     }
 
     void negativeSearchDeparture(String searchValue) {
-        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").shouldBe(visible);
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.departure.$error']").waitUntil(visible, 5 * 1000);
         if ("".equalsIgnoreCase(searchValue)) {
             assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {
@@ -771,7 +771,7 @@ class TestSuite {
     }
 
     void negativeSearchArrival(String searchValue) {
-        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").shouldBe(visible);
+        SelenideElement errorMsg = $x(".//*[@data-ng-messages='PlaneSearchForm.arrival.$error']").waitUntil(visible, 5 * 1000);
         if ("".equalsIgnoreCase(searchValue)) {
             assertEquals(errorMsg.innerText().trim(), "Заполните поле");
         } else {

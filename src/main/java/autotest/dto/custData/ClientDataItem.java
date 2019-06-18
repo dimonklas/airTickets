@@ -1,6 +1,8 @@
 package autotest.dto.custData;
 
 import javax.annotation.Generated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.SimpleDateFormat;
@@ -210,6 +212,7 @@ public class ClientDataItem{
 			"}";
 		}
 
+		@JsonIgnore
 		public void updateClientData() {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 			this.setDocExpDate(LocalDate.now().plusMonths(18).format(formatter).toString());

@@ -45,7 +45,7 @@ public class ArchivePage {
     }
 
     public static void waitForArchivePageLoad(){
-        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 60 * 1000);
+        $x(".//*[text()='Поиск']").waitUntil(visible.because("Кнопка 'Поиск' на главной странице архива билетов"), 2 * 60 * 1000);
     }
 
     @Step("Проверим состояние забронированного билета")

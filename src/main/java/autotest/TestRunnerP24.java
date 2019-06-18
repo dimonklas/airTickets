@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static autotest.utils.Utils.getNewClientDataItem;
+
 @Log4j
 @Epic("П24 Сайт покупки авиабилетов (регрессионное тестирование крит. функционала)")
 @Listeners({AllureOnFailListener.class})
@@ -51,7 +53,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -84,7 +86,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setChildCount(1);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -118,7 +120,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -182,7 +184,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setPassengersCount(1);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -215,7 +217,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setInfantCount(1);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -251,8 +253,8 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         List<ClientDataItem> clientList = Arrays.asList(
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl())
+                getNewClientDataItem(),
+                getNewClientDataItem()
         );
 
         TicketData ticketData = new TicketData(t -> {
@@ -290,8 +292,8 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         List<ClientDataItem> clientList = Arrays.asList(
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl())
+                getNewClientDataItem(),
+                getNewClientDataItem()
         );
 
         TicketData ticketData = new TicketData(t -> {
@@ -333,9 +335,9 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         List<ClientDataItem> clientList = Arrays.asList(
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl())
+                getNewClientDataItem(),
+                getNewClientDataItem(),
+                getNewClientDataItem()
         );
 
         TicketData ticketData = new TicketData(t -> {
@@ -372,9 +374,9 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         List<ClientDataItem> clientList = Arrays.asList(
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl()),
-                CV.clientData.get(Utils.randomCl())
+                getNewClientDataItem(),
+                getNewClientDataItem(),
+                getNewClientDataItem()
         );
 
         TicketData ticketData = new TicketData(t -> {
@@ -413,7 +415,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         List<ClientDataItem> clientList = Collections.singletonList(
-                CV.clientData.get(Utils.randomCl())
+                getNewClientDataItem()
         );
 
         TicketData ticketData = new TicketData(t -> {
@@ -446,7 +448,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setFakeDoc(true);
         });
 
-        ClientDataItem cl = CV.clientData.get(Utils.randomCl());
+        ClientDataItem cl = getNewClientDataItem();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());

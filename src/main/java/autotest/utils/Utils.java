@@ -252,4 +252,10 @@ public class Utils {
             switchTo().window(1).close();
         }
     }
+
+    public static ClientDataItem getNewClientDataItem(){
+        ClientDataItem clientDataItem = CV.clientData.get(Utils.randomCl());
+        clientDataItem.updateClientData();
+        return clientDataItem;
+    }
 }

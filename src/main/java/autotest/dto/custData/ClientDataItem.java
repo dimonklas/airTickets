@@ -212,10 +212,6 @@ public class ClientDataItem {
                         "}";
     }
 
-    public ClientDataItem() {
-        updateClientData();
-    }
-
     @JsonIgnore
     public void updateClientData() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -224,6 +220,4 @@ public class ClientDataItem {
         this.setBirthDateInf(LocalDate.now().minusMonths(9).format(formatter).toString());
         this.setBirthDateChd(LocalDate.now().minusMonths(48).format(formatter).toString());
     }
-
-
 }

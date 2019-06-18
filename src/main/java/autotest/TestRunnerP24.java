@@ -30,13 +30,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     private final ConfigurationVariables CV = ConfigurationVariables.getInstance();
     private TestSuite testSuite = new TestSuite();
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14514: Бронировка авиабилета для одного взрослого (П24)",
             groups = {"Покупка билетов"},
             priority = 10)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14514")
-    public void a1_front_14514(){
+    public void a1_front_14514() {
         log.info(">>>> a1_front_14514() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -52,7 +52,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -63,13 +62,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.bookTickets(searchData, cl, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-12552:Покупка авиабилета для взрослого и ребенка (П24)",
             groups = {"Покупка билетов"},
             priority = 20)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-12552")
-    public void a2_front_12552(){
+    public void a2_front_12552() {
         log.info(">>>> a2_front_12552() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -86,7 +85,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -97,13 +95,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_12552(searchData, cl, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15024:Покупка авиабилета для одного взрослого сложный маршрут ( П24 )",
             groups = {"Покупка билетов"},
             priority = 30)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15024")
-    public void a3_front_15024(){
+    public void a3_front_15024() {
         log.info(">>>> a3_front_15024() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -121,7 +119,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -132,13 +129,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_15024(searchData, cl, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15091:Добавление перелета при сложном маршруте (П24)",
             groups = {"Покупка билетов"},
             priority = 40)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15091")
-    public void a4_front_15091(){
+    public void a4_front_15091() {
         log.info(">>>> a4_front_15091() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -163,13 +160,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_15091();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15848:Покупка билета для одного взрослого +- 3 дня (П24)",
             groups = {"Покупка билетов"},
             priority = 50)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15848")
-    public void a5_front_15848(){
+    public void a5_front_15848() {
         log.info(">>>> a5_front_15848() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -186,7 +183,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -197,13 +193,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_15848(searchData, cl, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14517:Бронировка билета для взрослого и младенца (П24)",
             groups = {"Покупка билетов"},
             priority = 60)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14517")
-    public void a6_front_14517(){
+    public void a6_front_14517() {
         log.info(">>>> a6_front_14517() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -220,7 +216,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -232,7 +227,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19722:Только туда/+-3 дня/бронь/рассрочка2 (П24)",
             groups = {"Покупка билетов"},
@@ -270,7 +265,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19723:Туда-обратно/+-3 дня/2 взр/покупка (П24)",
             groups = {"Покупка билетов"},
@@ -309,7 +304,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19724:FF/Р24/Сложный маршрут/1взр+3реб/док-off (П24)",
             groups = {"Покупка билетов"},
@@ -352,7 +347,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19724(searchData, clientList, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19725:GC/Фронт/Только туда/1взр+1млад/FakeDoc (П24)",
             groups = {"Покупка билетов"},
@@ -392,7 +387,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19726:FF/Фронт/Сложный/+2маршрута/1взр1реб",
             groups = {"Покупка билетов"},
@@ -430,13 +425,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19724(searchData, clientList, ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-15720:Покупка авиабилета для одного пассажира с фейковыми документами с не заполнением данных(П24)",
             groups = {"Покупка билетов"},
             priority = 103)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-15720")
-    public void a7_front_15720(){
+    public void a7_front_15720() {
         log.info(">>>> a7_front_15720() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -452,7 +447,6 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         ClientDataItem cl = CV.clientData.get(Utils.randomCl());
-        cl.updateClientData();
 
         TicketData ticketData = new TicketData(t -> {
             t.setOwnerFIO(cl.getLastName().toUpperCase() + " " + cl.getFirstName().toUpperCase());
@@ -464,96 +458,96 @@ public class TestRunnerP24 extends SetUpAndTearDown {
     }
 
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14506:Оплата бронировки авиабилета в архиве",
             groups = {"Архив билетов"},
             priority = 110)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14506")
-    public void b1_front_14506(){
+    public void b1_front_14506() {
         log.info(">>>> b1_front_14506() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
 
         testSuite.front_14506(BookedTickets.getTicketsList().get(0));
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14928:Скачивание правил билета после покупки билета в архиве (Архив)",
             groups = {"Архив билетов"},
             priority = 130)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14928")
-    public void b2_front_14928(){
+    public void b2_front_14928() {
         log.info(">>>> b2_front_14928() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
 
         testSuite.front_14928(BookedTickets.getTicketsList().get(0));
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-17753:Заказ багажа в архиве",
             groups = {"Архив билетов"},
             priority = 130)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17753")
-    public void b3_front_17753(){
+    public void b3_front_17753() {
         log.info(">>>> b3_front_17753() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
 
         testSuite.front_17753(BookedTickets.getTicketsList().get(0));
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-17763:Заказ перевозки животных в архиве (Архив)",
             groups = {"Архив билетов"},
             priority = 140)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17763")
-    public void b4_front_17763(){
+    public void b4_front_17763() {
         log.info(">>>> b4_front_17763() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
 
         testSuite.front_17763(BookedTickets.getTicketsList().get(0));
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-17767:Заказ специального питания в архиве (Архив)",
             groups = {"Архив билетов"},
             priority = 150)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17767")
-    public void b5_front_17767(){
+    public void b5_front_17767() {
         log.info(">>>> b5_front_17767() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
 
         testSuite.front_17767(BookedTickets.getTicketsList().get(0));
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-17714:Аннулирование брони авиабилета в архиве",
             groups = {"Архив билетов"},
             priority = 170)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-17714")
-    public void b7_front_17714(){
+    public void b7_front_17714() {
         log.info(">>>> b7_front_17714() is running...");
 
-        if(BookedTickets.getTicketsList().size() < 1) {
+        if (BookedTickets.getTicketsList().size() < 1) {
             a1_front_14514();
         }
         TicketData ticketData = BookedTickets.getTicketsList().get(0);
@@ -561,13 +555,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_17714(ticketData);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19452:Багаж (фильтр) П24",
             groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19452")
-    public void c1_front_19452(){
+    public void c1_front_19452() {
         log.info(">>>> c1_front_19452() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -586,13 +580,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19452();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19453:Время вылета/прилета П24",
             groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19453")
-    public void c1_front_19453(){
+    public void c1_front_19453() {
         log.info(">>>> c1_front_19453() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -611,13 +605,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19453();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19454:Аэропорт П24",
             groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19454")
-    public void c1_front_19454(){
+    public void c1_front_19454() {
         log.info(">>>> c1_front_19454() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -636,13 +630,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19454();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19455:Авиакомпании П24",
             groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19455")
-    public void c1_front_19455(){
+    public void c1_front_19455() {
         log.info(">>>> c1_front_19455() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -661,13 +655,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.front_19455();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-19579:Прямые перелеты, пересадки П24",
             groups = {"Поиск билетов"},
             priority = 300)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-19579")
-    public void c1_front_19579(){
+    public void c1_front_19579() {
         log.info(">>>> c1_front_19579() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -691,14 +685,14 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         return Dataproviders.dataForDepartureAndArrivalFields();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             dataProvider = "dataForDepartureAndArrivalFields",
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14699:Неправильный ввод города в поле 'Откуда'(город вылета) (П24)",
             groups = {"Негативные"},
             priority = 400)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14699")
-    public void d1_front_14699(String searchValue){
+    public void d1_front_14699(String searchValue) {
         log.info(">>>> d1_front_14699() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -717,14 +711,14 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.negativeSearchDeparture(searchValue);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             dataProvider = "dataForDepartureAndArrivalFields",
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14700:Неправильный ввод города в поле 'Куда'(город прилета) (П24)",
             groups = {"Негативные"},
             priority = 410)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14700")
-    public void d2_front_14700(String searchValue){
+    public void d2_front_14700(String searchValue) {
         log.info(">>>> d2_front_14700() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -743,13 +737,13 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.negativeSearchArrival(searchValue);
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14864:Неправильный ввод количества пасажиров (детей, младенцев) П24",
             groups = {"Негативные"},
             priority = 420)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14864")
-    public void d3_front_14864(){
+    public void d3_front_14864() {
         log.info(">>>> d3_front_14864() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -774,14 +768,14 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         return Dataproviders.dataForBirthdayField();
     }
 
-    @Test(  enabled = true,
+    @Test(enabled = true,
             dataProvider = "dataForBirthdayField",
             retryAnalyzer = RunTestAgainIfFailed.class,
             description = "front-14293:Неправильный ввод даты рождения для покупки билета (П24)",
             groups = {"Негативные"},
             priority = 430)
     @Link(name = "Ссылка на ТК", url = "https://testlink.privatbank.ua/linkto.php?tprojectPrefix=front&item=testcase&id=front-14293")
-    public void d4_front_14293(DateTests dateTests){
+    public void d4_front_14293(DateTests dateTests) {
         log.info(">>>> d4_front_14293() is running...");
         SearchData searchData = new SearchData(s -> {
             s.setChannel("П24");
@@ -799,7 +793,8 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         testSuite.performSearch(searchData);
         testSuite.negativeIncorrectBirthDate(dateTests);
     }
-    @Test(  enabled = true,
+
+    @Test(enabled = true,
             description = "Ручное сторнирование бронировок",
             groups = {"Manual Running"},
             priority = 10000)

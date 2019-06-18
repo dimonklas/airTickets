@@ -48,7 +48,7 @@ public class MainPage {
 
     @Step("Откроем архив билетов для {phoneNum}")
     public void openArchivePage(String phoneNum) {
-        open(Utils.getArchiveUrl(phoneNum));
+        open("https://" + CV.urlBase + Utils.getArchiveUrl(phoneNum));
         switchTo().defaultContent();
         ArchivePage.waitForArchivePageLoad();
     }

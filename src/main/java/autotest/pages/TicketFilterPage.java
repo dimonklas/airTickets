@@ -276,6 +276,7 @@ public class TicketFilterPage {
         $x(".//*[text()='Прямой']").shouldBe(visible, enabled).click();
         $$x(".//*[text()='Пересадки']").shouldBe(CollectionCondition.empty);
         $x(".//*[text()='1 пересадка']").shouldBe(visible, enabled).click();
-        $$x(".//*[text()='без пересадок']").shouldBe(CollectionCondition.empty);
+        $$x(".//*[text()='Пересадки']").shouldBe(CollectionCondition.sizeGreaterThanOrEqual(1));
+//        $$x(".//*[text()='без пересадок']").shouldBe(CollectionCondition.empty);   //временно (или постоянно) отключен
     }
 }

@@ -207,7 +207,8 @@ class TestSuite {
         searchResultsPage.checkPresenceOfDepartureTimeBackward(id, regex);
         searchResultsPage.checkPresenceOfArrivalTimeBackward(id, regex);
 
-        regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
+//        regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
+        regex = "[0-9д\\s]{0,2}[0-9ч\\s]{0,4}[0-9м\\s]{0,6}";
         searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
         searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
 

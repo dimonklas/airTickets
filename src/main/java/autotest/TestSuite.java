@@ -346,15 +346,18 @@ class TestSuite {
         passengersDataPage.fillDocData(2, client.getDocSNChd(), client.getDocExpDateChd(), search.isFakeDocChld());
 
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.bookTicket();
 
-        passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
-        String bookingCode = passengersDataPage.getBookingCode();
-        ticket.setBookingId(bookingCode);
+        buyTicket(search);
+//        passengersDataPage.bookTicket();
+//
+//        passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
+//        String bookingCode = passengersDataPage.getBookingCode();
+//        ticket.setBookingId(bookingCode);
+//
+//        passengersDataPage.openArchive();
+//        archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
+//        closeTabAfterOpenArchivePage();
 
-        passengersDataPage.openArchive();
-        archivePage.checkTicketStatus(bookingCode, "Забронирован, не оплачен");
-        closeTabAfterOpenArchivePage();
     }
 
 
@@ -389,18 +392,7 @@ class TestSuite {
         passengersDataPage.setSex(1, client.getSex());
         passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.clickBuyTicket();
-
-        paymentPage.title.shouldBe(visible);
-
-        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
-            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
-        } else {
-            paymentPage.doPaymentByCard();
-            String idTicket = paymentPage.getIdTicketAfterPayment();
-            paymentPage.openArchive();
-            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
-        }
+        buyTicket(search);
     }
 
 
@@ -455,17 +447,8 @@ class TestSuite {
         passengersDataPage.setSex(1, client.getSex());
         passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.clickBuyTicket();
 
-        paymentPage.title.shouldBe(visible);
-        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
-            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
-        } else {
-            paymentPage.doPaymentByCard();
-            String idTicket = paymentPage.getIdTicketAfterPayment();
-            paymentPage.openArchive();
-            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
-        }
+        buyTicket(search);
     }
 
     //Покупка билета в рассрочку для одного взрослого +- 3 дня (для front_19722 и front_19725)
@@ -529,17 +512,8 @@ class TestSuite {
         }
 
         fillPassengersFields(search, clientList);
-        passengersDataPage.clickBuyTicket();
 
-        paymentPage.title.shouldBe(visible);
-        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
-            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
-        } else {
-            paymentPage.doPaymentByCard();
-            String idTicket = paymentPage.getIdTicketAfterPayment();
-            paymentPage.openArchive();
-            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
-        }
+        buyTicket(search);
     }
 
     // покупка в рассрочку билета 1 взрослый и три ребенка (Для front_19724 и front_19726)
@@ -993,6 +967,26 @@ class TestSuite {
 
         archivePage.clickTransferBookingButton();
         archivePage.transferBooking(ticket.getBookingId(), CV.phone2);
+    }
+
+    void buyTicket(SearchData search) {
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        PaymentPage paymentPage = new PaymentPage();
+        ArchivePage archivePage = new ArchivePage();
+
+        passengersDataPage.clickBuyTicket();
+
+        paymentPage.title.shouldBe(visible);
+
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        } else {
+            paymentPage.doPaymentByCard();
+            String idTicket = paymentPage.getIdTicketAfterPayment();
+            paymentPage.openArchive();
+            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
+        }
+
     }
 
     void stornBookings() {

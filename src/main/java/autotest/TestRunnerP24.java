@@ -44,8 +44,8 @@ public class TestRunnerP24 extends SetUpAndTearDown {
             s.setChannel("П24");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Киев");
-            s.setArrivalCity("Харьков");
+            s.setDepartureCity(CV.defaultDepartureCity);
+            s.setArrivalCity(CV.defaultArrivalCity);
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));
@@ -61,7 +61,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         testSuite.performSearch(searchData);
-        testSuite.bookTickets(searchData, cl, ticketData);
+        testSuite.bookTicketsAfterPayment(searchData, cl, ticketData);
     }
 
     @Test(enabled = true,
@@ -225,7 +225,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         testSuite.performSearch(searchData);
-        testSuite.bookTickets(searchData, cl, ticketData);
+        testSuite.bookTicketsAfterPayment(searchData, cl, ticketData);
     }
 
 
@@ -456,7 +456,7 @@ public class TestRunnerP24 extends SetUpAndTearDown {
         });
 
         testSuite.performSearch(searchData);
-        testSuite.bookTickets(searchData, cl, ticketData);
+        testSuite.bookTicketsAfterPayment(searchData, cl, ticketData);
     }
 
 

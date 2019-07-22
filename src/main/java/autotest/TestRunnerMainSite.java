@@ -47,8 +47,8 @@ public class TestRunnerMainSite extends SetUpAndTearDown {
             s.setChannel("Внешний Сайт");
             s.setWaysType("Туда и обратно");
             s.setClassType("Эконом");
-            s.setDepartureCity("Киев");
-            s.setArrivalCity("Харьков");
+            s.setDepartureCity(CV.defaultDepartureCity);
+            s.setArrivalCity(CV.defaultArrivalCity);
             s.setDaysFwd(180);
             s.setDaysBckwd(185);
             s.setDepartureDateForward(Utils.getDateForFlightSearchResults(180));

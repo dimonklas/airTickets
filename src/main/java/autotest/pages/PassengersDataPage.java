@@ -3,7 +3,10 @@ package autotest.pages;
 
 import autotest.utils.ConfigurationVariables;
 import autotest.utils.exception.NotClickedException;
-import com.codeborne.selenide.*;
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -88,7 +91,7 @@ public class PassengersDataPage {
         String textForPassportField2 = "Данные паспорта не обязательны, но вы можете их заполнить включив поле";
         String textForPassportField3 = "Для выбранного рейса необходимы данные паспорта";
 
-        $$(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='%s' or text()='%s' or text()='%s']", passType , textForPassportField1, textForPassportField2, textForPassportField3))).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
+        $$(By.xpath(String.format(".//*[text()='%s']/../..//*[text()='%s' or text()='%s' or text()='%s']", passType, textForPassportField1, textForPassportField2, textForPassportField3))).shouldHave(CollectionCondition.sizeGreaterThanOrEqual(1));
 
         if (expireDateText.get(0).isEnabled()) {
             $x(String.format("(.//*[text()='Для документов без срока действия отключите поле'])[%s]", index)).shouldBe(visible);
@@ -192,7 +195,7 @@ public class PassengersDataPage {
     }
 
     @Step("Нажмем кнопку 'Купить'")
-    public void buyTicket() {
+    public void clickBuyTicket() {
         buyBtn.shouldBe(visible).scrollIntoView(true).click();
         sleep(100);
         if (errorText.isDisplayed()) {
@@ -214,6 +217,13 @@ public class PassengersDataPage {
     @Step("Проверим отображение кода бронирования билета")
     public String getBookingCode() {
         String code = $(By.xpath(".//*[text()='Код бронирования']/following-sibling::p[@data-ng-bind='locator']")).shouldBe(visible).getText();
+        Assert.assertFalse(code.isEmpty(), "В сообщении о бронировании билета не отобразился код бронирования");
+        return code;
+    }
+
+    @Step("Проверим отображение кода бронирования билета после оплаты картой")
+    public String getBookingCodeAfterPaymentCard() {
+        String code = $(By.xpath("(//div[@class='bold ng-binding']/b)[1]")).shouldBe(visible).getText();
         Assert.assertFalse(code.isEmpty(), "В сообщении о бронировании билета не отобразился код бронирования");
         return code;
     }

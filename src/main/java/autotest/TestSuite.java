@@ -172,6 +172,111 @@ class TestSuite {
     }
 
 
+    void bookTicketsAfterPayment(SearchData search, ClientDataItem client, TicketData ticket) {
+        SearchResultsPage searchResultsPage = new SearchResultsPage();
+        TicketInfoPage ticketInfoPage = new TicketInfoPage();
+        CustomerContactDataPage customerContactDataPage = new CustomerContactDataPage();
+        PassengersDataPage passengersDataPage = new PassengersDataPage();
+        ArchivePage archivePage = new ArchivePage();
+        PaymentPage paymentPage = new PaymentPage();
+
+
+        //Получим id блока с результатами поиска
+        String id = searchResultsPage.getIdOfSearchResults().get(0);
+
+        searchResultsPage.checkCompanyPresence(id, 2);
+
+        searchResultsPage.checkDepartureCityNameForward(id, search.getDepartureCity());
+        searchResultsPage.checkArrivalCityNameForward(id, search.getArrivalCity());
+        searchResultsPage.checkDepartureCityNameBackward(id, search.getArrivalCity());
+        searchResultsPage.checkArrivalCityNameBackward(id, search.getDepartureCity());
+
+        searchResultsPage.checkDepartureAitportNameForward(id);
+        searchResultsPage.checkArrivalAitportNameForward(id);
+        searchResultsPage.checkDepartureAitportNameBackward(id);
+        searchResultsPage.checkArrivalAitportNameBackward(id);
+
+        searchResultsPage.checkDepartureDateForward(id, search.getDaysFwd());
+        searchResultsPage.checkArrivalDateForward(id, search.getDaysFwd());
+        searchResultsPage.checkDepartureDateBackward(id, search.getDaysBckwd());
+        searchResultsPage.checkArrivalDateBackward(id, search.getDaysBckwd());
+
+        String regex = "[0-9]{1,2}:[0-9]{2}";
+        searchResultsPage.checkPresenceOfDepartureTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfArrivalTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfDepartureTimeBackward(id, regex);
+        searchResultsPage.checkPresenceOfArrivalTimeBackward(id, regex);
+
+        regex = "[0-9ч]{2,3}[0-9м\\s]{0,4}";
+        searchResultsPage.checkPresenceOfFlyingTimeForward(id, regex);
+        searchResultsPage.checkPresenceOfFlyingTimeBackward(id, regex);
+
+        String price = searchResultsPage.checkPresenceOfTicketsCost(id);
+        ticket.setPrice(price);
+
+        searchResultsPage.pressSelectButton(id);
+
+        ticketInfoPage.waitForTicketRulesBtn();
+        ticketInfoPage.checkTicketForwardDetails();
+        ticketInfoPage.checkTicketBackwardDetails();
+
+        if (search.getChannel().equalsIgnoreCase("Внешний Сайт")) {
+            customerContactDataPage.checkPresenceOfContactDataBlock();
+            customerContactDataPage.enterUserData();
+        }
+
+        //Индексы полей для xPath
+        int indexChild = 2;
+        int indexInfant = 2;
+        if (search.getInfantCount() == 1 && search.getChildCount() == 1) indexInfant = 3;
+
+        passengersDataPage.checkAvaliabilityOfCustomersDataFields();
+        passengersDataPage.checkPresenceOfTextElements(1, "Взрослый");
+        if (search.getChildCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexChild, "Ребенок");
+        if (search.getInfantCount() == 1) passengersDataPage.checkPresenceOfTextElements(indexInfant, "Младенец");
+
+        passengersDataPage.checkPresenceAndAvaliabilityOfButtons();
+
+        passengersDataPage.fillCustomersData(1, client.getLastName(), client.getFirstName(), client.getBirthDate());
+        passengersDataPage.fillCitizenship(1, CV.citizenship);
+        passengersDataPage.setSex(1, client.getSex());
+        passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
+
+        if (search.getChildCount() == 1) {
+            passengersDataPage.fillCustomersData(indexChild, client.getLastName(), client.getFirstNameChd(), client.getBirthDateChd());
+            passengersDataPage.fillCitizenship(indexChild, CV.citizenship);
+            passengersDataPage.setSex(indexChild, client.getSexChd());
+            passengersDataPage.fillDocData(indexChild, client.getDocSNChd(), client.getDocExpDateChd(), search.isFakeDocChld());
+        }
+
+        if (search.getInfantCount() == 1) {
+            passengersDataPage.fillCustomersData(indexInfant, client.getLastName(), client.getFirstNameInf(), client.getBirthDateInf());
+            passengersDataPage.fillCitizenship(indexInfant, CV.citizenship);
+            passengersDataPage.setSex(indexInfant, client.getSexInf());
+            passengersDataPage.fillDocData(indexInfant, client.getDocSNInf(), client.getDocExpDateInf(), search.isFakeDocInf());
+        }
+
+        passengersDataPage.fillEmail(CV.email);
+        passengersDataPage.clickBuyTicket();
+
+        paymentPage.title.shouldBe(visible);
+
+        if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
+            paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
+        } else {
+            paymentPage.doPaymentByCard();
+            String idTicket = paymentPage.getIdTicketAfterPayment();
+            passengersDataPage.checkBookedTicketMessage(ticket.getPrice());
+            String bookingCode = passengersDataPage.getBookingCodeAfterPaymentCard();
+            ticket.setBookingId(bookingCode);
+            BookedTickets.getTicketsList().add(ticket);
+            paymentPage.openArchive();
+            archivePage.checkTicketStatus(idTicket, "Забронирован, не оплачен");
+            closeTabAfterOpenArchivePage();
+        }
+    }
+
+
     //Покупка авиабилета для взрослого и ребенка (внешний сайт)
     void front_12552(SearchData search, ClientDataItem client, TicketData ticket) {
         SearchResultsPage searchResultsPage = new SearchResultsPage();
@@ -284,7 +389,7 @@ class TestSuite {
         passengersDataPage.setSex(1, client.getSex());
         passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
 
@@ -350,7 +455,7 @@ class TestSuite {
         passengersDataPage.setSex(1, client.getSex());
         passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
         if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
@@ -390,7 +495,7 @@ class TestSuite {
         }
 
         fillPassengersFields(search, clientList);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
         paymentPage.doInstalments();
@@ -424,7 +529,7 @@ class TestSuite {
         }
 
         fillPassengersFields(search, clientList);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
         if (search.getChannel().equalsIgnoreCase("Внешний сайт")) {
@@ -461,7 +566,7 @@ class TestSuite {
         }
 
         fillPassengersFields(search, clientList);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
         paymentPage.doInstalments();
@@ -514,16 +619,18 @@ class TestSuite {
         archivePage.checkCloseButton();
 
         archivePage.downloadTicketRulesFile();
-        Utils.waitUntilFileDownload("fare_conditions.pdf");
-        String rules = Utils.pdfToString("fare_conditions.pdf");
+        String fareConditionsFileName = String.format("fare_conditions_%s.pdf", ticket.getBookingId());
+        Utils.waitUntilFileDownload(fareConditionsFileName);
+        String rules = Utils.pdfToString(fareConditionsFileName);
 
         Assert.assertTrue(rules.contains("Условия возврата"), "Файл не содержит текст 'Условия возврата'");
         String fromCityToCity = String.format("%s - %s", CV.defaultDepartureCity, CV.defaultArrivalCity);
         Assert.assertTrue(rules.contains(fromCityToCity), "Файл 'Условия возврата' не содержит текст '" + fromCityToCity + "'");
 
         archivePage.downloadBookingDocument();
-        Utils.waitUntilFileDownload("booking.doc");
-        String bookingDoc = Utils.docToString("booking.doc");
+        String bookingFileName = String.format("booking_%s.doc", ticket.getBookingId());
+        Utils.waitUntilFileDownload(bookingFileName);
+        String bookingDoc = Utils.docToString(bookingFileName);
         Assert.assertTrue(bookingDoc.contains("PASSENGER ITINERARY RECEIPT"), "Файл не содержит текст 'PASSENGER ITINERARY RECEIPT'");
         Assert.assertTrue(bookingDoc.contains("NAME: " + ticket.getOwnerFIO()), "Файл не содержит ФИО " + ticket.getOwnerFIO());
     }
@@ -749,10 +856,10 @@ class TestSuite {
         clientNumber = 0;
         if (search.getInfantCount() > 0) {
             for (int i = 1; i <= search.getInfantCount(); i++) {
-                passengersDataPage.fillCustomersData(indexInfant,  clientList.get(clientNumber).getLastName(),  clientList.get(clientNumber).getFirstNameInf(),  clientList.get(clientNumber).getBirthDateInf());
+                passengersDataPage.fillCustomersData(indexInfant, clientList.get(clientNumber).getLastName(), clientList.get(clientNumber).getFirstNameInf(), clientList.get(clientNumber).getBirthDateInf());
                 passengersDataPage.fillCitizenship(indexInfant, CV.citizenship);
-                passengersDataPage.setSex(indexInfant,  clientList.get(clientNumber).getSexInf());
-                passengersDataPage.fillDocData(indexInfant,  clientList.get(clientNumber).getDocSNInf(),  clientList.get(clientNumber).getDocExpDateInf(), search.isFakeDocInf());
+                passengersDataPage.setSex(indexInfant, clientList.get(clientNumber).getSexInf());
+                passengersDataPage.fillDocData(indexInfant, clientList.get(clientNumber).getDocSNInf(), clientList.get(clientNumber).getDocExpDateInf(), search.isFakeDocInf());
                 clientNumber++;
                 indexInfant++;
             }
@@ -844,7 +951,7 @@ class TestSuite {
         passengersDataPage.setSex(1, client.getSex());
         passengersDataPage.fillDocData(1, client.getDocSN(), client.getDocExpDate(), search.isFakeDoc());
         passengersDataPage.fillEmail(CV.email);
-        passengersDataPage.buyTicket();
+        passengersDataPage.clickBuyTicket();
 
         paymentPage.title.shouldBe(visible);
         paymentPage.doPaymentByCard(new String[]{"", "", "", ""}, "08/2020", "000");
